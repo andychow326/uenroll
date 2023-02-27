@@ -6,7 +6,7 @@ Uenroll is a web-based application which is a course selection system for univer
 
 ## Prerequisites
 
-This project is using NodeJS 18. Please perform the following steps to align the NodeJS version:
+This project is using NodeJS 18 and Docker for development usage. Please perform the following steps to align the NodeJS version:
 
 1. Install [NVM (Node Version Manager)](https://github.com/nvm-sh/nvm#intro)
 
@@ -15,3 +15,5 @@ This project is using NodeJS 18. Please perform the following steps to align the
    ```bash
    nvm use
    ```
+
+3. Install [Docker](https://www.docker.com)
