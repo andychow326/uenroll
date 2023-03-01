@@ -18,5 +18,12 @@ services:
     environment:
       REDIS_PASS: ${REDIS_PASS}
 
+  nginx:
+    image: nginx:1.23.3
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:8080
+
 volumes:
   db_data:
