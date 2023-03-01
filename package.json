@@ -1,0 +1,36 @@
+{
+  "name": "uenroll",
+  "version": "1.0.0",
+  "workspaces": [
+    "server",
+    "worker",
+    "portal"
+  ],
+  "scripts": {
+    "start:server": "npm run start -w server",
+    "start": "run-s start:*",
+    "build:server": "npm run build -w server",
+    "build": "run-s build:*",
+    "prettier:server": "npm run prettier -w server",
+    "prettier": "run-s prettier:*",
+    "format:server": "npm run format -w server",
+    "format": "run-s format:*",
+    "lint:server": "npm run lint -w server",
+    "lint": "run-s lint:*"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "5.54.0",
+    "@typescript-eslint/parser": "5.54.0",
+    "eslint": "8.35.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "eslint-config-prettier": "8.6.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "npm-run-all": "4.1.5",
+    "prettier": "2.8.4"
+  }
+}
