@@ -17,3 +17,33 @@ This project is using NodeJS 18 and Docker for development usage. Please perform
    ```
 
 3. Install [Docker](https://www.docker.com)
+
+## Development
+
+### Fresh Installation
+
+On the root directory, run the following command
+
+```bash
+# Install dependencies
+npm install
+
+# Run necessary Docker containers
+docker compose up -d
+```
+
+### Start server
+
+On the root directory, run the following command
+
+```bash
+npm run start:server
+```
+
+### Start portal
+
+On the root directory, run the following command
+
+```bash
+npm run start:portal
+```
