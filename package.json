@@ -8,14 +8,18 @@
   ],
   "scripts": {
     "start:server": "npm run start -w server",
-    "start": "run-s start:*",
+    "start:portal": "npm run start -w portal",
     "build:server": "npm run build -w server",
+    "build:portal": "npm run build -w portal",
     "build": "run-s build:*",
     "prettier:server": "npm run prettier -w server",
+    "prettier:portal": "npm run prettier -w portal",
     "prettier": "run-s prettier:*",
     "format:server": "npm run format -w server",
+    "format:portal": "npm run format -w portal",
     "format": "run-s format:*",
     "lint:server": "npm run lint -w server",
+    "lint:portal": "npm run lint -w portal",
     "lint": "run-s lint:*"
   },
   "devDependencies": {
