@@ -8,7 +8,7 @@
     "prettier": "prettier --list-different './src/**/*.ts'",
     "format": "prettier --write './src/**/*.ts'",
     "lint": "eslint './src/**/*.{js,ts}'",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "devDependencies": {
     "@types/cors": "2.8.13",

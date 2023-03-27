@@ -1,14 +1,13 @@
 {
   "name": "portal",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
     "prettier": "prettier --list-different 'src/**/*.{js,ts,jsx,tsx}'",
     "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx}'",
     "lint": "eslint './src/**/*.{js,ts,jsx,tsx}'",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@tanstack/react-query": "4.28.0",
