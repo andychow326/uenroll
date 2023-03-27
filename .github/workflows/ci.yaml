@@ -1,0 +1,40 @@
+name: CI/CD
+
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - "*"
+      - "!gh-pages"
+
+  pull_request:
+    branches:
+      - "*"
+      - "!gh-pages"
+
+jobs:
+  test-portal:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.14.2"
+      - run: npm ci
+      - run: npm run ci:portal
+        if: ${{ !cancelled() }}
+
+  test-server:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.14.2"
+      - run: npm ci
+      - run: npm run ci:server
+        if: ${{ !cancelled() }}
