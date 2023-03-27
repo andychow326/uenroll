@@ -13,6 +13,10 @@ const trpc = initTRPC.context<Context>().create({
             ? error.cause.flatten()
             : null,
       },
+      message:
+        error.code === "BAD_REQUEST" && error.cause instanceof ZodError
+          ? ""
+          : error.message,
     };
   },
 });
