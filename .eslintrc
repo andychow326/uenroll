@@ -29,6 +29,7 @@
       {
         "checksVoidReturn": false
       }
-    ]
+    ],
+    "react/require-default-props": "off"
   }
 }

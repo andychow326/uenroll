@@ -1,0 +1,14 @@
+.container {
+  display: block;
+  width: 100%;
+  min-height: 64px;
+}
+
+.input {
+  width: 100%;
+}
+
+.message {
+  color: red;
+  height: 20px;
+}
