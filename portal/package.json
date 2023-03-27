@@ -7,18 +7,22 @@
     "build": "tsc && vite build",
     "prettier": "prettier --list-different 'src/**/*.{js,ts,jsx,tsx}'",
     "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx}'",
-    "lint": "eslint './src/**/*.{js,ts,jsx,tsx}'"
+    "lint": "eslint './src/**/*.{js,ts,jsx,tsx}'",
+    "test": "jest"
   },
   "dependencies": {
+    "@tanstack/react-query": "4.28.0",
+    "@trpc/client": "10.18.0",
+    "@trpc/react-query": "10.18.0",
+    "@trpc/server": "10.18.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.9.0"
   },
   "devDependencies": {
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
+    "@types/react": "18.0.29",
+    "@types/react-dom": "18.0.11",
     "@vitejs/plugin-react": "3.1.0",
-    "typescript": "4.9.3",
-    "vite": "4.1.0"
+    "vite": "4.2.1"
   }
 }
