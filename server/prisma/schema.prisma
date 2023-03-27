@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id @map("id")
+  password       String           @map("password")
+  firstName      String           @map("first_name")
+  lastName       String           @map("last_name")
+  isAdmin        Boolean          @map("is_admin")
+  email          String           @map("email")
+  ShoppingCart   ShoppingCart[]
+  RecentlyViewed RecentlyViewed[]
+  EnrolledCourse EnrolledCourse[]
+  WorkerQueue    WorkerQueue[]
+
+  @@map("user")
+}
+
+model Course {
+  subject             String  @map("subject")
+  number              String  @map("number")
+  title               String  @map("title")
+  career              String  @map("career")
+  units               Float   @map("units")
+  description         String? @map("description")
+  learningOutcome     String? @map("learning_outcome")
+  syllabus            String? @map("syllabus")
+  requiredReadings    String? @map("required_readings")
+  recommendedReadings String? @map("recommended_readings")
+
+  openedCourse OpenedCourse[]
+
+  @@id([subject, number])
+  @@map("course")
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model TimeSlot {
+  id        String    @id @map("id")
+  start     DateTime  @map("start")
+  end       DateTime  @map("end")
+  dayOfWeek DayOfWeek @map("day_of_week")
+
+  OpenedCourse OpenedCourse[]
+
+  @@map("time_slot")
+}
+
+model OpenedCourse {
+  id         String @id @default(uuid())
+  subject    String @map("subject")
+  number     String @map("number")
+  section    String @map("section")
+  year       Int    @map("year")
+  semester   String @map("semester")
+  timeSlotId String @map("time_slot_id")
+  venue      String @map("venue")
+  lecturer   String @map("lecturer")
+  outline    Bytes? @map("outline")
+  capacity   Int    @map("capacity")
+
+  course         Course           @relation(fields: [subject, number], references: [subject, number])
+  timeSlot       TimeSlot         @relation(fields: [timeSlotId], references: [id])
+  ShoppingCart   ShoppingCart[]
+  RecentlyViewed RecentlyViewed[]
+  EnrolledCourse EnrolledCourse[]
+  WorkerQueue    WorkerQueue[]
+
+  @@map("opened_course")
+}
+
+model ShoppingCart {
+  userId   String @map("user_id")
+  courseId String @map("course_id")
+
+  user   User         @relation(fields: [userId], references: [id])
+  course OpenedCourse @relation(fields: [courseId], references: [id])
+
+  @@id([userId, courseId])
+  @@map("shopping_cart")
+}
+
+model RecentlyViewed {
+  id       String @id @default(uuid())
+  userId   String @map("user_id")
+  courseId String @map("course_id")
+
+  user   User         @relation(fields: [userId], references: [id])
+  course OpenedCourse @relation(fields: [courseId], references: [id])
+
+  @@map("recently_viewed")
+}
+
+model EnrolledCourse {
+  userId   String @map("user_id")
+  courseId String @map("course_id")
+
+  user   User         @relation(fields: [userId], references: [id])
+  course OpenedCourse @relation(fields: [courseId], references: [id])
+
+  @@id([userId, courseId])
+  @@map("enrolled_course")
+}
+
+enum WorkerAction {
+  ENROLL
+  DROP
+  SWAP
+}
+
+enum WorkerStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FULL
+}
+
+model WorkerQueue {
+  id       String       @id @map("id")
+  userId   String       @map("user_id")
+  courseId String       @map("course_id")
+  action   WorkerAction @map("action")
+  status   WorkerStatus @map("status")
+
+  user   User         @relation(fields: [userId], references: [id])
+  course OpenedCourse @relation(fields: [courseId], references: [id])
+
+  @@map("worker_queue")
+}
