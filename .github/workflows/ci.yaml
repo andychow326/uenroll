@@ -36,5 +36,6 @@ jobs:
         with:
           node-version: "18.14.2"
       - run: npm ci
+      - run: make init-prisma
       - run: npm run ci:server
         if: ${{ !cancelled() }}
