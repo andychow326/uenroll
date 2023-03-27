@@ -18,6 +18,35 @@ This project is using NodeJS 18 and Docker for development usage. Please perform
 
 3. Install [Docker](https://www.docker.com)
 
+## Architecture
+
+The system consists of:
+
+1. API server serving tRPC procedures
+2. Worker (process course enrollment)
+3. Portal (React)
+4. Redis storing user sessions
+5. PostgreSQL serves as database
+
+```
+         ┌─────────────┐
+         │   Browser   │
+         └──────┬──────┘
+         ┌──────┴───────┐
+         │    Portal    │
+         └──────┬───────┘
+                │ tRPC
+         ┌──────┴───────┐
+         │  API server  │
+         └───┬──────┬───┘
+ ┌───────────┴─┐  ┌─┴───────────┐
+ │    Redis    │  │ PostgreSQL  │
+ └───────────┬─┘  └─┬───────────┘
+         ┌───┴──────┴───┐
+         │    Worker    │
+         └──────────────┘
+```
+
 ## Development
 
 ### Fresh Installation
@@ -28,8 +57,14 @@ On the root directory, run the following command
 # Install dependencies
 npm install
 
+# Create configuration files
+make setup
+
 # Run necessary Docker containers
 docker compose up -d
+
+# Run database migrations
+make migratedb
 ```
 
 ### Start server
