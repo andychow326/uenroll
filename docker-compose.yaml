@@ -17,6 +17,8 @@ services:
     command: redis-server --requirepass "$REDIS_PASS"
     environment:
       REDIS_PASS: ${REDIS_PASS}
+    ports:
+      - 6379:6379
 
   nginx:
     image: nginx:1.23.3

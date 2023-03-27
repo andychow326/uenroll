@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import cors from "cors";
 import express from "express";
 import * as trpcExpress from "@trpc/server/adapters/express";
@@ -5,6 +6,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import { createContext } from "./context";
 import { router } from "./router";
+import { setupRedisClient } from "./redis";
 
 dotenv.config();
 
@@ -15,7 +17,7 @@ app.use(morgan("combined"));
 
 app.use(
   cors({
-    origin: [process.env.ORIGIN],
+    origin: [process.env.ORIGIN ?? ""],
   })
 );
 
@@ -27,4 +29,7 @@ app.use(
   })
 );
 
+setupRedisClient();
+
+console.log("Server lisening on port 3000");
 app.listen(3000);
