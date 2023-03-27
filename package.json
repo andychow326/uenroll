@@ -24,7 +24,9 @@
     "test:server": "npm run test -w server",
     "test:portal": "npm run test -w portal",
     "test": "run-s test:*",
-    "ci": "run-s prettier:* lint:* test:*"
+    "ci:server": "run-s build:server prettier:server lint:server test:server",
+    "ci:portal": "run-s build:portal prettier:portal lint:portal test:portal",
+    "ci": "run-s ci:*"
   },
   "devDependencies": {
     "@types/jest": "29.5.0",
