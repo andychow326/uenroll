@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
 import useUserActionCreator from "../actions/user";
-import LoginForm from "../components/LoginForm";
+import AuthForm from "../components/AuthForm";
 
-const useLoginForm = () => {
+const useAuthForm = () => {
   const { error, login } = useUserActionCreator();
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
@@ -34,10 +34,10 @@ const useLoginForm = () => {
 
 const Login: React.FC = () => {
   const { error, userID, password, onChangeUserID, onChangePassword, onLogin } =
-    useLoginForm();
+    useAuthForm();
 
   return (
-    <LoginForm
+    <AuthForm
       error={error}
       userID={userID}
       password={password}

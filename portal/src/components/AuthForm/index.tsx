@@ -7,7 +7,7 @@ import type { Error } from "../../trpc";
 
 import styles from "./styles.module.css";
 
-interface LoginFormProps {
+interface AuthFormProps {
   error: Error | null;
   userID: string;
   password: string;
@@ -16,7 +16,7 @@ interface LoginFormProps {
   onLogin: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = (props) => {
+const AuthForm: React.FC<AuthFormProps> = (props) => {
   const { error, userID, password, onChangeUserID, onChangePassword, onLogin } =
     props;
   const intl = useIntl();
@@ -33,12 +33,12 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             size="medium"
           />
           <div className={styles.brandTitle}>
-            <FormattedMessage id="LoginForm.title" />
+            <FormattedMessage id="AuthForm.title" />
           </div>
         </div>
         <div className={styles.loginForm}>
           <div className={styles.loginFormTitle}>
-            <FormattedMessage id="LoginForm.welcome-back" />
+            <FormattedMessage id="AuthForm.welcome-back" />
           </div>
           <div className={styles.loginFormBody}>
             <InputWithErrorField
@@ -47,7 +47,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               className={styles.inputBlock}
               inputClassName={styles.input}
               placeholder={intl.formatMessage({
-                id: "LoginForm.user-id.placeholder",
+                id: "AuthForm.user-id.placeholder",
               })}
               name="userID"
               value={userID}
@@ -59,7 +59,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               className={styles.inputBlock}
               inputClassName={styles.input}
               placeholder={intl.formatMessage({
-                id: "LoginForm.password.placeholder",
+                id: "AuthForm.password.placeholder",
               })}
               type="password"
               name="password"
@@ -67,7 +67,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               onChange={onChangePasswordField}
             />
             <div className={styles.forgotPassword}>
-              <FormattedMessage id="LoginForm.forgot-password.label" />
+              <FormattedMessage id="AuthForm.forgot-password.label" />
             </div>
           </div>
           <div className={styles.submitSection}>
@@ -76,7 +76,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
               color="black"
               onClick={onLogin}
             >
-              <FormattedMessage id="LoginForm.login-button.label" />
+              <FormattedMessage id="AuthForm.login-button.label" />
             </Button>
             <div className={styles.error}>{error?.message}</div>
           </div>
@@ -86,4 +86,4 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   );
 };
 
-export default LoginForm;
+export default AuthForm;
