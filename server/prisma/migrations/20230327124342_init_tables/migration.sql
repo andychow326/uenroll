@@ -13,7 +13,7 @@ CREATE TABLE "user" (
     "password" TEXT NOT NULL,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
-    "is_admin" BOOLEAN NOT NULL,
+    "is_admin" BOOLEAN NOT NULL DEFAULT false,
     "email" TEXT NOT NULL,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
