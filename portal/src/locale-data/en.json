@@ -3,9 +3,14 @@
   "app.logo.uri": "/images/uenroll-logo.png",
 
   "AuthForm.title": "Course Registration System",
-  "AuthForm.welcome-back": "Welcome back",
+  "AuthForm.back-button.label": "Back",
+  "AuthForm.login.title": "Welcome back",
+  "AuthForm.forgot-password.title": "Forgot Password",
+  "AuthForm.reset-password.title": "Reset Password",
   "AuthForm.user-id.placeholder": "User ID",
   "AuthForm.password.placeholder": "Password",
   "AuthForm.forgot-password.label": "Forgot password",
-  "AuthForm.login-button.label": "Login"
+  "AuthForm.login.button.label": "Login",
+  "AuthForm.forgot-password.button.label": "Continue",
+  "AuthForm.reset-password.button.label": "Continue"
 }

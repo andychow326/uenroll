@@ -1,7 +1,9 @@
 const routes = {
   prefix: "",
-  login: "/login",
-  logout: "/logout",
-};
+  auth: {
+    path: "/auth",
+    mode: { path: "/auth/:mode" },
+  },
+} as const;
 
 export default routes;

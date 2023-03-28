@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
-import useUserActionCreator from "../actions/user";
+import useAuthActionCreator from "../actions/auth";
 import AuthForm from "../components/AuthForm";
 
 const useAuthForm = () => {
-  const { error, login } = useUserActionCreator();
+  const { loading, error, currentAuthMode, login, onChangeAuthMode } =
+    useAuthActionCreator();
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,26 +22,51 @@ const useAuthForm = () => {
 
   return useMemo(
     () => ({
+      currentAuthMode,
+      loading,
       error,
       userID,
       password,
+      onChangeAuthMode,
       onChangeUserID,
       onChangePassword,
       onLogin,
     }),
-    [error, userID, password, onChangeUserID, onChangePassword, onLogin]
+    [
+      currentAuthMode,
+      loading,
+      error,
+      userID,
+      password,
+      onChangeAuthMode,
+      onChangeUserID,
+      onChangePassword,
+      onLogin,
+    ]
   );
 };
 
-const Login: React.FC = () => {
-  const { error, userID, password, onChangeUserID, onChangePassword, onLogin } =
-    useAuthForm();
+const Authentication: React.FC = () => {
+  const {
+    currentAuthMode,
+    loading,
+    error,
+    userID,
+    password,
+    onChangeAuthMode,
+    onChangeUserID,
+    onChangePassword,
+    onLogin,
+  } = useAuthForm();
 
   return (
     <AuthForm
+      loading={loading}
+      currentAuthMode={currentAuthMode}
       error={error}
       userID={userID}
       password={password}
+      onChangeAuthMode={onChangeAuthMode}
       onChangeUserID={onChangeUserID}
       onChangePassword={onChangePassword}
       onLogin={onLogin}
@@ -48,4 +74,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Authentication;

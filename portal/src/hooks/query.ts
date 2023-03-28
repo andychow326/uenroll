@@ -20,8 +20,13 @@ export function useSafeQuery() {
     return null;
   }, []);
 
+  const clearQuery = useCallback(() => {
+    setError(null);
+    setLoading(false);
+  }, []);
+
   return useMemo(
-    () => ({ loading, error, safeQuery }),
-    [loading, error, safeQuery]
+    () => ({ loading, error, safeQuery, clearQuery }),
+    [loading, error, safeQuery, clearQuery]
   );
 }

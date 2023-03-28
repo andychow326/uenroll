@@ -1,29 +1,36 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import ApiClientProvider from "../contexts/ApiClientProvider";
 import UserProvider from "../contexts/UserProvider";
 import routes from "../routes";
 import Home from "./Home";
-import Login from "./Login";
-import Logout from "./Logout";
+import Authentication from "./Authentication";
 import MESSAGES from "../locale-data/en.json";
+import Root from "./Root";
 
 const router = createBrowserRouter([
   {
     path: routes.prefix,
+    element: <Root />,
     children: [
       {
         index: true,
         element: <Home />,
       },
       {
-        path: routes.login,
-        element: <Login />,
-      },
-      {
-        path: routes.logout,
-        element: <Logout />,
+        path: routes.auth.path,
+        children: [
+          { index: true, element: <Navigate to={routes.auth.mode.path} /> },
+          {
+            path: routes.auth.mode.path,
+            element: <Authentication />,
+          },
+        ],
       },
     ],
   },
