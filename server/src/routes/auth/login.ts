@@ -10,8 +10,8 @@ import { SessionUser } from "../../context";
 
 const inputSchema = z
   .object({
-    userID: z.string().trim().min(1),
-    password: z.string().trim().min(1),
+    userID: z.string().trim().nonempty(),
+    password: z.string().trim().nonempty(),
   })
   .required();
 
