@@ -33,7 +33,11 @@ const login = publicProcedure.input(inputSchema).query(async ({ input }) => {
   const sessionUser: SessionUser = { id: user.id, isAdmin: user.isAdmin };
   await redisClient.set(
     getRedisKey(RedisKey.SESSION, sessionID),
-    JSON.stringify(sessionUser)
+    JSON.stringify(sessionUser),
+    {
+      EX: 30 * 60, // 30 minutes expiration time
+      NX: true, // Only set the key if it does not already exist
+    }
   );
   await redisClient.rPush(
     getRedisKey(RedisKey.LOGIN_SESSION, user.id),
