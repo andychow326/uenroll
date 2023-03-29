@@ -49,14 +49,15 @@ The system consists of:
 
 ## Development
 
+For development, we will use nginx to serve as the reverse proxy for the server and portal. It will be hosted on http://localhost:8080/.
+
+Both server and portal will be automatically hot-reloaded when there is any code change. NO RESTART IS REQUIRED.
+
 ### Fresh Installation
 
 On the root directory, run the following command
 
 ```bash
-# Install dependencies
-npm install
-
 # Create configuration files
 make setup
 
@@ -67,18 +68,4 @@ docker compose up -d
 make migratedb
 ```
 
-### Start server
-
-On the root directory, run the following command
-
-```bash
-npm run start:server
-```
-
-### Start portal
-
-On the root directory, run the following command
-
-```bash
-npm run start:portal
-```
+After running the above commands, you should be abled to see the login page via http://localhost:8080/.

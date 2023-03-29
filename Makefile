@@ -1,5 +1,7 @@
+USE_DOCKER_COMPOSE=docker compose -p uenroll
+
 .PHONY: setup
-setup: init-prisma
+setup:
 	cp .env.example .env
 	ln .env server/.env
 
@@ -9,8 +11,8 @@ init-prisma:
 
 .PHONY: migratedb
 migratedb:
-	npx -w server prisma migrate dev
+	${USE_DOCKER_COMPOSE} exec server bash -c "npx -w server prisma migrate dev"
 
 .PHONY: resetdb
 resetdb:
-	npx -w server prisma migrate reset
+	${USE_DOCKER_COMPOSE} exec server bash -c "npx -w server prisma migrate reset"
