@@ -8,10 +8,14 @@ const Root: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Handle unauthenticated users
   useEffect(() => {
+    // Handle unauthenticated users
     if (!location.pathname.startsWith(routes.auth.path) && sessionID == null) {
       navigate(routes.auth.path);
+    }
+    // Handle authenticated users
+    if (location.pathname.startsWith(routes.auth.path) && sessionID != null) {
+      navigate(routes.prefix);
     }
   }, [location, navigate, sessionID]);
 
