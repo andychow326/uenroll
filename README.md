@@ -69,3 +69,23 @@ make migratedb
 ```
 
 After running the above commands, you should be abled to see the login page via http://localhost:8080/.
+
+### Database Migration
+
+- Create new migration
+
+  ```bash
+  make new-migration name=example_name
+  ```
+
+- Sync up migrations
+
+  ```bash
+  make migratedb
+  ```
+
+- Reset migrations
+
+  ```bash
+  make resetdb
+  ```
