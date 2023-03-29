@@ -1,0 +1,2 @@
+INSERT INTO "uenroll"."user" ("id", "password", "first_name", "last_name", "is_admin", "email") VALUES
+('admin', '$argon2id$v=19$m=65536,t=3,p=4$fAF1UkjxkrLqMU8rWYkXVA$A3Gxai1dbmlh/MX8txBeiwO46bTKwIuQEKlqYGJloyk', 'Admin', 'Admin', 't', 'admin@uenroll.com');
