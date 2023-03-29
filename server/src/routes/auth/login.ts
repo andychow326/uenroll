@@ -31,18 +31,22 @@ const login = publicProcedure.input(inputSchema).query(async ({ input }) => {
 
   const sessionID = crypto.randomBytes(128).toString("base64");
   const sessionUser: SessionUser = { id: user.id, isAdmin: user.isAdmin };
-  await redisClient.set(
-    getRedisKey(RedisKey.SESSION, sessionID),
-    JSON.stringify(sessionUser),
-    {
-      EX: 30 * 60, // 30 minutes expiration time
-      NX: true, // Only set the key if it does not already exist
-    }
-  );
-  await redisClient.rPush(
-    getRedisKey(RedisKey.LOGIN_SESSION, user.id),
-    sessionID
-  );
+  await Promise.all([
+    redisClient.set(
+      getRedisKey(RedisKey.SESSION, sessionID),
+      JSON.stringify(sessionUser),
+      {
+        EX: 30 * 60, // 30 minutes expiration time
+        NX: true, // Only set the key if it does not already exist
+      }
+    ),
+    redisClient.rPush(getRedisKey(RedisKey.LOGIN_SESSION, user.id), sessionID),
+    redisClient.expire(
+      getRedisKey(RedisKey.LOGIN_SESSION, user.id),
+      30 * 60 // 30 minutes expiration time
+    ),
+  ]);
+
   return sessionID;
 });
 
