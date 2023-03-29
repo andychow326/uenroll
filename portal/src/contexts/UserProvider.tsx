@@ -26,7 +26,7 @@ interface UserProviderProps {
 
 const UserProvider: React.FC<UserProviderProps> = (props) => {
   const { children } = props;
-  const [sessionID, setSessionID] = useState<string | null>(
+  const [sessionID, setSessionID] = useState<string | null>(() =>
     getStorageItem(StorageKey.SessionID)
   );
 
