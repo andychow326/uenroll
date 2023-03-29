@@ -1,4 +1,13 @@
-# Uenroll
+# Uenroll <!-- omit in toc -->
+
+Work in progress
+
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Architecture](#architecture)
+- [Development](#development)
+  - [Fresh Installation](#fresh-installation)
+  - [Database Migration](#database-migration)
 
 ## Overview
 
