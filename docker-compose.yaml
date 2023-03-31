@@ -50,7 +50,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: [ "npm", "run", "start:portal" ]
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm run start:portal
     volumes:
       - .:/app
       - node_modules:/app/node_modules
