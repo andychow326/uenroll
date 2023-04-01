@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { AuthMode } from "../constants";
 import { useUser } from "../contexts/UserProvider";
 import { useSafeQuery } from "../hooks/query";
-import trpc from "../trpc";
-import { AuthMode } from "../constants";
 import routes from "../routes";
+import trpc from "../trpc";
 
 function useAuthActionCreator() {
   const apiClient = trpc.useContext();
@@ -12,6 +12,7 @@ function useAuthActionCreator() {
   const { updateSessionID } = useUser();
   const { mode } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentAuthMode, setCurrentAuthMode] = useState<AuthMode>(
     mode != null && Object.keys(AuthMode).includes(mode)
       ? (mode as AuthMode)
@@ -19,10 +20,13 @@ function useAuthActionCreator() {
   );
 
   useEffect(() => {
-    if (mode !== currentAuthMode) {
+    if (
+      location.pathname.startsWith(routes.auth.path) &&
+      mode !== currentAuthMode
+    ) {
       navigate(`${routes.auth.path}/${currentAuthMode}`);
     }
-  }, [currentAuthMode, mode, navigate]);
+  }, [currentAuthMode, location.pathname, mode, navigate]);
 
   const login = useCallback(
     async (userID: string, password: string) => {
