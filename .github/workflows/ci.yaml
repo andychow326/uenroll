@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.14.2"
+          node-version: "18.15.0"
       - run: npm ci
       - run: npm run ci:portal
         if: ${{ !cancelled() }}
@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.14.2"
+          node-version: "18.15.0"
       - run: npm ci
       - run: make init-prisma
       - run: npm run ci:server
