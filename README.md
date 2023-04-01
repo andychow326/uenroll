@@ -2,6 +2,8 @@
 
 Work in progress
 
+[![Tests](https://img.shields.io/github/actions/workflow/status/andychow326/uenroll/ci.yaml?branch=master)](https://github.com/andychow326/uenroll/actions/workflows/ci.yaml)
+
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
 - [Architecture](#architecture)
