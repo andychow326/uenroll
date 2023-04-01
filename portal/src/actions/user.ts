@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useUser } from "../contexts/UserProvider";
 import { useSafeQuery } from "../hooks/query";
 import trpc from "../trpc";
+import type { UserProfile } from "../types";
 
 function useUserActionCreator() {
   const apiClient = trpc.useContext();
@@ -11,7 +12,7 @@ function useUserActionCreator() {
   const fetchUserProfile = useCallback(async () => {
     const userProfile = await safeQuery(() => apiClient.user.profile.fetch());
     if (userProfile != null) {
-      updateUserProfile(userProfile);
+      updateUserProfile(userProfile as UserProfile);
     }
   }, [apiClient.user.profile, safeQuery, updateUserProfile]);
 
