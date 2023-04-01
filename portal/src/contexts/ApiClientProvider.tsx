@@ -1,6 +1,6 @@
-import React, { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
+import React, { ReactNode, useState } from "react";
 import trpc from "../trpc";
 
 interface ApiClientProviderProps {

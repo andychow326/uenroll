@@ -1,10 +1,10 @@
 import React, { ReactElement, useCallback, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Button, Icon, Image } from "semantic-ui-react";
-import { useTextFieldChange } from "../../hooks/component";
-import InputWithErrorField from "../InputWithErrorField";
-import type { Error } from "../../trpc";
 import { AuthMode } from "../../constants";
+import { useTextFieldChange } from "../../hooks/component";
+import type { Error } from "../../trpc";
+import InputWithErrorField from "../InputWithErrorField";
 
 import styles from "./styles.module.css";
 

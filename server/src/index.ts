@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import cors from "cors";
-import express from "express";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import morgan from "morgan";
+import cors from "cors";
 import dotenv from "dotenv";
+import express from "express";
+import morgan from "morgan";
 import { createContext } from "./context";
-import { router } from "./router";
 import { setupRedisClient } from "./redis";
+import { router } from "./router";
 
 dotenv.config();
 

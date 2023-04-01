@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import cn from "classnames";
+import React, { useEffect, useState } from "react";
 import { Input, InputProps } from "semantic-ui-react";
 import type { Error } from "../../trpc";
 

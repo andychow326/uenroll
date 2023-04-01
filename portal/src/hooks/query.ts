@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Error } from "../trpc";
 
 export function useSafeQuery() {

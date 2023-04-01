@@ -1,7 +1,7 @@
-import healthz from "./routes/healthz";
 import auth from "./routes/auth";
-import trpc from "./trpc";
+import healthz from "./routes/healthz";
 import user from "./routes/user";
+import trpc from "./trpc";
 
 export const router = trpc.router({
   healthz,

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { createClient } from "redis";
 import dotenv from "dotenv";
+import { createClient } from "redis";
 
 dotenv.config();
 

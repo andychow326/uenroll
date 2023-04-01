@@ -1,16 +1,16 @@
 import React from "react";
+import { IntlProvider } from "react-intl";
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { IntlProvider } from "react-intl";
 import ApiClientProvider from "../contexts/ApiClientProvider";
 import UserProvider from "../contexts/UserProvider";
-import routes from "../routes";
-import Home from "./Home";
-import Authentication from "./Authentication";
 import MESSAGES from "../locale-data/en.json";
+import routes from "../routes";
+import Authentication from "./Authentication";
+import Home from "./Home";
 import Root from "./Root";
 
 const router = createBrowserRouter([
