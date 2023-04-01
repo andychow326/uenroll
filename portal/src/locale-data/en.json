@@ -4,6 +4,9 @@
 
   "LoadingSpinner.text": "Loading...",
 
+  "TopBar.dropdown.name.label": "{lastName} {firstName}",
+  "TopBar.dropdown.options.logout.label": "Logout",
+
   "AuthForm.title": "Course Registration System",
   "AuthForm.back-button.label": "Back",
   "AuthForm.login.title": "Welcome back",
