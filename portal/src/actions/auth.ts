@@ -9,7 +9,7 @@ import trpc from "../trpc";
 function useAuthActionCreator() {
   const apiClient = trpc.useContext();
   const { loading, error, safeQuery, clearQuery } = useSafeQuery();
-  const { updateSessionID } = useUser();
+  const { updateSessionID, updateUserProfile } = useUser();
   const { mode } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,9 +40,11 @@ function useAuthActionCreator() {
     [apiClient.auth.login, safeQuery, updateSessionID]
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    await safeQuery(() => apiClient.auth.logout.fetch());
+    updateUserProfile(null);
     updateSessionID(null);
-  }, [updateSessionID]);
+  }, [apiClient.auth.logout, safeQuery, updateSessionID, updateUserProfile]);
 
   const onChangeAuthMode = useCallback(
     (newMode: AuthMode) => {
