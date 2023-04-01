@@ -70,6 +70,9 @@ On the root directory, run the following command
 # Create configuration files
 make setup
 
+# Install dependencies to show syntax highlighting
+npm install
+
 # Run necessary Docker containers
 docker compose up -d
 
