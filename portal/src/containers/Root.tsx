@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useUserActionCreator from "../actions/user";
+import ScreenLayout from "../components/ScreenLayout";
 import { useUser } from "../contexts/UserProvider";
 import routes from "../routes";
 
@@ -40,7 +41,15 @@ const Root: React.FC = () => {
     };
   }, [onValidateSession]);
 
-  return <Outlet />;
+  if (location.pathname.startsWith(routes.auth.path)) {
+    return <Outlet />;
+  }
+
+  return (
+    <ScreenLayout>
+      <Outlet />
+    </ScreenLayout>
+  );
 };
 
 export default Root;
