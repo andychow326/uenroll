@@ -26,14 +26,16 @@ const Root: React.FC = () => {
     if (location.pathname.startsWith(routes.auth.path) && sessionID != null) {
       navigate(routes.prefix);
     }
+  }, [location, navigate, sessionID]);
 
+  useEffect(() => {
     // Handle auto-logout for expired sessions
     const validateSessionInterval = setInterval(onValidateSession, 5000);
 
     return () => {
       clearInterval(validateSessionInterval);
     };
-  }, [location, navigate, onValidateSession, sessionID]);
+  }, [onValidateSession]);
 
   return <Outlet />;
 };
