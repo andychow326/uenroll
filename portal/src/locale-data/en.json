@@ -2,6 +2,8 @@
   "app.name": "Uenroll",
   "app.logo.uri": "/images/uenroll-logo.png",
 
+  "LoadingSpinner.text": "Loading...",
+
   "AuthForm.title": "Course Registration System",
   "AuthForm.back-button.label": "Back",
   "AuthForm.login.title": "Welcome back",
