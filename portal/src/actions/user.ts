@@ -6,7 +6,14 @@ import trpc from "../trpc";
 function useUserActionCreator() {
   const apiClient = trpc.useContext();
   const { safeQuery } = useSafeQuery();
-  const { updateSessionID } = useUser();
+  const { updateSessionID, updateUserProfile } = useUser();
+
+  const fetchUserProfile = useCallback(async () => {
+    const userProfile = await safeQuery(() => apiClient.user.profile.fetch());
+    if (userProfile != null) {
+      updateUserProfile(userProfile);
+    }
+  }, [apiClient.user.profile, safeQuery, updateUserProfile]);
 
   const validateSession = useCallback(async () => {
     const isValid = await safeQuery(() =>
@@ -19,9 +26,10 @@ function useUserActionCreator() {
 
   return useMemo(
     () => ({
+      fetchUserProfile,
       validateSession,
     }),
-    [validateSession]
+    [fetchUserProfile, validateSession]
   );
 }
 
