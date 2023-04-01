@@ -6,6 +6,7 @@ Work in progress
 - [Prerequisites](#prerequisites)
 - [Architecture](#architecture)
 - [Development](#development)
+  - [Recommended tools](#recommended-tools)
   - [Fresh Installation](#fresh-installation)
   - [Database Migration](#database-migration)
 
@@ -61,6 +62,10 @@ The system consists of:
 For development, we will use nginx to serve as the reverse proxy for the server and portal. It will be hosted on http://localhost:8080/.
 
 Both server and portal will be automatically hot-reloaded when there is any code change. NO RESTART IS REQUIRED.
+
+### Recommended tools
+
+We highly recommend using [VsCode](https://code.visualstudio.com) as your code editor. Here we have defined some useful extensions in `.vscode/extension.json` and basic settings in `.vscode/settings.json` for better productivity. [VsCode](https://code.visualstudio.com) will automatically load the `.vscode` folder and show you the prompt for installing those extensions. Please click the `Install All` button on the prompt to install all recommended extensions.
 
 ### Fresh Installation
 
