@@ -13,10 +13,16 @@ const profile = authProcedure.query(async ({ ctx }) => {
   }
 
   return {
+    id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
     isAdmin: user.isAdmin,
+    dateOfBirth: user.dateOfBirth,
+    phoneNumber: user.phoneNumber,
+    gender: user.gender,
+    major: user.major,
+    address: user.address,
   };
 });
 

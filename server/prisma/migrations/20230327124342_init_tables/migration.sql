@@ -7,6 +7,9 @@ CREATE TYPE "WorkerAction" AS ENUM ('ENROLL', 'DROP', 'SWAP');
 -- CreateEnum
 CREATE TYPE "WorkerStatus" AS ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FULL');
 
+-- CreateEnum
+CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
+
 -- CreateTable
 CREATE TABLE "user" (
     "id" TEXT NOT NULL,
@@ -15,6 +18,11 @@ CREATE TABLE "user" (
     "last_name" TEXT NOT NULL,
     "is_admin" BOOLEAN NOT NULL DEFAULT false,
     "email" TEXT NOT NULL,
+    "phone_number" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "date_of_birth" DATE NOT NULL,
+    "gender" "Gender" NOT NULL,
+    "major" TEXT NOT NULL,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );

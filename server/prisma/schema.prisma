@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
 model User {
   id             String           @id @map("id")
   password       String           @map("password")
@@ -17,6 +23,11 @@ model User {
   lastName       String           @map("last_name")
   isAdmin        Boolean          @default(false) @map("is_admin")
   email          String           @map("email")
+  dateOfBirth    DateTime         @map("date_of_birth") @db.Date
+  phoneNumber    String           @map("phone_number")
+  gender         Gender           @map("gender")
+  major          String           @map("major")
+  address        String           @map("address")
   ShoppingCart   ShoppingCart[]
   RecentlyViewed RecentlyViewed[]
   EnrolledCourse EnrolledCourse[]
