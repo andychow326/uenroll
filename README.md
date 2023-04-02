@@ -89,6 +89,13 @@ make migratedb
 
 After running the above commands, you should be abled to see the login page via http://localhost:8080/.
 
+We have created a test admin account, the information is in the following:
+
+```
+userID: admin
+password: admin
+```
+
 ### Database Migration
 
 - Create new migration
