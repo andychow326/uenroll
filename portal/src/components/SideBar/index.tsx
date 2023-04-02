@@ -24,7 +24,10 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
   }, [navigate, path]);
 
   const isActive = useMemo(
-    () => location.pathname.startsWith(path),
+    () =>
+      path === routes.prefix
+        ? location.pathname === path
+        : location.pathname.startsWith(path),
     [location.pathname, path]
   );
 

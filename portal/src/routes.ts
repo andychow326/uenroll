@@ -1,5 +1,5 @@
 const routes = {
-  prefix: "",
+  prefix: "/",
   auth: {
     path: "/auth",
     mode: { path: "/auth/:mode" },
