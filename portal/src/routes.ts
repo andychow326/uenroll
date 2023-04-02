@@ -19,6 +19,11 @@ const routes = {
   timeTable: {
     path: "/time-table",
   },
+  manage: {
+    path: "/manage",
+    course: { path: "/manage/course" },
+    user: { path: "/manage/user" },
+  },
 } as const;
 
 export default routes;

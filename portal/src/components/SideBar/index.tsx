@@ -3,6 +3,7 @@ import React, { useCallback, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Icon, SemanticICONS } from "semantic-ui-react";
+import { useUser } from "../../contexts/UserProvider";
 import routes from "../../routes";
 
 import styles from "./styles.module.css";
@@ -41,41 +42,66 @@ const MenuItem: React.FC<MenuItemProps> = (props) => {
 };
 
 const SideBar: React.FC = () => {
-  const menuItems = useMemo(
+  const { userProfile } = useUser();
+
+  const studentMenuItems = useMemo(
     (): MenuItemProps[] => [
       {
         icon: "home",
-        textID: "SideBar.menu.home.label",
+        textID: "SideBar.menu.student.home.label",
         path: routes.prefix,
       },
       {
         icon: "search",
-        textID: "SideBar.menu.course-search.label",
+        textID: "SideBar.menu.student.course-search.label",
         path: routes.course.path,
       },
       {
         icon: "shopping cart",
-        textID: "SideBar.menu.shopping-cart.label",
+        textID: "SideBar.menu.student.shopping-cart.label",
         path: routes.shoppingCart.path,
       },
       {
         icon: "shopping bag",
-        textID: "SideBar.menu.drop-classes.label",
+        textID: "SideBar.menu.student.drop-classes.label",
         path: routes.dropClasses.path,
       },
       {
         icon: "calendar",
-        textID: "SideBar.menu.time-table.label",
+        textID: "SideBar.menu.student.time-table.label",
         path: routes.timeTable.path,
       },
       {
         icon: "file alternate",
-        textID: "SideBar.menu.enrollment-status.label",
+        textID: "SideBar.menu.student.enrollment-status.label",
         path: routes.enrollmentStatus.path,
       },
     ],
     []
   );
+
+  const adminMenuItems = useMemo(
+    (): MenuItemProps[] => [
+      {
+        icon: "home",
+        textID: "SideBar.menu.student.home.label",
+        path: routes.prefix,
+      },
+      {
+        icon: "folder open",
+        textID: "SideBar.menu.admin.course-management.label",
+        path: routes.manage.course.path,
+      },
+      {
+        icon: "user",
+        textID: "SideBar.menu.admin.user-management.label",
+        path: routes.manage.user.path,
+      },
+    ],
+    []
+  );
+
+  const menuItems = userProfile?.isAdmin ? adminMenuItems : studentMenuItems;
 
   return (
     <div className={styles.container}>
