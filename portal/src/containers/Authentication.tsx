@@ -1,10 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import useAuthActionCreator from "../actions/auth";
+import useUserActionCreator from "../actions/user";
 import AuthForm from "../components/AuthForm";
 
 const useAuthForm = () => {
   const { loading, error, currentAuthMode, login, onChangeAuthMode } =
     useAuthActionCreator();
+  const { fetchUserProfile } = useUserActionCreator();
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,7 +20,8 @@ const useAuthForm = () => {
 
   const onLogin = useCallback(async () => {
     await login(userID, password);
-  }, [login, password, userID]);
+    await fetchUserProfile();
+  }, [fetchUserProfile, login, password, userID]);
 
   return useMemo(
     () => ({

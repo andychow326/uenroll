@@ -6,7 +6,7 @@ import { useUser } from "../contexts/UserProvider";
 import routes from "../routes";
 
 const Root: React.FC = () => {
-  const { userProfile, sessionID } = useUser();
+  const { sessionID } = useUser();
   const { validateSession, fetchUserProfile } = useUserActionCreator();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,10 +27,7 @@ const Root: React.FC = () => {
     if (location.pathname.startsWith(routes.auth.path) && sessionID != null) {
       navigate(routes.prefix);
     }
-    if (userProfile == null && sessionID != null) {
-      fetchUserProfile().finally(() => {});
-    }
-  }, [fetchUserProfile, location, navigate, sessionID, userProfile]);
+  }, [location, navigate, sessionID]);
 
   useEffect(() => {
     // Handle auto-logout for expired sessions
@@ -40,6 +37,11 @@ const Root: React.FC = () => {
       clearInterval(validateSessionInterval);
     };
   }, [onValidateSession]);
+
+  useEffect(() => {
+    fetchUserProfile().finally(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (location.pathname.startsWith(routes.auth.path)) {
     return <Outlet />;
