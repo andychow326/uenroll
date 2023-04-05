@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: "18.15.0"
       - run: npm ci
+      - run: make init-prisma
       - run: npm run ci:portal
         if: ${{ !cancelled() }}
 
