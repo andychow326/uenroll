@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 24px;
+  margin: 24px 0;
+  box-shadow: 0 4px 4px #2029321f;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.rowData {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.details {
+  margin: 24px 0;
+  border: 1px solid #0e111166;
+  box-shadow: 0 4px 4px #2029321f;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
