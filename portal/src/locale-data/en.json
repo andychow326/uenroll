@@ -26,5 +26,26 @@
   "AuthForm.forgot-password.label": "Forgot password",
   "AuthForm.login.button.label": "Login",
   "AuthForm.forgot-password.button.label": "Continue",
-  "AuthForm.reset-password.button.label": "Continue"
+  "AuthForm.reset-password.button.label": "Continue",
+
+  "UserManagement.title": "User Management",
+  "UserManagement.search-bar.user-id.label": "User ID: ",
+  "UserManagement.search-bar.user-name.label": "User Name: ",
+  "UserManagement.search-bar.search-button.label": "Search",
+
+  "UserManagement.table.header.user-id.label": "User ID",
+  "UserManagement.table.header.user-name.label": "User Name",
+  "UserManagement.table.header.add-button.label": "+ Add",
+  "UserManagement.table.row.user-name": "{lastName} {firstName}",
+  "UserManagement.table.row.more-button.label": "More",
+  "UserManagement.table.row.hidden-button.label": "Hide",
+
+  "UserTableDetailsCell.first-name.label": "First Name",
+  "UserTableDetailsCell.last-name.label": "Last Name",
+  "UserTableDetailsCell.email.label": "Email",
+  "UserTableDetailsCell.dof.label": "Date of birth",
+  "UserTableDetailsCell.phone-number.label": "Phone Number",
+  "UserTableDetailsCell.gender.label": "Gender",
+  "UserTableDetailsCell.major.label": "Major",
+  "UserTableDetailsCell.address.label": "Address"
 }
