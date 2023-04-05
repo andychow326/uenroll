@@ -14,6 +14,7 @@ import routes from "../routes";
 const Authentication = lazy(async () => import("./Authentication"));
 const Home = lazy(async () => import("./Home"));
 const Root = lazy(async () => import("./Root"));
+const CourseManagement = lazy(async () => import("./CourseManagement"));
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,19 @@ const router = createBrowserRouter([
             <Home />
           </Suspense>
         ),
+      },
+      {
+        path: routes.manage.path,
+        children: [
+          {
+            path: routes.manage.course.path,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <CourseManagement />
+              </Suspense>
+            ),
+          },
+        ],
       },
       {
         path: routes.auth.path,
