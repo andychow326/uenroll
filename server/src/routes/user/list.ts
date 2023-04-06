@@ -25,16 +25,19 @@ const list = adminProcedure.input(inputSchema).query(async ({ input }) => {
               {
                 id: {
                   contains: userID,
+                  mode: "insensitive",
                 },
               },
               {
                 firstName: {
                   contains: username,
+                  mode: "insensitive",
                 },
               },
               {
                 lastName: {
                   contains: username,
+                  mode: "insensitive",
                 },
               },
             ],
