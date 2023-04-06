@@ -1,5 +1,5 @@
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedDate, FormattedMessage } from "react-intl";
 
 import styles from "./styles.module.css";
 
@@ -60,7 +60,7 @@ const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
         <div style={{ width: 100 }}>{lastName}</div>
         <div style={{ width: 150 }}>{email}</div>
         <div style={{ width: 100 }}>
-          {new Date(dateOfBirth).toLocaleDateString()}
+          <FormattedDate value={dateOfBirth} />
         </div>
         <div style={{ width: 100 }}>{phoneNumber}</div>
         <div style={{ width: 100 }}>{gender}</div>
