@@ -4,7 +4,7 @@ import { z } from "zod";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
-const inputSchema = z
+export const inputSchema = z
   .object({
     id: z.string().trim().toLowerCase(),
     firstName: z.string().trim().nonempty(),
