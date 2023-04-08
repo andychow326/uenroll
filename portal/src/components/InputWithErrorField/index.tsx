@@ -15,6 +15,7 @@ interface InputWithErrorFieldProps extends InputProps {
 
 const InputWithErrorField: React.FC<InputWithErrorFieldProps> = (props) => {
   const {
+    loading,
     name,
     errorData: error,
     className,
@@ -34,6 +35,7 @@ const InputWithErrorField: React.FC<InputWithErrorFieldProps> = (props) => {
     <div className={cn(styles.container, className)}>
       <Input
         {...props}
+        disabled={loading}
         error={message.length > 0}
         className={cn(styles.input, inputClassName)}
       />
