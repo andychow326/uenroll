@@ -2,6 +2,7 @@
 import { UserGender, UserProfile } from "./types";
 
 export const NEW_USER_PROFILE: UserProfile = {
+  id: "",
   firstName: "",
   lastName: "",
   email: "",

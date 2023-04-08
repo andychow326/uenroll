@@ -1,0 +1,13 @@
+.label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.checkbox {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+}

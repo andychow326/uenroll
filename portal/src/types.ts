@@ -10,8 +10,13 @@ export enum UserGender {
   other = "OTHER",
 }
 
+export enum UserRole {
+  student = "STUDENT",
+  admin = "ADMIN",
+}
+
 export type UserProfile = {
-  id?: string;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;

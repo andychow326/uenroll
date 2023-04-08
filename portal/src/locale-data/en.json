@@ -47,5 +47,19 @@
   "UserTableDetailsCell.phone-number.label": "Phone Number",
   "UserTableDetailsCell.gender.label": "Gender",
   "UserTableDetailsCell.major.label": "Major",
-  "UserTableDetailsCell.address.label": "Address"
+  "UserTableDetailsCell.address.label": "Address",
+
+  "EditUserModal.header.create-user": "Create User",
+  "EditUserModal.header.edit-user": "Edit User",
+  "EditUserModal.input.user-id.label": "User ID",
+  "EditUserModal.input.first-name.label": "First Name",
+  "EditUserModal.input.last-name.label": "Last Name",
+  "EditUserModal.input.email.label": "Email",
+  "EditUserModal.input.dof.label": "Date of birth",
+  "EditUserModal.input.phone-number.label": "Phone Number",
+  "EditUserModal.input.role.label": "Role",
+  "EditUserModal.input.gender.label": "Gender",
+  "EditUserModal.input.major.label": "Major",
+  "EditUserModal.input.address.label": "Address",
+  "EditUserModal.save-button.label": "Save"
 }

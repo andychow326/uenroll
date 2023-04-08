@@ -8,9 +8,11 @@ import React, {
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
 import useAdminActionCreator from "../actions/admin";
+import EditUserModal from "../components/EditUserModal";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import UserTableDetailsCell from "../components/UserTableDetailsCell";
+import { useEditUserModal } from "../hooks/modal";
 import { useUserSearchBar } from "../hooks/searchBar";
 import {
   SearchBarItem,
@@ -69,6 +71,7 @@ function useUserManagement() {
 
 const UserManagement: React.FC = () => {
   const { userProfiles, searchBarItems, onSearch } = useUserManagement();
+  const editUserModalOptions = useEditUserModal();
   const intl = useIntl();
 
   const tableColumnOptions = useMemo(
@@ -113,7 +116,7 @@ const UserManagement: React.FC = () => {
     (data: UserProfile): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
-          data.id ?? "",
+          data.id,
           data.firstName,
           data.lastName
         )}
@@ -148,8 +151,28 @@ const UserManagement: React.FC = () => {
         columnOptions={tableColumnOptions}
         showHeaderButton
         headerButtonLabelID="UserManagement.table.header.add-button.label"
+        onClickHeaderButton={editUserModalOptions.onOpenCreateUserModal}
         tableData={userProfiles ?? []}
         onRenderRow={onRenderTableRow}
+      />
+      <EditUserModal
+        loading={editUserModalOptions.loading}
+        error={editUserModalOptions.error}
+        onSave={editUserModalOptions.onSave}
+        isCreateNewUser={editUserModalOptions.isCreateNewUser}
+        isOpen={editUserModalOptions.isEditUserModalOpen}
+        onClose={editUserModalOptions.onCloseEditUserModal}
+        userProfile={editUserModalOptions.currentUserProfile}
+        onChangeID={editUserModalOptions.onChangeID}
+        onChangeFirstName={editUserModalOptions.onChangeFirstName}
+        onChangeLastName={editUserModalOptions.onChangeLastName}
+        onChangeEmail={editUserModalOptions.onChangeEmail}
+        onChangeIsAdmin={editUserModalOptions.onChangeIsAdmin}
+        onChangeDateOfBirth={editUserModalOptions.onChangeDateOfBirth}
+        onChangePhoneNumber={editUserModalOptions.onChangePhoneNumber}
+        onChangeGender={editUserModalOptions.onChangeGender}
+        onChangeMajor={editUserModalOptions.onChangeMajor}
+        onChangeAddress={editUserModalOptions.onChangeAddress}
       />
     </>
   );

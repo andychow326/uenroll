@@ -15,7 +15,7 @@ interface TableProps {
   tableData: any[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onRenderRow: (data: any) => ReactNode;
-  onClickheaderButton?: () => void;
+  onClickHeaderButton?: () => void;
   onSearch: () => void;
 }
 
@@ -27,7 +27,7 @@ const Table: React.FC<TableProps> = (props) => {
     headerButtonLabelID,
     tableData,
     onRenderRow,
-    onClickheaderButton,
+    onClickHeaderButton,
     onSearch,
   } = props;
 
@@ -43,7 +43,7 @@ const Table: React.FC<TableProps> = (props) => {
           ))}
         </div>
         {showHeaderButton && (
-          <Button color="green" onClick={onClickheaderButton}>
+          <Button color="green" onClick={onClickHeaderButton}>
             <FormattedMessage id={headerButtonLabelID} />
           </Button>
         )}
