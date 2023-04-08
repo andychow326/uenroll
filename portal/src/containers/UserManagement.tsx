@@ -133,12 +133,19 @@ const UserManagement: React.FC = () => {
             gender={data.gender}
             major={data.major}
             address={data.address}
+            onEdit={editUserModalOptions.onEdit(data)}
           />
         }
       />
     ),
-    [getTableRowCellColumnOptions]
+    [editUserModalOptions, getTableRowCellColumnOptions]
   );
+
+  const onSaveEditUserModal = useCallback(() => {
+    editUserModalOptions.onSave().finally(() => {
+      onSearch();
+    });
+  }, [editUserModalOptions, onSearch]);
 
   return (
     <>
@@ -158,7 +165,7 @@ const UserManagement: React.FC = () => {
       <EditUserModal
         loading={editUserModalOptions.loading}
         error={editUserModalOptions.error}
-        onSave={editUserModalOptions.onSave}
+        onSave={onSaveEditUserModal}
         isCreateNewUser={editUserModalOptions.isCreateNewUser}
         isOpen={editUserModalOptions.isEditUserModalOpen}
         onClose={editUserModalOptions.onCloseEditUserModal}

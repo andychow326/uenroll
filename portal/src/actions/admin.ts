@@ -5,7 +5,7 @@ import { UserProfile, UserProfileListFilter } from "../types";
 
 function useAdminActionCreator() {
   const apiClient = trpc.useContext();
-  const { safeQuery, loading, error } = useSafeQuery();
+  const { safeQuery, loading, error, clearQuery } = useSafeQuery();
   const [userProfiles, setUserProfiles] = useState<UserProfile[] | null>([]);
 
   const fetchUserProfiles = useCallback(
@@ -20,11 +20,28 @@ function useAdminActionCreator() {
 
   const createUser = useCallback(
     async (userProfile: UserProfile) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      await safeQuery(() => apiClient.user.create.fetch(userProfile));
+      const result = await safeQuery(() =>
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        apiClient.user.create.fetch(userProfile)
+      );
+      if (result != null) return true;
+      return false;
     },
     [apiClient.user.create, safeQuery]
+  );
+
+  const editUser = useCallback(
+    async (userProfile: UserProfile) => {
+      const result = await safeQuery(() =>
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        apiClient.user.edit.fetch(userProfile)
+      );
+      if (result != null) return true;
+      return false;
+    },
+    [apiClient.user.edit, safeQuery]
   );
 
   return useMemo(
@@ -32,10 +49,20 @@ function useAdminActionCreator() {
       loading,
       error,
       userProfiles,
+      clearQuery,
       fetchUserProfiles,
       createUser,
+      editUser,
     }),
-    [loading, error, userProfiles, fetchUserProfiles, createUser]
+    [
+      loading,
+      error,
+      userProfiles,
+      clearQuery,
+      fetchUserProfiles,
+      createUser,
+      editUser,
+    ]
   );
 }
 

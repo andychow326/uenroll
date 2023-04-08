@@ -1,6 +1,7 @@
 import React from "react";
 import { FormattedDate, FormattedMessage } from "react-intl";
 
+import { Button } from "semantic-ui-react";
 import styles from "./styles.module.css";
 
 interface UserTableDetailsCellProps {
@@ -12,6 +13,7 @@ interface UserTableDetailsCellProps {
   gender: string;
   major: string;
   address: string;
+  onEdit: () => void;
 }
 
 const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
@@ -24,6 +26,7 @@ const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
     gender,
     major,
     address,
+    onEdit,
   } = props;
 
   return (
@@ -67,7 +70,15 @@ const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
         <div style={{ width: 150 }}>{major}</div>
         <div style={{ width: 150 }}>{address}</div>
       </div>
-      <div className={styles.footer}>{/* TODO: Add Edit/Remove buttons */}</div>
+      <div className={styles.footer}>
+        <Button color="blue" onClick={onEdit}>
+          <FormattedMessage id="UserTableDetailsCell.edit-button.label" />
+        </Button>
+        {/* TODO: Implement delete button */}
+        <Button color="red">
+          <FormattedMessage id="UserTableDetailsCell.delete-button.label" />
+        </Button>
+      </div>
     </div>
   );
 };

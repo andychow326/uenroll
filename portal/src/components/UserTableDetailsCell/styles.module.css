@@ -33,3 +33,13 @@
   padding: 16px 8px;
   text-align: center;
 }
+
+.footer {
+  align-self: self-end;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 12px;
+}

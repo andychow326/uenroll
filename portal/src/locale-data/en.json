@@ -48,6 +48,8 @@
   "UserTableDetailsCell.gender.label": "Gender",
   "UserTableDetailsCell.major.label": "Major",
   "UserTableDetailsCell.address.label": "Address",
+  "UserTableDetailsCell.edit-button.label": "Edit",
+  "UserTableDetailsCell.delete-button.label": "Delete",
 
   "EditUserModal.header.create-user": "Create User",
   "EditUserModal.header.edit-user": "Edit User",

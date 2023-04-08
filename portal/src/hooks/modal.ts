@@ -10,7 +10,8 @@ export function useEditUserModal(userProfile?: UserProfile) {
   const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile>(
     userProfile ?? NEW_USER_PROFILE
   );
-  const { loading, error, createUser } = useAdminActionCreator();
+  const { loading, error, createUser, editUser, clearQuery } =
+    useAdminActionCreator();
 
   const onOpenCreateUserModal = useCallback(() => {
     setIsCreateNewUser(true);
@@ -24,14 +25,38 @@ export function useEditUserModal(userProfile?: UserProfile) {
 
   const onCloseEditUserModal = useCallback(() => {
     setIsEditUserModalOpen(false);
-  }, []);
+    setCurrentUserProfile(NEW_USER_PROFILE);
+    clearQuery();
+  }, [clearQuery]);
 
-  const onSave = useCallback(() => {
-    createUser(currentUserProfile).finally(() => {
+  const onEdit = useCallback(
+    (profile: UserProfile) => () => {
+      setCurrentUserProfile(profile);
+      onOpenEditUserModal();
+    },
+    [onOpenEditUserModal]
+  );
+
+  const onSave = useCallback(async () => {
+    let success: boolean;
+    if (isCreateNewUser) {
+      success = await createUser(currentUserProfile);
+    } else {
+      success = await editUser(currentUserProfile);
+    }
+
+    if (success) {
+      // TODO: Should show success modal first
       onCloseEditUserModal();
       setCurrentUserProfile(NEW_USER_PROFILE);
-    });
-  }, [createUser, currentUserProfile, onCloseEditUserModal]);
+    }
+  }, [
+    createUser,
+    currentUserProfile,
+    editUser,
+    isCreateNewUser,
+    onCloseEditUserModal,
+  ]);
 
   const onChangeID = useCallback((value: string) => {
     setCurrentUserProfile((profile) => ({
@@ -107,6 +132,7 @@ export function useEditUserModal(userProfile?: UserProfile) {
     () => ({
       loading,
       error,
+      onEdit,
       onSave,
       isCreateNewUser,
       isEditUserModalOpen,
@@ -128,6 +154,7 @@ export function useEditUserModal(userProfile?: UserProfile) {
     [
       loading,
       error,
+      onEdit,
       onSave,
       isCreateNewUser,
       isEditUserModalOpen,
