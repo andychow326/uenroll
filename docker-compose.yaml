@@ -58,6 +58,7 @@ services:
       - /bin/sh
       - -c
       - |
+        npx prisma generate --schema=./server/prisma/schema.prisma
         npm run start:portal
     ports:
       - 3001:3001
