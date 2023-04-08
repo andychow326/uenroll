@@ -6,7 +6,6 @@ const inputSchema = z
   .object({
     userID: z.string().trim(),
     username: z.string().trim(),
-    cursor: z.string().trim(),
   })
   .partial()
   .optional();
@@ -14,10 +13,8 @@ const inputSchema = z
 const list = adminProcedure.input(inputSchema).query(async ({ input }) => {
   const userID = input?.userID || undefined;
   const username = input?.username || undefined;
-  const cursor = input?.cursor || undefined;
 
   const users = await prisma.user.findMany({
-    take: 10,
     where:
       userID || username
         ? {
@@ -43,11 +40,10 @@ const list = adminProcedure.input(inputSchema).query(async ({ input }) => {
             ],
           }
         : undefined,
-    cursor: cursor ? { id: cursor } : undefined,
   });
 
   if (users.length === 0) {
-    return [];
+    return null;
   }
 
   return users.map((user) => ({
