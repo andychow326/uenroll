@@ -4,7 +4,7 @@
 
   "LoadingSpinner.text": "Loading...",
 
-  "TopBar.dropdown.name.label": "{lastName} {firstName}",
+  "TopBar.dropdown.name.label": "{firstName} {lastName}",
   "TopBar.dropdown.options.logout.label": "Logout",
 
   "SideBar.menu.student.home.label": "Home",
@@ -36,7 +36,7 @@
   "UserManagement.table.header.user-id.label": "User ID",
   "UserManagement.table.header.user-name.label": "User Name",
   "UserManagement.table.header.add-button.label": "+ Add",
-  "UserManagement.table.row.user-name": "{lastName} {firstName}",
+  "UserManagement.table.row.user-name": "{firstName} {lastName}",
   "UserManagement.table.row.more-button.label": "More",
   "UserManagement.table.row.hidden-button.label": "Hide",
 
