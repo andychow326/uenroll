@@ -36,6 +36,12 @@ model User {
   @@map("user")
 }
 
+model NextStudent {
+  id BigInt @id @map("id")
+
+  @@map("next_student")
+}
+
 model Course {
   subject             String  @map("subject")
   number              String  @map("number")
