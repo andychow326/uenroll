@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { AuthMode } from "../constants";
 import { useUser } from "../contexts/UserProvider";
 import { useSafeQuery } from "../hooks/query";
 import routes from "../routes";
 import trpc from "../trpc";
+import { AuthMode } from "../types";
 
 function useAuthActionCreator() {
   const apiClient = trpc.useContext();

@@ -1,12 +1,24 @@
+export enum AuthMode {
+  login = "login",
+  forgotPassword = "forgotPassword",
+  resetPassword = "resetPassword",
+}
+
+export enum UserGender {
+  male = "MALE",
+  female = "FEMALE",
+  other = "OTHER",
+}
+
 export type UserProfile = {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
   isAdmin: boolean;
   dateOfBirth: string;
   phoneNumber: string;
-  gender: string;
+  gender: UserGender;
   major: string;
   address: string;
 };

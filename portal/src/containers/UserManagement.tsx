@@ -113,7 +113,7 @@ const UserManagement: React.FC = () => {
     (data: UserProfile): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
-          data.id,
+          data.id ?? "",
           data.firstName,
           data.lastName
         )}
