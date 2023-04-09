@@ -1,5 +1,6 @@
 import cn from "classnames";
 import React, { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 import { Input, InputProps } from "semantic-ui-react";
 import type { Error } from "../../trpc";
 
@@ -11,6 +12,7 @@ interface InputWithErrorFieldProps extends InputProps {
   className?: string;
   inputClassName?: string;
   messageClassName?: string;
+  labelID?: string;
 }
 
 const InputWithErrorField: React.FC<InputWithErrorFieldProps> = (props) => {
@@ -21,6 +23,8 @@ const InputWithErrorField: React.FC<InputWithErrorFieldProps> = (props) => {
     className,
     inputClassName,
     messageClassName,
+    labelID,
+    disabled,
   } = props;
   const [message, setMessage] = useState("");
 
@@ -33,9 +37,14 @@ const InputWithErrorField: React.FC<InputWithErrorFieldProps> = (props) => {
 
   return (
     <div className={cn(styles.container, className)}>
+      {labelID != null && (
+        <div className={styles.label}>
+          <FormattedMessage id={labelID} />
+        </div>
+      )}
       <Input
         {...props}
-        disabled={loading}
+        disabled={disabled ?? loading}
         error={message.length > 0}
         className={cn(styles.input, inputClassName)}
       />
