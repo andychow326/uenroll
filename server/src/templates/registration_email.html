@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <title>[Uenroll] New User Registration</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin");
+
+      body {
+        background-color: #feefd4;
+        font-family: "Lato", "Helvetica Neue", Arial, Helvetica, sans-serif;
+      }
+
+      .container {
+        background-color: #fcc07a;
+        color: black;
+        margin: 24px;
+        padding: 24px;
+      }
+
+      .header {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 600;
+        padding: 24px 0;
+      }
+
+      .content {
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 400;
+      }
+
+      .footer {
+        text-align: center;
+      }
+
+      .button {
+        cursor: pointer;
+        display: inline-block;
+        outline: none;
+        border: none;
+        background: black;
+        padding: 12px 24px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">Uenroll New User Registration</div>
+      <div class="content">
+        <p>Hi <b><%= firstName %></b>,</p>
+        <p>
+          You are invited to register for our
+          <b>Course Selection System (Uenroll)</b>. Please click the button
+          below to complete registration. Please note the link in the email will
+          be expired in <b>30 days</b>.
+        </p>
+      </div>
+      <div class="footer">
+        <a href="<%= redirectURL %>"
+          ><button class="button">Click me</button></a
+        >
+      </div>
+      <p>
+        If the link above does not work, copy and paste this URL in your
+        browser:
+      </p>
+      <a href="<%= redirectURL %>"><%= redirectURL %></a>
+    </div>
+  </body>
+</html>

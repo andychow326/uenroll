@@ -14,6 +14,7 @@
     "esbenp.prettier-vscode",
     "Prisma.prisma",
     "foxundermoon.shell-format",
-    "TabNine.tabnine-vscode"
+    "TabNine.tabnine-vscode",
+    "DigitalBrainstem.javascript-ejs-support"
   ]
 }
