@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useMemo } from "react";
+import React, { ReactNode, useCallback, useEffect, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Button, Icon, Image } from "semantic-ui-react";
 import { useTextFieldChange } from "../../hooks/component";
@@ -12,9 +12,10 @@ const mapMainFormTitle: Record<AuthMode, string> = {
   login: "AuthForm.login.title",
   forgotPassword: "AuthForm.forgot-password.title",
   resetPassword: "AuthForm.reset-password.title",
+  expiredAccessToken: "AuthForm.expired-access-token.title",
 } as const;
 
-const mapSubmitButtonLabel: Record<AuthMode, string> = {
+const mapSubmitButtonLabel: Partial<Record<AuthMode, string>> = {
   login: "AuthForm.login.button.label",
   forgotPassword: "AuthForm.forgot-password.button.label",
   resetPassword: "AuthForm.reset-password.button.label",
@@ -24,11 +25,11 @@ interface MainFormProps {
   loading: boolean;
   showBackButton?: boolean;
   titleTextID: string;
-  submitButtonLabelID: string;
+  submitButtonLabelID?: string;
   error: Error | null;
-  children: ReactElement | ReactElement[];
+  children: ReactNode;
   onBack?: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }
 
 const MainForm: React.FC<MainFormProps> = (props) => {
@@ -42,6 +43,23 @@ const MainForm: React.FC<MainFormProps> = (props) => {
     onBack,
     onSubmit,
   } = props;
+
+  const onKeydown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        onSubmit?.();
+      }
+    },
+    [onSubmit]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", onKeydown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeydown);
+    };
+  }, [onKeydown]);
 
   return (
     <div className={styles.form}>
@@ -57,17 +75,19 @@ const MainForm: React.FC<MainFormProps> = (props) => {
         <FormattedMessage id={titleTextID} />
       </div>
       <div className={styles.formBody}>{children}</div>
-      <div className={styles.submitSection}>
-        <Button
-          loading={loading}
-          className={styles.button}
-          color="black"
-          onClick={onSubmit}
-        >
-          <FormattedMessage id={submitButtonLabelID} />
-        </Button>
-        <div className={styles.error}>{error?.message}</div>
-      </div>
+      {onSubmit != null && (
+        <div className={styles.submitSection}>
+          <Button
+            loading={loading}
+            className={styles.button}
+            color="black"
+            onClick={onSubmit}
+          >
+            <FormattedMessage id={submitButtonLabelID} />
+          </Button>
+          <div className={styles.error}>{error?.message}</div>
+        </div>
+      )}
     </div>
   );
 };
@@ -77,10 +97,13 @@ interface AuthFormProps {
   error: Error | null;
   userID: string;
   password: string;
+  confirmPassword: string;
   currentAuthMode: AuthMode;
   onChangeUserID: (value: string) => void;
   onChangePassword: (value: string) => void;
+  onChangeConfirmPassword: (value: string) => void;
   onLogin: () => void;
+  onResetPassword: () => void;
   onChangeAuthMode: (newAuthMode: AuthMode) => void;
 }
 
@@ -91,10 +114,13 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
     error,
     userID,
     password,
+    confirmPassword,
     onChangeAuthMode,
     onChangeUserID,
     onChangePassword,
+    onChangeConfirmPassword,
     onLogin,
+    onResetPassword,
   } = props;
   const intl = useIntl();
 
@@ -108,6 +134,9 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
 
   const onChangeUserIDField = useTextFieldChange(onChangeUserID);
   const onChangePasswordField = useTextFieldChange(onChangePassword);
+  const onChangeConfirmPasswordField = useTextFieldChange(
+    onChangeConfirmPassword
+  );
 
   const commonMainFormProps = useMemo(
     () => ({
@@ -188,6 +217,44 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             onSubmit={() => {}}
           >
             <InputWithErrorField {...commonInputUserIDProps} />
+          </MainForm>
+        )}
+        {currentAuthMode === "resetPassword" && (
+          <MainForm {...commonMainFormProps} onSubmit={onResetPassword}>
+            <InputWithErrorField
+              {...commonInputUserIDProps}
+              disabled
+              labelID="AuthForm.user-id.placeholder"
+            />
+            <InputWithErrorField
+              {...commonInputPasswordProps}
+              labelID="AuthForm.password.placeholder"
+              placeholder={intl.formatMessage({
+                id: "AuthForm.password.placeholder",
+              })}
+              name="password"
+              value={password}
+              onChange={onChangePasswordField}
+            />
+            <InputWithErrorField
+              {...commonInputPasswordProps}
+              labelID="AuthForm.confirm-password.placeholder"
+              placeholder={intl.formatMessage({
+                id: "AuthForm.confirm-password.placeholder",
+              })}
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={onChangeConfirmPasswordField}
+            />
+          </MainForm>
+        )}
+        {currentAuthMode === "expiredAccessToken" && (
+          <MainForm
+            {...commonMainFormProps}
+            showBackButton
+            onBack={onChangeLoginMode}
+          >
+            <FormattedMessage id="AuthForm.expired-access-token.description" />
           </MainForm>
         )}
       </div>

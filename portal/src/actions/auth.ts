@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useUser } from "../contexts/UserProvider";
 import { useSafeQuery } from "../hooks/query";
 import routes from "../routes";
 import trpc from "../trpc";
-import { AuthMode } from "../types";
+import { AuthMode, SearchParams } from "../types";
 
 function useAuthActionCreator() {
   const apiClient = trpc.useContext();
@@ -13,6 +18,7 @@ function useAuthActionCreator() {
   const { mode } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [currentAuthMode, setCurrentAuthMode] = useState<AuthMode>(
     mode != null && Object.keys(AuthMode).includes(mode)
       ? (mode as AuthMode)
@@ -24,9 +30,15 @@ function useAuthActionCreator() {
       location.pathname.startsWith(routes.auth.path) &&
       mode !== currentAuthMode
     ) {
-      navigate(`${routes.auth.path}/${currentAuthMode}`);
+      navigate(
+        `${routes.auth.path}/${currentAuthMode}${
+          currentAuthMode === AuthMode.resetPassword
+            ? `?${searchParams.toString()}`
+            : ""
+        }`
+      );
     }
-  }, [currentAuthMode, location.pathname, mode, navigate]);
+  }, [currentAuthMode, location.pathname, mode, navigate, searchParams]);
 
   const login = useCallback(
     async (userID: string, password: string) => {
@@ -46,6 +58,50 @@ function useAuthActionCreator() {
     updateSessionID(null);
   }, [apiClient.auth.logout, safeQuery, updateSessionID, updateUserProfile]);
 
+  const resetPassword = useCallback(
+    async (password: string, confirmPassword: string) => {
+      const result = await safeQuery(() =>
+        apiClient.auth.resetPassword.fetch({
+          password,
+          confirmPassword,
+          accessToken: searchParams.get(SearchParams.accessToken) ?? "",
+        })
+      );
+      if (result) {
+        return true;
+      }
+
+      return false;
+    },
+    [apiClient.auth.resetPassword, safeQuery, searchParams]
+  );
+
+  const validateAccessToken = useCallback(async () => {
+    let userID: string | null = "";
+    if (
+      currentAuthMode === AuthMode.resetPassword &&
+      searchParams.has(SearchParams.accessToken)
+    ) {
+      userID = await safeQuery(() =>
+        apiClient.auth.validateAccessToken.fetch(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          searchParams.get(SearchParams.accessToken)!
+        )
+      );
+    }
+    if (userID == null) {
+      searchParams.delete(SearchParams.accessToken);
+      setCurrentAuthMode(AuthMode.expiredAccessToken);
+    }
+
+    return userID;
+  }, [
+    apiClient.auth.validateAccessToken,
+    currentAuthMode,
+    safeQuery,
+    searchParams,
+  ]);
+
   const onChangeAuthMode = useCallback(
     (newMode: AuthMode) => {
       clearQuery();
@@ -61,9 +117,20 @@ function useAuthActionCreator() {
       currentAuthMode,
       login,
       logout,
+      resetPassword,
+      validateAccessToken,
       onChangeAuthMode,
     }),
-    [loading, error, currentAuthMode, login, logout, onChangeAuthMode]
+    [
+      loading,
+      error,
+      currentAuthMode,
+      login,
+      logout,
+      resetPassword,
+      validateAccessToken,
+      onChangeAuthMode,
+    ]
   );
 }
 

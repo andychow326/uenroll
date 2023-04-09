@@ -1,14 +1,32 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useAuthActionCreator from "../actions/auth";
 import useUserActionCreator from "../actions/user";
 import AuthForm from "../components/AuthForm";
 
 const useAuthForm = () => {
-  const { loading, error, currentAuthMode, login, onChangeAuthMode } =
-    useAuthActionCreator();
+  const {
+    loading,
+    error,
+    currentAuthMode,
+    login,
+    resetPassword,
+    validateAccessToken,
+    onChangeAuthMode,
+  } = useAuthActionCreator();
   const { fetchUserProfile } = useUserActionCreator();
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const onValidateAccessToken = useCallback(async () => {
+    const result = await validateAccessToken();
+    setUserID(result ?? "");
+  }, [validateAccessToken]);
+
+  useEffect(() => {
+    onValidateAccessToken().finally(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onChangeUserID = useCallback((value: string) => {
     setUserID(value);
@@ -18,10 +36,21 @@ const useAuthForm = () => {
     setPassword(value);
   }, []);
 
+  const onChangeConfirmPassword = useCallback((value: string) => {
+    setConfirmPassword(value);
+  }, []);
+
   const onLogin = useCallback(async () => {
     await login(userID, password);
     await fetchUserProfile();
   }, [fetchUserProfile, login, password, userID]);
+
+  const onResetPassword = useCallback(async () => {
+    const isSuccess = await resetPassword(password, confirmPassword);
+    if (isSuccess) {
+      await onLogin();
+    }
+  }, [confirmPassword, onLogin, password, resetPassword]);
 
   return useMemo(
     () => ({
@@ -30,10 +59,13 @@ const useAuthForm = () => {
       error,
       userID,
       password,
+      confirmPassword,
       onChangeAuthMode,
       onChangeUserID,
       onChangePassword,
+      onChangeConfirmPassword,
       onLogin,
+      onResetPassword,
     }),
     [
       currentAuthMode,
@@ -41,10 +73,13 @@ const useAuthForm = () => {
       error,
       userID,
       password,
+      confirmPassword,
       onChangeAuthMode,
       onChangeUserID,
       onChangePassword,
+      onChangeConfirmPassword,
       onLogin,
+      onResetPassword,
     ]
   );
 };
@@ -56,10 +91,13 @@ const Authentication: React.FC = () => {
     error,
     userID,
     password,
+    confirmPassword,
     onChangeAuthMode,
     onChangeUserID,
     onChangePassword,
+    onChangeConfirmPassword,
     onLogin,
+    onResetPassword,
   } = useAuthForm();
 
   return (
@@ -69,10 +107,13 @@ const Authentication: React.FC = () => {
       error={error}
       userID={userID}
       password={password}
+      confirmPassword={confirmPassword}
       onChangeAuthMode={onChangeAuthMode}
       onChangeUserID={onChangeUserID}
       onChangePassword={onChangePassword}
+      onChangeConfirmPassword={onChangeConfirmPassword}
       onLogin={onLogin}
+      onResetPassword={onResetPassword}
     />
   );
 };

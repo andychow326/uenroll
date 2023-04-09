@@ -2,6 +2,7 @@ export enum AuthMode {
   login = "login",
   forgotPassword = "forgotPassword",
   resetPassword = "resetPassword",
+  expiredAccessToken = "expiredAccessToken",
 }
 
 export enum UserGender {
@@ -13,6 +14,10 @@ export enum UserGender {
 export enum UserRole {
   student = "STUDENT",
   admin = "ADMIN",
+}
+
+export enum SearchParams {
+  accessToken = "accessToken",
 }
 
 export type UserProfile = {
