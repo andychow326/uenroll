@@ -16,6 +16,9 @@
   "SideBar.menu.admin.course-management.label": "Course Management",
   "SideBar.menu.admin.user-management.label": "User Management",
 
+  "ConfirmModal.button.confirm.label": "Confirm",
+  "ConfirmModal.button.cancel.label": "Cancel",
+
   "AuthForm.title": "Course Registration System",
   "AuthForm.back-button.label": "Back",
   "AuthForm.login.title": "Welcome back",
