@@ -5,10 +5,20 @@
   justify-content: center;
   align-items: flex-start;
   padding: 4px 0;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
   overflow: auto;
 }
 
 .header {
+  width: inherit;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -19,27 +29,30 @@
   text-align: center;
 }
 
-.divider {
-  width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.7);
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+.header > div:last-child {
+  flex: 1 0 0;
 }
 
 .body {
+  width: inherit;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   padding: 16px 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.7);
   text-align: center;
+  word-wrap: break-word;
+}
+
+.body > div:last-child {
+  flex: 1 0 0;
 }
 
 .footer {
   align-self: self-end;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   padding: 8px;
   gap: 12px;
 }
