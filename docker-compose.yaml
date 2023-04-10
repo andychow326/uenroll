@@ -21,7 +21,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 54320:5432
+      - 5433:5432
 
   redis:
     image: redis:7
@@ -29,7 +29,7 @@ services:
     environment:
       REDIS_PASS: ${REDIS_PASS}
     ports:
-      - 63790:6379
+      - 6380:6379
 
   nginx:
     image: nginx:1.23.3
