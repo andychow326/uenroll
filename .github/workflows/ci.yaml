@@ -43,7 +43,15 @@ jobs:
 
   build:
     runs-on: ubuntu-22.04
+    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
     needs: [test-server, test-portal]
+
+    strategy:
+      matrix:
+        component:
+          - portal
+          - server
+
     steps:
       - uses: actions/checkout@v3
       - name: Generate image tag
@@ -57,11 +65,11 @@ jobs:
       - uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile.${{ matrix.component }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll${{ matrix.component }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll${{ matrix.component }}:${{ env.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

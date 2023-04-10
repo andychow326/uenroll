@@ -1,0 +1,19 @@
+FROM node:18.15.0-alpine AS builder
+
+WORKDIR /app
+
+COPY server/package.json server/package.json
+COPY portal/package.json portal/package.json
+COPY package*.json .
+RUN npm ci
+
+COPY . .
+RUN npx prisma generate --schema=./server/prisma/schema.prisma
+RUN npm run build:portal
+
+FROM nginx:1.23.3-alpine
+
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY --from=builder /app/portal/dist .
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
