@@ -19,4 +19,5 @@
 
 .body {
   overflow: auto;
+  padding-right: 4px;
 }
