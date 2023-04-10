@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export enum AuthMode {
   login = "login",
   forgotPassword = "forgotPassword",
@@ -22,6 +24,7 @@ export enum SearchParams {
 
 export type UserProfile = {
   id: string;
+  isVerified?: boolean;
   firstName: string;
   lastName: string;
   email: string;
@@ -46,7 +49,7 @@ export type TableColumnOption = {
 };
 
 export type TableRowCellOption = {
-  width: number;
+  styles: CSSProperties;
   value: string;
 };
 

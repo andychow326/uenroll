@@ -36,8 +36,7 @@ const TableRowCell: React.FC<TableRowCellProps> = (props) => {
       <div className={styles.container}>
         <div className={styles.rowData}>
           {columnOptions.map((item, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={`${id}-${index}`} style={{ width: item.width }}>
+            <div key={`${id}-${index}`} style={item.styles}>
               {item.value}
             </div>
           ))}

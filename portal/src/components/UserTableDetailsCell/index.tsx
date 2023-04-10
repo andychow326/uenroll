@@ -13,7 +13,9 @@ interface UserTableDetailsCellProps {
   gender: string;
   major: string;
   address: string;
+  isVerified?: boolean;
   onEdit: () => void;
+  onResendInvitation: () => void;
 }
 
 const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
@@ -26,7 +28,9 @@ const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
     gender,
     major,
     address,
+    isVerified,
     onEdit,
+    onResendInvitation,
   } = props;
 
   return (
@@ -72,6 +76,11 @@ const UserTableDetailsCell: React.FC<UserTableDetailsCellProps> = (props) => {
         </div>
       </div>
       <div className={styles.footer}>
+        {!isVerified && (
+          <Button onClick={onResendInvitation}>
+            <FormattedMessage id="UserTableDetailsCell.resend-button.label" />
+          </Button>
+        )}
         <Button color="blue" onClick={onEdit}>
           <FormattedMessage id="UserTableDetailsCell.edit-button.label" />
         </Button>

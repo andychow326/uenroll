@@ -43,6 +43,8 @@
   "UserManagement.table.header.user-name.label": "User Name",
   "UserManagement.table.header.add-button.label": "+ Add",
   "UserManagement.table.row.user-name": "{firstName} {lastName}",
+  "UserManagement.table.row.verified": "Verified",
+  "UserManagement.table.row.not-verified": "Not Verified",
   "UserManagement.table.row.more-button.label": "More",
   "UserManagement.table.row.hidden-button.label": "Hide",
 
@@ -54,6 +56,7 @@
   "UserTableDetailsCell.gender.label": "Gender",
   "UserTableDetailsCell.major.label": "Major",
   "UserTableDetailsCell.address.label": "Address",
+  "UserTableDetailsCell.resend-button.label": "Resend Invitation",
   "UserTableDetailsCell.edit-button.label": "Edit",
   "UserTableDetailsCell.delete-button.label": "Delete",
 
@@ -69,5 +72,9 @@
   "EditUserModal.input.gender.label": "Gender",
   "EditUserModal.input.major.label": "Major",
   "EditUserModal.input.address.label": "Address",
-  "EditUserModal.save-button.label": "Save"
+  "EditUserModal.save-button.label": "Save",
+
+  "ResendInvitationModal.header": "Resend Invitation",
+  "ResendInvitationModal.description.start": "You are about to resend the invitation to:",
+  "ResendInvitationModal.description.target": "{firstName} {lastName} ({email})"
 }

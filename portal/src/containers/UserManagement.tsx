@@ -1,18 +1,13 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import React, { ReactNode, useCallback, useEffect, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
 import useAdminActionCreator from "../actions/admin";
 import EditUserModal from "../components/EditUserModal";
+import ResendInvitationModal from "../components/ResendInvitationModal";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import UserTableDetailsCell from "../components/UserTableDetailsCell";
-import { useEditUserModal } from "../hooks/modal";
+import { useEditUserModal, useResendInvitationModal } from "../hooks/modal";
 import { useUserSearchBar } from "../hooks/searchBar";
 import {
   SearchBarItem,
@@ -23,9 +18,26 @@ import {
 
 function useUserManagement() {
   const searchBar = useUserSearchBar();
-  const { userProfiles, fetchUserProfiles } = useAdminActionCreator();
-  const isInitized = useRef(false);
-  isInitized.current = false;
+  const {
+    loading,
+    error,
+    userProfiles,
+    fetchUserProfiles,
+    sendInvitation,
+    createUser,
+    editUser,
+    clearQuery,
+  } = useAdminActionCreator();
+  const editUserModalOptions = useEditUserModal({
+    createUser,
+    sendInvitation,
+    editUser,
+    clearQuery,
+  });
+  const resendInvitationModalOptions = useResendInvitationModal({
+    sendInvitation,
+  });
+  const intl = useIntl();
 
   const searchBarItems = useMemo(
     (): SearchBarItem[] => [
@@ -54,26 +66,6 @@ function useUserManagement() {
     searchBar.onSearch(fetchUserProfiles);
   }, [fetchUserProfiles, searchBar]);
 
-  useEffect(() => {
-    onSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return useMemo(
-    () => ({
-      userProfiles,
-      searchBarItems,
-      onSearch,
-    }),
-    [userProfiles, searchBarItems, onSearch]
-  );
-}
-
-const UserManagement: React.FC = () => {
-  const { userProfiles, searchBarItems, onSearch } = useUserManagement();
-  const editUserModalOptions = useEditUserModal();
-  const intl = useIntl();
-
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
@@ -92,11 +84,14 @@ const UserManagement: React.FC = () => {
     (
       userID: string,
       firstName: string,
-      lastName: string
+      lastName: string,
+      isVerified?: boolean
     ): TableRowCellOption[] => [
       {
         value: userID,
-        width: 200,
+        styles: {
+          width: 200,
+        },
       },
       {
         value: intl.formatMessage(
@@ -106,7 +101,20 @@ const UserManagement: React.FC = () => {
             lastName,
           }
         ),
-        width: 200,
+        styles: {
+          width: 200,
+        },
+      },
+      {
+        value: intl.formatMessage({
+          id: isVerified
+            ? "UserManagement.table.row.verified"
+            : "UserManagement.table.row.not-verified",
+        }),
+        styles: {
+          width: 100,
+          color: isVerified ? "mediumseagreen" : "red",
+        },
       },
     ],
     [intl]
@@ -118,7 +126,8 @@ const UserManagement: React.FC = () => {
         columnOptions={getTableRowCellColumnOptions(
           data.id,
           data.firstName,
-          data.lastName
+          data.lastName,
+          data.isVerified
         )}
         showDetailButton
         detailButtonLabelID="UserManagement.table.row.more-button.label"
@@ -133,12 +142,20 @@ const UserManagement: React.FC = () => {
             gender={data.gender}
             major={data.major}
             address={data.address}
+            isVerified={data.isVerified}
             onEdit={editUserModalOptions.onEdit(data)}
+            onResendInvitation={resendInvitationModalOptions.onOpenResendInvitationModal(
+              data
+            )}
           />
         }
       />
     ),
-    [editUserModalOptions, getTableRowCellColumnOptions]
+    [
+      editUserModalOptions,
+      getTableRowCellColumnOptions,
+      resendInvitationModalOptions,
+    ]
   );
 
   const onSaveEditUserModal = useCallback(() => {
@@ -146,6 +163,53 @@ const UserManagement: React.FC = () => {
       onSearch();
     });
   }, [editUserModalOptions, onSearch]);
+
+  useEffect(() => {
+    onSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return useMemo(
+    () => ({
+      loading,
+      error,
+      userProfiles,
+      searchBarItems,
+      tableColumnOptions,
+      editUserModalOptions,
+      resendInvitationModalOptions,
+      onSearch,
+      onRenderTableRow,
+      onSaveEditUserModal,
+    }),
+    [
+      loading,
+      error,
+      userProfiles,
+      searchBarItems,
+      tableColumnOptions,
+      editUserModalOptions,
+      resendInvitationModalOptions,
+      onSearch,
+      onRenderTableRow,
+      onSaveEditUserModal,
+    ]
+  );
+}
+
+const UserManagement: React.FC = () => {
+  const {
+    loading,
+    error,
+    userProfiles,
+    searchBarItems,
+    tableColumnOptions,
+    editUserModalOptions,
+    resendInvitationModalOptions,
+    onSearch,
+    onRenderTableRow,
+    onSaveEditUserModal,
+  } = useUserManagement();
 
   return (
     <>
@@ -163,8 +227,8 @@ const UserManagement: React.FC = () => {
         onRenderRow={onRenderTableRow}
       />
       <EditUserModal
-        loading={editUserModalOptions.loading}
-        error={editUserModalOptions.error}
+        loading={loading}
+        error={error}
         onSave={onSaveEditUserModal}
         isCreateNewUser={editUserModalOptions.isCreateNewUser}
         isOpen={editUserModalOptions.isEditUserModalOpen}
@@ -180,6 +244,13 @@ const UserManagement: React.FC = () => {
         onChangeGender={editUserModalOptions.onChangeGender}
         onChangeMajor={editUserModalOptions.onChangeMajor}
         onChangeAddress={editUserModalOptions.onChangeAddress}
+      />
+      <ResendInvitationModal
+        loading={loading}
+        userProfile={resendInvitationModalOptions.currentUserProfile}
+        isOpen={resendInvitationModalOptions.isResendInvitationModalOpen}
+        onConfirm={resendInvitationModalOptions.onResendInvitation}
+        onCancel={resendInvitationModalOptions.onCloseResendInvitationModal}
       />
     </>
   );

@@ -18,17 +18,31 @@ function useAdminActionCreator() {
     [apiClient.user.list, safeQuery]
   );
 
-  const createUser = useCallback(
-    async (userProfile: UserProfile) => {
+  const sendInvitation = useCallback(
+    async (userID: string) => {
       const result = await safeQuery(() =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        apiClient.user.create.fetch(userProfile)
+        apiClient.user.sendInvitation.fetch(userID)
       );
       if (result != null) return true;
       return false;
     },
-    [apiClient.user.create, safeQuery]
+    [apiClient.user.sendInvitation, safeQuery]
+  );
+
+  const createUser = useCallback(
+    async (userProfile: UserProfile) => {
+      const user = await safeQuery(() =>
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        apiClient.user.create.fetch(userProfile)
+      );
+      if (user != null) {
+        const result = await sendInvitation(user.id);
+        return result;
+      }
+      return false;
+    },
+    [apiClient.user.create, safeQuery, sendInvitation]
   );
 
   const editUser = useCallback(
@@ -51,6 +65,7 @@ function useAdminActionCreator() {
       userProfiles,
       clearQuery,
       fetchUserProfiles,
+      sendInvitation,
       createUser,
       editUser,
     }),
@@ -60,6 +75,7 @@ function useAdminActionCreator() {
       userProfiles,
       clearQuery,
       fetchUserProfiles,
+      sendInvitation,
       createUser,
       editUser,
     ]

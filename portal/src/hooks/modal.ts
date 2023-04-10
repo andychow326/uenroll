@@ -4,14 +4,13 @@ import useAdminActionCreator from "../actions/admin";
 import { NEW_USER_PROFILE } from "../constants";
 import { UserGender, UserProfile } from "../types";
 
-export function useEditUserModal(userProfile?: UserProfile) {
+export function useEditUserModal(
+  actions: Partial<ReturnType<typeof useAdminActionCreator>>
+) {
   const [isCreateNewUser, setIsCreateNewUser] = useState(false);
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
-  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile>(
-    userProfile ?? NEW_USER_PROFILE
-  );
-  const { loading, error, createUser, editUser, clearQuery } =
-    useAdminActionCreator();
+  const [currentUserProfile, setCurrentUserProfile] =
+    useState<UserProfile>(NEW_USER_PROFILE);
 
   const onOpenCreateUserModal = useCallback(() => {
     setIsCreateNewUser(true);
@@ -26,8 +25,8 @@ export function useEditUserModal(userProfile?: UserProfile) {
   const onCloseEditUserModal = useCallback(() => {
     setIsEditUserModalOpen(false);
     setCurrentUserProfile(NEW_USER_PROFILE);
-    clearQuery();
-  }, [clearQuery]);
+    actions?.clearQuery?.();
+  }, [actions]);
 
   const onEdit = useCallback(
     (profile: UserProfile) => () => {
@@ -38,25 +37,19 @@ export function useEditUserModal(userProfile?: UserProfile) {
   );
 
   const onSave = useCallback(async () => {
-    let success: boolean;
+    let success: boolean | undefined;
     if (isCreateNewUser) {
-      success = await createUser(currentUserProfile);
+      success = await actions?.createUser?.(currentUserProfile);
     } else {
-      success = await editUser(currentUserProfile);
+      success = await actions?.editUser?.(currentUserProfile);
     }
 
     if (success) {
-      // TODO: Should show success modal first
+      // TODO: Should show success message bar
       onCloseEditUserModal();
       setCurrentUserProfile(NEW_USER_PROFILE);
     }
-  }, [
-    createUser,
-    currentUserProfile,
-    editUser,
-    isCreateNewUser,
-    onCloseEditUserModal,
-  ]);
+  }, [actions, currentUserProfile, isCreateNewUser, onCloseEditUserModal]);
 
   const onChangeID = useCallback((value: string) => {
     setCurrentUserProfile((profile) => ({
@@ -130,8 +123,6 @@ export function useEditUserModal(userProfile?: UserProfile) {
 
   return useMemo(
     () => ({
-      loading,
-      error,
       onEdit,
       onSave,
       isCreateNewUser,
@@ -152,8 +143,6 @@ export function useEditUserModal(userProfile?: UserProfile) {
       onChangeAddress,
     }),
     [
-      loading,
-      error,
       onEdit,
       onSave,
       isCreateNewUser,
@@ -172,6 +161,53 @@ export function useEditUserModal(userProfile?: UserProfile) {
       onChangeGender,
       onChangeMajor,
       onChangeAddress,
+    ]
+  );
+}
+
+export function useResendInvitationModal(
+  actions: Partial<ReturnType<typeof useAdminActionCreator>>
+) {
+  const [isResendInvitationModalOpen, setIsResendInvitationModalOpen] =
+    useState(false);
+  const [currentUserProfile, setCurrentUserProfile] =
+    useState<UserProfile | null>(null);
+
+  const onOpenResendInvitationModal = useCallback(
+    (userProfile: UserProfile) => () => {
+      setCurrentUserProfile(userProfile);
+      setIsResendInvitationModalOpen(true);
+    },
+    []
+  );
+
+  const onCloseResendInvitationModal = useCallback(() => {
+    setIsResendInvitationModalOpen(false);
+    setCurrentUserProfile(null);
+  }, []);
+
+  const onResendInvitation = useCallback(() => {
+    if (currentUserProfile != null) {
+      actions?.sendInvitation?.(currentUserProfile.id).finally(() => {
+        onCloseResendInvitationModal();
+      });
+    }
+  }, [actions, currentUserProfile, onCloseResendInvitationModal]);
+
+  return useMemo(
+    () => ({
+      currentUserProfile,
+      isResendInvitationModalOpen,
+      onOpenResendInvitationModal,
+      onCloseResendInvitationModal,
+      onResendInvitation,
+    }),
+    [
+      currentUserProfile,
+      isResendInvitationModalOpen,
+      onOpenResendInvitationModal,
+      onCloseResendInvitationModal,
+      onResendInvitation,
     ]
   );
 }

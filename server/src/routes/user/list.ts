@@ -48,6 +48,7 @@ const list = adminProcedure.input(inputSchema).query(async ({ input }) => {
 
   return users.map((user) => ({
     id: user.id,
+    isVerified: user.password !== "",
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
