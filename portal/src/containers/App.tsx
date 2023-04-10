@@ -16,6 +16,11 @@ const Home = lazy(async () => import("./Home"));
 const Root = lazy(async () => import("./Root"));
 const CourseManagement = lazy(async () => import("./CourseManagement"));
 const UserManagement = lazy(async () => import("./UserManagement"));
+const CourseSearch = lazy(async () => import("./CourseSearch"));
+const ShoppingCart = lazy(async () => import("./ShoppingCart"));
+const DropClasses = lazy(async () => import("./DropClasses"));
+const TimeTable = lazy(async () => import("./TimeTable"));
+const EnrollmentStatus = lazy(async () => import("./EnrollmentStatus"));
 
 const router = createBrowserRouter([
   {
@@ -64,6 +69,71 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<LoadingSpinner />}>
                 <Authentication />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: routes.course.path,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <CourseSearch />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: routes.shoppingCart.path,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <ShoppingCart />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: routes.dropClasses.path,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <DropClasses />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: routes.timeTable.path,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <TimeTable />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: routes.enrollmentStatus.path,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <EnrollmentStatus />
               </Suspense>
             ),
           },
