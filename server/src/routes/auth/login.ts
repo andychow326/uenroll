@@ -25,7 +25,7 @@ const login = publicProcedure.input(inputSchema).query(async ({ input }) => {
   if (user == null || !(await verifyPassword(user.password, input.password))) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "User ID or Password is incorrect!",
+      message: "error.server.incorrect_user_id_or_password",
     });
   }
 

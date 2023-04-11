@@ -85,7 +85,9 @@ const MainForm: React.FC<MainFormProps> = (props) => {
           >
             <FormattedMessage id={submitButtonLabelID} />
           </Button>
-          <div className={styles.error}>{error?.message}</div>
+          <div className={styles.error}>
+            {error?.message && <FormattedMessage id={error.message} />}
+          </div>
         </div>
       )}
     </div>

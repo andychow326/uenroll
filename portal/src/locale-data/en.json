@@ -2,6 +2,9 @@
   "app.name": "Uenroll",
   "app.logo.uri": "/images/uenroll-logo.png",
 
+  "error.server.incorrect_user_id_or_password": "User ID or Password is incorrect",
+  "error.server.user_not_found": "User not found",
+
   "LoadingSpinner.text": "Loading...",
 
   "TopBar.dropdown.name.label": "{firstName} {lastName}",
