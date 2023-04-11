@@ -79,6 +79,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [test-server, test-portal, build]
     steps:
+      - uses: actions/checkout@v3
       - name: Generate image tag
         run: echo "IMAGE_TAG=`git rev-parse --short=7 HEAD`" >> $GITHUB_ENV
       - uses: azure/k8s-set-context@v3
@@ -86,7 +87,6 @@ jobs:
           method: service-account
           k8s-url: ${{ secrets.KUBERNETES_SERVER }}
           k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
-      - uses: actions/checkout@v3
       - uses: azure/k8s-deploy@v4
         with:
           namespace: uenroll

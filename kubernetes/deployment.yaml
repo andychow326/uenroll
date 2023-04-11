@@ -21,8 +21,8 @@ spec:
                 name: uenroll-env
           resources:
             limits:
-              memory: "128Mi"
-              cpu: "250m"
+              memory: 128Mi
+              cpu: 250m
           ports:
             - containerPort: 3000
 ---
@@ -41,10 +41,6 @@ spec:
       labels:
         app: uenroll-portal
     spec:
-      volumes:
-        - name: volume-nginx-conf
-          configMap:
-            name: uenroll-portal
       containers:
         - name: uenroll-portal
           image: andychow326/uenroll-portal:latest
@@ -53,11 +49,15 @@ spec:
                 name: uenroll-env
           resources:
             limits:
-              memory: "64Mi"
-              cpu: "125m"
+              memory: 64Mi
+              cpu: 125m
           volumeMounts:
             - name: volume-nginx-conf
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
           ports:
             - containerPort: 80
+      volumes:
+        - name: volume-nginx-conf
+          configMap:
+            name: uenroll-portal
