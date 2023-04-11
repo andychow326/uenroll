@@ -18,6 +18,7 @@ WORKDIR /app
 COPY server/package.json package.json
 RUN npm install --omit=dev
 COPY server/prisma prisma
+COPY server/src/templates src/templates
 RUN npx prisma generate
 
 COPY --from=builder /app/server/dist .
