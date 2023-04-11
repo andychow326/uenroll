@@ -46,8 +46,8 @@ CREATE TABLE "course" (
 -- CreateTable
 CREATE TABLE "time_slot" (
     "id" TEXT NOT NULL,
-    "start" TIMESTAMP(3) NOT NULL,
-    "end" TIMESTAMP(3) NOT NULL,
+    "start" TIME NOT NULL,
+    "end" TIME NOT NULL,
     "day_of_week" "DayOfWeek" NOT NULL,
 
     CONSTRAINT "time_slot_pkey" PRIMARY KEY ("id")
@@ -61,7 +61,7 @@ CREATE TABLE "opened_course" (
     "section" TEXT NOT NULL,
     "year" INTEGER NOT NULL,
     "semester" TEXT NOT NULL,
-    "time_slot_id" TEXT NOT NULL,
+    "time_slot_ids" TEXT[] NOT NULL,
     "venue" TEXT NOT NULL,
     "lecturer" TEXT NOT NULL,
     "outline" BYTEA,
@@ -108,9 +108,6 @@ CREATE TABLE "worker_queue" (
 
 -- AddForeignKey
 ALTER TABLE "opened_course" ADD CONSTRAINT "opened_course_subject_number_fkey" FOREIGN KEY ("subject", "number") REFERENCES "course"("subject", "number") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "opened_course" ADD CONSTRAINT "opened_course_time_slot_id_fkey" FOREIGN KEY ("time_slot_id") REFERENCES "time_slot"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "shopping_cart" ADD CONSTRAINT "shopping_cart_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

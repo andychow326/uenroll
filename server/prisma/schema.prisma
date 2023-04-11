@@ -72,30 +72,27 @@ enum DayOfWeek {
 
 model TimeSlot {
   id        String    @id @map("id")
-  start     DateTime  @map("start")
-  end       DateTime  @map("end")
+  start     DateTime  @map("start") @db.Time()
+  end       DateTime  @map("end") @db.Time()
   dayOfWeek DayOfWeek @map("day_of_week")
-
-  OpenedCourse OpenedCourse[]
 
   @@map("time_slot")
 }
 
 model OpenedCourse {
-  id         String @id @default(uuid())
-  subject    String @map("subject")
-  number     String @map("number")
-  section    String @map("section")
-  year       Int    @map("year")
-  semester   String @map("semester")
-  timeSlotId String @map("time_slot_id")
-  venue      String @map("venue")
-  lecturer   String @map("lecturer")
-  outline    Bytes? @map("outline")
-  capacity   Int    @map("capacity")
+  id          String   @id @default(uuid())
+  subject     String   @map("subject")
+  number      String   @map("number")
+  section     String   @map("section")
+  year        Int      @map("year")
+  semester    String   @map("semester")
+  timeSlotIds String[] @map("time_slot_ids")
+  venue       String   @map("venue")
+  lecturer    String   @map("lecturer")
+  outline     Bytes?   @map("outline")
+  capacity    Int      @map("capacity")
 
   course         Course           @relation(fields: [subject, number], references: [subject, number])
-  timeSlot       TimeSlot         @relation(fields: [timeSlotId], references: [id])
   ShoppingCart   ShoppingCart[]
   RecentlyViewed RecentlyViewed[]
   EnrolledCourse EnrolledCourse[]
