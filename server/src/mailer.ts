@@ -32,3 +32,25 @@ export const sendRegistrationEmail = async (
     html,
   });
 };
+
+export const sendForgotPasswordEmail = async (
+  email: string,
+  firstName: string,
+  redirectURL: string
+) => {
+  const html = await ejs.renderFile(
+    "./src/templates/forgot_password_email.html",
+    {
+      firstName,
+      email,
+      redirectURL,
+    }
+  );
+
+  await mailer.sendMail({
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: "[Uenroll] Forgot Password Instruction",
+    html,
+  });
+};
