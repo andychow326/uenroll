@@ -37,12 +37,24 @@ export type UserProfile = {
   address: string;
 };
 
-export type SearchBarItem = {
+export type SearchBarItemType = "textField" | "dropdown";
+
+export type SearchBarItemTextField = {
+  type: "textField";
   labelID: string;
-  type: "textField" | "dropdown";
   value: string;
   onChange: (value: string) => void;
 };
+
+export type SearchBarItemDropdown = {
+  type: "dropdown";
+  labelID: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+};
+
+export type SearchBarItem = SearchBarItemTextField | SearchBarItemDropdown;
 
 export type TableColumnOption = {
   headerLabelID: string;
@@ -58,4 +70,57 @@ export type UserProfileListFilter = {
   userID?: string;
   username?: string;
   cursor?: string;
+};
+
+export enum CourseType {
+  course = "course",
+  openedCourse = "openedCourse",
+}
+
+export type Course = {
+  type: CourseType.course;
+  subject: string;
+  number: string;
+  title: string;
+  career: string;
+  units: number;
+  description?: string;
+  learningOutcome?: string;
+  syllabus?: string;
+  requiredReadings?: string;
+  recommendedReadings?: string;
+  openedCourse: OpenedCourse[];
+};
+
+export type OpenedCourse = {
+  type: CourseType.openedCourse;
+  id: string;
+  subject: string;
+  number: string;
+  section: string;
+  year: number;
+  semester: string;
+  timeSlotIds: string[];
+  venue: string;
+  lecturer: string;
+  outline?: string;
+  capacity: number;
+  course: Course;
+};
+
+export type CourseListItem<T> = T extends CourseType.course
+  ? Course
+  : T extends CourseType.openedCourse
+  ? OpenedCourse
+  : never;
+
+export type CoursePeriod = {
+  year: number;
+  semester: string;
+};
+
+export type CourseListFilter = {
+  code: string;
+  title: string;
+  period?: CoursePeriod;
 };

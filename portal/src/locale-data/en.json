@@ -81,5 +81,17 @@
 
   "ResendInvitationModal.header": "Resend Invitation",
   "ResendInvitationModal.description.start": "You are about to resend the invitation to:",
-  "ResendInvitationModal.description.target": "{firstName} {lastName} ({email})"
+  "ResendInvitationModal.description.target": "{firstName} {lastName} ({email})",
+
+  "CourseSearch.title": "Course Search",
+  "CourseSearch.search-bar.course-code.label": "Course Code:",
+  "CourseSearch.search-bar.course-title.label": "Course Title:",
+  "CourseSearch.table.header.course-code.label": "Course Code",
+  "CourseSearch.table.header.course-title.label": "Course Title",
+  "CourseSearch.table.row.course-code.label": "{subject}{number}",
+  "CourseSearch.table.row.more-button.label": "More",
+  "CourseSearch.table.row.hidden-button.label": "Hide",
+
+  "CourseManagement.title": "Course Management",
+  "CourseManagement.table.header.add-button.label": "+ Add"
 }
