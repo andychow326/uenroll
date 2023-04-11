@@ -37,6 +37,33 @@ export type UserProfile = {
   address: string;
 };
 
+export type CourseProfile = {
+  subject: string;
+  number: string;
+  title: string;
+  career: string;
+  units: number;
+  description: string;
+  learningOutcome: string;
+  syllabus: string;
+  requiredReadings: string
+  recommendedReadings: string;
+  openedCourse: OpenedCourseProfile[];
+};
+
+export type OpenedCourseProfile = {
+  id: string;
+  subject: string;
+  number: string;
+  section: string;
+  year: number;
+  semester: string;
+  timeSlotID: string;
+  venue: string;
+  lecturer: string;
+  capacity: number;
+};
+
 export type SearchBarItem = {
   labelID: string;
   type: "textField" | "dropdown";
@@ -59,3 +86,14 @@ export type UserProfileListFilter = {
   username?: string;
   cursor?: string;
 };
+
+export type CourseProfileListFilter = {
+  courseID?: string;
+  coursename?: string;
+  cursor?: string;
+};
+
+export type OpenedCourseProfileListFilter = {
+  courseID?: string;
+  cursor?: string;
+}

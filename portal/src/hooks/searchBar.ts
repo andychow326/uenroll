@@ -23,4 +23,25 @@ export function useUserSearchBar() {
   );
 }
 
-export function useCourseSearchBar() {}
+export function useCourseSearchBar() {
+  const [courseID, setCourseID] = useState<string>("");
+  const [courseName, setCourseName] = useState<string>("");
+
+  const onSearch = useCallback(
+    (callback: (options: { courseID: string; courseName: string }) => void) => {
+      callback({ courseID, courseName });
+    },
+    [courseID, courseName]
+  );
+
+  return useMemo(
+    () => ({
+      courseID,
+      courseName,
+      onChangeCourseID: setCourseID,
+      onChangeCourseName: setCourseName,
+      onSearch,
+    }),
+    [courseID, courseName, setCourseID, setCourseName, onSearch]
+  );
+}
