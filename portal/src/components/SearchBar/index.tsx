@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { FormattedMessage } from "react-intl";
 import { Button, Input } from "semantic-ui-react";
 import { useTextFieldChange } from "../../hooks/component";
@@ -13,12 +13,13 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = (props) => {
   const { items, onSearch } = props;
+  const id = useId();
 
   return (
     <div className={styles.container}>
       <div className={styles.options}>
-        {items.map((item) => (
-          <div className={styles.option}>
+        {items.map((item, index) => (
+          <div className={styles.option} key={`${id}-${index}`}>
             <FormattedMessage id={item.labelID} />
             {item.type === "textField" ? (
               <Input

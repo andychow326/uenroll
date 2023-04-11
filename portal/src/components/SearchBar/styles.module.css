@@ -10,17 +10,14 @@
 }
 
 .options {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
+  display: inline-block;
 }
 
 .option {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 4px 16px 4px 0;
   gap: 8px;
 }
