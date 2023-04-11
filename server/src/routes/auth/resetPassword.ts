@@ -40,9 +40,9 @@ const resetPassword = publicProcedure
       throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
     }
 
-    // await redisClient.del(
-    //   getRedisKey(RedisKey.ACCESS_TOKEN, input.accessToken)
-    // );
+    await redisClient.del(
+      getRedisKey(RedisKey.ACCESS_TOKEN, input.accessToken)
+    );
 
     return true;
   });
