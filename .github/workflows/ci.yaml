@@ -86,13 +86,10 @@ jobs:
           method: service-account
           k8s-url: ${{ secrets.KUBERNETES_SERVER }}
           k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
-      - uses: azure/k8s-create-secret@v4
-        with:
-          namespace: uenroll-dev
       - uses: actions/checkout@v3
       - uses: azure/k8s-deploy@v4
         with:
-          namespace: uenroll-dev
+          namespace: uenroll
           manifests: |
             kubernetes/deployment.yaml
             kubernetes/ingress.yaml
