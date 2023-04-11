@@ -3,6 +3,7 @@ import { CSSProperties } from "react";
 export enum AuthMode {
   login = "login",
   forgotPassword = "forgotPassword",
+  forgotPasswordConfirmation = "forgotPasswordConfirmation",
   resetPassword = "resetPassword",
   expiredAccessToken = "expiredAccessToken",
 }

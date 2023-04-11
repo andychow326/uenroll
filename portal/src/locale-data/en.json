@@ -26,6 +26,8 @@
   "AuthForm.back-button.label": "Back",
   "AuthForm.login.title": "Welcome back",
   "AuthForm.forgot-password.title": "Forgot Password",
+  "AuthForm.forgot-password-confirmation.header": "Forgot Password Confirmation",
+  "AuthForm.forgot-password-confirmation.description": "Check your email for more information on how to reset your password",
   "AuthForm.reset-password.title": "Reset Password",
   "AuthForm.expired-access-token.title": "Expired Link",
   "AuthForm.expired-access-token.description": "This link is already expired. Please try again later.",

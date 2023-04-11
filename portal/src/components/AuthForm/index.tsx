@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useEffect, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button, Icon, Image } from "semantic-ui-react";
+import { Button, Header, Icon, Image } from "semantic-ui-react";
 import { useTextFieldChange } from "../../hooks/component";
 import type { Error } from "../../trpc";
 import { AuthMode } from "../../types";
@@ -8,7 +8,7 @@ import InputWithErrorField from "../InputWithErrorField";
 
 import styles from "./styles.module.css";
 
-const mapMainFormTitle: Record<AuthMode, string> = {
+const mapMainFormTitle: Partial<Record<AuthMode, string>> = {
   login: "AuthForm.login.title",
   forgotPassword: "AuthForm.forgot-password.title",
   resetPassword: "AuthForm.reset-password.title",
@@ -24,7 +24,7 @@ const mapSubmitButtonLabel: Partial<Record<AuthMode, string>> = {
 interface MainFormProps {
   loading: boolean;
   showBackButton?: boolean;
-  titleTextID: string;
+  titleTextID?: string;
   submitButtonLabelID?: string;
   error: Error | null;
   children: ReactNode;
@@ -71,9 +71,11 @@ const MainForm: React.FC<MainFormProps> = (props) => {
           </>
         )}
       </div>
-      <div className={styles.formTitle}>
-        <FormattedMessage id={titleTextID} />
-      </div>
+      {titleTextID && (
+        <div className={styles.formTitle}>
+          <FormattedMessage id={titleTextID} />
+        </div>
+      )}
       <div className={styles.formBody}>{children}</div>
       {onSubmit != null && (
         <div className={styles.submitSection}>
@@ -105,6 +107,7 @@ interface AuthFormProps {
   onChangePassword: (value: string) => void;
   onChangeConfirmPassword: (value: string) => void;
   onLogin: () => void;
+  onForgotPassword: () => void;
   onResetPassword: () => void;
   onChangeAuthMode: (newAuthMode: AuthMode) => void;
 }
@@ -122,6 +125,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
     onChangePassword,
     onChangeConfirmPassword,
     onLogin,
+    onForgotPassword,
     onResetPassword,
   } = props;
   const intl = useIntl();
@@ -157,6 +161,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
       errorData: error,
       className: styles.inputBlock,
       inputClassName: styles.input,
+      labelID: "AuthForm.user-id.placeholder",
       placeholder: intl.formatMessage({
         id: "AuthForm.user-id.placeholder",
       }),
@@ -196,6 +201,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             <InputWithErrorField {...commonInputUserIDProps} />
             <InputWithErrorField
               {...commonInputPasswordProps}
+              labelID="AuthForm.password.placeholder"
               placeholder={intl.formatMessage({
                 id: "AuthForm.password.placeholder",
               })}
@@ -216,18 +222,25 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             {...commonMainFormProps}
             showBackButton
             onBack={onChangeLoginMode}
-            onSubmit={() => {}}
+            onSubmit={onForgotPassword}
           >
             <InputWithErrorField {...commonInputUserIDProps} />
           </MainForm>
         )}
+        {currentAuthMode === AuthMode.forgotPasswordConfirmation && (
+          <MainForm {...commonMainFormProps}>
+            <Header as="h1" icon>
+              <Icon name="check circle outline" />
+              <FormattedMessage id="AuthForm.forgot-password-confirmation.header" />
+              <Header.Subheader>
+                <FormattedMessage id="AuthForm.forgot-password-confirmation.description" />
+              </Header.Subheader>
+            </Header>
+          </MainForm>
+        )}
         {currentAuthMode === AuthMode.resetPassword && (
           <MainForm {...commonMainFormProps} onSubmit={onResetPassword}>
-            <InputWithErrorField
-              {...commonInputUserIDProps}
-              disabled
-              labelID="AuthForm.user-id.placeholder"
-            />
+            <InputWithErrorField {...commonInputUserIDProps} disabled />
             <InputWithErrorField
               {...commonInputPasswordProps}
               labelID="AuthForm.password.placeholder"

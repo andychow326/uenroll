@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useAuthActionCreator from "../actions/auth";
 import useUserActionCreator from "../actions/user";
 import AuthForm from "../components/AuthForm";
+import { AuthMode } from "../types";
 
 const useAuthForm = () => {
   const {
@@ -9,6 +10,7 @@ const useAuthForm = () => {
     error,
     currentAuthMode,
     login,
+    forgotPassword,
     resetPassword,
     validateAccessToken,
     onChangeAuthMode,
@@ -45,6 +47,13 @@ const useAuthForm = () => {
     await fetchUserProfile();
   }, [fetchUserProfile, login, password, userID]);
 
+  const onForgotPassword = useCallback(async () => {
+    const isSuccess = await forgotPassword(userID);
+    if (isSuccess) {
+      onChangeAuthMode(AuthMode.forgotPasswordConfirmation);
+    }
+  }, [forgotPassword, onChangeAuthMode, userID]);
+
   const onResetPassword = useCallback(async () => {
     const isSuccess = await resetPassword(password, confirmPassword);
     if (isSuccess) {
@@ -65,6 +74,7 @@ const useAuthForm = () => {
       onChangePassword,
       onChangeConfirmPassword,
       onLogin,
+      onForgotPassword,
       onResetPassword,
     }),
     [
@@ -79,6 +89,7 @@ const useAuthForm = () => {
       onChangePassword,
       onChangeConfirmPassword,
       onLogin,
+      onForgotPassword,
       onResetPassword,
     ]
   );
@@ -97,6 +108,7 @@ const Authentication: React.FC = () => {
     onChangePassword,
     onChangeConfirmPassword,
     onLogin,
+    onForgotPassword,
     onResetPassword,
   } = useAuthForm();
 
@@ -113,6 +125,7 @@ const Authentication: React.FC = () => {
       onChangePassword={onChangePassword}
       onChangeConfirmPassword={onChangeConfirmPassword}
       onLogin={onLogin}
+      onForgotPassword={onForgotPassword}
       onResetPassword={onResetPassword}
     />
   );

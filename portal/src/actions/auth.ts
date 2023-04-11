@@ -102,6 +102,16 @@ function useAuthActionCreator() {
     searchParams,
   ]);
 
+  const forgotPassword = useCallback(
+    async (userID: string) => {
+      const result = await safeQuery(() =>
+        apiClient.auth.forgotPassword.fetch(userID)
+      );
+      return result === true;
+    },
+    [apiClient.auth.forgotPassword, safeQuery]
+  );
+
   const onChangeAuthMode = useCallback(
     (newMode: AuthMode) => {
       clearQuery();
@@ -118,6 +128,7 @@ function useAuthActionCreator() {
       login,
       logout,
       resetPassword,
+      forgotPassword,
       validateAccessToken,
       onChangeAuthMode,
     }),
@@ -128,6 +139,7 @@ function useAuthActionCreator() {
       login,
       logout,
       resetPassword,
+      forgotPassword,
       validateAccessToken,
       onChangeAuthMode,
     ]
