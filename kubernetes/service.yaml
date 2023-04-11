@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uenroll-server
+  namespace: uenroll
+spec:
+  selector:
+    app: uenroll-server
+  ports:
+    - port: 3000
+      targetPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uenroll-portal
+  namespace: uenroll
+spec:
+  selector:
+    app: uenroll-portal
+  ports:
+    - port: 80
+      targetPort: 80

@@ -73,3 +73,30 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/uenroll-${{ matrix.component }}:${{ env.IMAGE_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    runs-on: ubuntu-22.04
+    needs: [test-server, test-portal, build]
+    steps:
+      - name: Generate image tag
+        run: echo "IMAGE_TAG=`git rev-parse --short=7 HEAD`" >> $GITHUB_ENV
+      - uses: azure/k8s-set-context@v3
+        with:
+          method: service-account
+          k8s-url: ${{ secrets.KUBERNETES_SERVER }}
+          k8s-secret: ${{ secrets.KUBERNETES_SECRET }}
+      - uses: azure/k8s-create-secret@v4
+        with:
+          namespace: uenroll-dev
+      - uses: actions/checkout@v3
+      - uses: azure/k8s-deploy@v4
+        with:
+          namespace: uenroll-dev
+          manifests: |
+            kubernetes/deployment.yaml
+            kubernetes/ingress.yaml
+            kubernetes/service.yaml
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll-server:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll-portal:${{ env.IMAGE_TAG }}

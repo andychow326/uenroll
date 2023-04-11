@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: uenroll-redis
+  namespace: uenroll
+spec:
+  selector:
+    matchLabels:
+      app: uenroll-redis
+  serviceName: uenroll-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: uenroll-redis
+    spec:
+      containers:
+        - name: uenroll-redis
+          image: redis:7
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: uenroll-redis-volume
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: uenroll-redis-volume
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uenroll-redis
+  namespace: uenroll
+spec:
+  selector:
+    app: uenroll-redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: uenroll-database
+  namespace: uenroll
+spec:
+  selector:
+    matchLabels:
+      app: uenroll-database
+  serviceName: uenroll-database
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: uenroll-database
+    spec:
+      containers:
+        - name: uenroll-database
+          image: postgres:15
+          envFrom:
+            - secretRef:
+                name: uenroll-env
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: uenroll-database-volume
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: uenroll-database-volume
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uenroll-database
+  namespace: uenroll
+spec:
+  selector:
+    app: uenroll-database
+  ports:
+    - port: 5432
+      targetPort: 5432
