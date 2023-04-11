@@ -64,7 +64,7 @@ CREATE TABLE "opened_course" (
     "time_slot_ids" TEXT[] NOT NULL,
     "venue" TEXT NOT NULL,
     "lecturer" TEXT NOT NULL,
-    "outline" BYTEA,
+    "outline" TEXT,
     "capacity" INTEGER NOT NULL,
 
     CONSTRAINT "opened_course_pkey" PRIMARY KEY ("id")

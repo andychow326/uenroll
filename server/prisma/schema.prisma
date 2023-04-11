@@ -89,7 +89,7 @@ model OpenedCourse {
   timeSlotIds String[] @map("time_slot_ids")
   venue       String   @map("venue")
   lecturer    String   @map("lecturer")
-  outline     Bytes?   @map("outline")
+  outline     String?  @map("outline")
   capacity    Int      @map("capacity")
 
   course         Course           @relation(fields: [subject, number], references: [subject, number])
