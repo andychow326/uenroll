@@ -123,4 +123,5 @@ export type CourseListFilter = {
   code: string;
   title: string;
   period?: CoursePeriod;
+  offset?: number;
 };

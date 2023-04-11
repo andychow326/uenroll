@@ -23,9 +23,19 @@ function useCourseActionCreator() {
     [apiClient.course.list, safeQuery]
   );
 
+  const fetchCourseCount = useCallback(
+    async <T extends CourseType>(type: T, filter: CourseListFilter) => {
+      const result = await safeQuery(() =>
+        apiClient.course.count.fetch({ ...filter, type })
+      );
+      return Math.ceil(result ?? 0);
+    },
+    [apiClient.course.count, safeQuery]
+  );
+
   return useMemo(
-    () => ({ loading, error, clearQuery, fetchCourseList }),
-    [loading, error, clearQuery, fetchCourseList]
+    () => ({ loading, error, clearQuery, fetchCourseList, fetchCourseCount }),
+    [loading, error, clearQuery, fetchCourseList, fetchCourseCount]
   );
 }
 

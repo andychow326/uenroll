@@ -30,3 +30,8 @@
   overflow: auto;
   padding-right: 4px;
 }
+
+.paginator {
+  text-align: center;
+  margin-top: 12px;
+}

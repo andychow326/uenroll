@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button, Loader } from "semantic-ui-react";
+import { Button, Loader, Pagination, PaginationProps } from "semantic-ui-react";
 import { SearchBarItem, TableColumnOption } from "../../types";
 import SearchBar from "../SearchBar";
 
@@ -8,6 +8,10 @@ import styles from "./styles.module.css";
 
 interface TableProps {
   loading?: boolean;
+  showPagination?: boolean;
+  totalPages?: number;
+  currentPage?: number;
+  onChangePage?: (page: number) => void;
   searchBarItems: SearchBarItem[];
   columnOptions: TableColumnOption[];
   showHeaderButton?: boolean;
@@ -23,6 +27,10 @@ interface TableProps {
 const Table: React.FC<TableProps> = (props) => {
   const {
     loading,
+    showPagination,
+    totalPages,
+    currentPage,
+    onChangePage,
     searchBarItems,
     columnOptions,
     showHeaderButton = false,
@@ -32,6 +40,16 @@ const Table: React.FC<TableProps> = (props) => {
     onClickHeaderButton,
     onSearch,
   } = props;
+
+  const onChangeCurrentPage = useCallback(
+    (
+      _event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+      data: PaginationProps
+    ) => {
+      onChangePage?.(data.activePage as number);
+    },
+    [onChangePage]
+  );
 
   return (
     <div className={styles.container}>
@@ -57,6 +75,17 @@ const Table: React.FC<TableProps> = (props) => {
           tableData.map((item) => onRenderRow(item))
         )}
       </div>
+      {showPagination && (
+        <div className={styles.paginator}>
+          <Pagination
+            totalPages={totalPages ?? 0}
+            activePage={currentPage}
+            onPageChange={onChangeCurrentPage}
+            boundaryRange={2}
+            siblingRange={2}
+          />
+        </div>
+      )}
     </div>
   );
 };

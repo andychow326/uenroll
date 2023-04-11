@@ -22,16 +22,38 @@ import {
 
 export function useCourseSearch<T extends CourseType>(courseType: T) {
   const searchBar = useCourseSearchBar(courseType);
-  const { loading, fetchCourseList } = useCourseActionCreator();
+  const { loading, fetchCourseList, fetchCourseCount } =
+    useCourseActionCreator();
   const intl = useIntl();
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [courseList, setCourseList] = useState<CourseListItem<T>[] | null>([]);
 
-  const onSearch = useCallback(() => {
-    searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
-      const result = await fetchCourseList(type, filter);
-      setCourseList(result as CourseListItem<T>[]);
-    });
-  }, [fetchCourseList, searchBar]);
+  const onSearch = useCallback(
+    (page?: number) => {
+      searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
+        const result = await fetchCourseList(type, {
+          ...filter,
+          offset: page ?? currentPage,
+        });
+        const pages = await fetchCourseCount(type, {
+          ...filter,
+          offset: page ?? currentPage,
+        });
+        setCourseList(result as CourseListItem<T>[]);
+        setTotalPages(pages);
+      });
+    },
+    [currentPage, fetchCourseCount, fetchCourseList, searchBar]
+  );
+
+  const onChangePage = useCallback(
+    (page: number) => {
+      setCurrentPage(page);
+      onSearch(page);
+    },
+    [onSearch]
+  );
 
   const searchBarItems = useMemo(
     (): SearchBarItem[] => [
@@ -114,19 +136,25 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
   return useMemo(
     () => ({
       loading,
+      currentPage,
+      totalPages,
       courseList,
       searchBarItems,
       tableColumnOptions,
       onSearch,
       onRenderTableRow,
+      onChangePage,
     }),
     [
       loading,
+      currentPage,
+      totalPages,
       courseList,
       searchBarItems,
       tableColumnOptions,
       onSearch,
       onRenderTableRow,
+      onChangePage,
     ]
   );
 }
@@ -134,11 +162,14 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
 const CourseSearch: React.FC = () => {
   const {
     loading,
+    currentPage,
+    totalPages,
     courseList,
     searchBarItems,
     tableColumnOptions,
     onSearch,
     onRenderTableRow,
+    onChangePage,
   } = useCourseSearch(CourseType.openedCourse);
 
   return (
@@ -153,6 +184,10 @@ const CourseSearch: React.FC = () => {
         columnOptions={tableColumnOptions}
         tableData={courseList ?? []}
         onRenderRow={onRenderTableRow}
+        showPagination
+        totalPages={totalPages}
+        onChangePage={onChangePage}
+        currentPage={currentPage}
       />
     </>
   );

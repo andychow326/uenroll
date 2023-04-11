@@ -8,11 +8,14 @@ import { useCourseSearch } from "./CourseSearch";
 const CourseManagement: React.FC = () => {
   const {
     loading,
+    currentPage,
+    totalPages,
     courseList,
     searchBarItems,
     tableColumnOptions,
     onSearch,
     onRenderTableRow,
+    onChangePage,
   } = useCourseSearch(CourseType.course);
 
   return (
@@ -27,6 +30,10 @@ const CourseManagement: React.FC = () => {
         columnOptions={tableColumnOptions}
         tableData={courseList ?? []}
         onRenderRow={onRenderTableRow}
+        showPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChangePage={onChangePage}
         showHeaderButton
         headerButtonLabelID="CourseManagement.table.header.add-button.label"
         // TODO: Implement header button
