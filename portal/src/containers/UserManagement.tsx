@@ -217,6 +217,7 @@ const UserManagement: React.FC = () => {
         <FormattedMessage id="UserManagement.title" />
       </Header>
       <Table
+        loading={loading}
         searchBarItems={searchBarItems}
         onSearch={onSearch}
         columnOptions={tableColumnOptions}

@@ -1,12 +1,13 @@
 import React, { ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button } from "semantic-ui-react";
+import { Button, Loader } from "semantic-ui-react";
 import { SearchBarItem, TableColumnOption } from "../../types";
 import SearchBar from "../SearchBar";
 
 import styles from "./styles.module.css";
 
 interface TableProps {
+  loading?: boolean;
   searchBarItems: SearchBarItem[];
   columnOptions: TableColumnOption[];
   showHeaderButton?: boolean;
@@ -21,6 +22,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = (props) => {
   const {
+    loading,
     searchBarItems,
     columnOptions,
     showHeaderButton = false,
@@ -32,7 +34,7 @@ const Table: React.FC<TableProps> = (props) => {
   } = props;
 
   return (
-    <>
+    <div className={styles.container}>
       <SearchBar items={searchBarItems} onSearch={onSearch} />
       <div className={styles.header}>
         <div className={styles.headerColumns}>
@@ -49,9 +51,13 @@ const Table: React.FC<TableProps> = (props) => {
         )}
       </div>
       <div className={styles.body}>
-        {tableData.map((item) => onRenderRow(item))}
+        {loading ? (
+          <Loader active={loading} inline="centered" />
+        ) : (
+          tableData.map((item) => onRenderRow(item))
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
