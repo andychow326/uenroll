@@ -191,7 +191,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             <FormattedMessage id="AuthForm.title" />
           </div>
         </div>
-        {currentAuthMode === "login" && (
+        {currentAuthMode === AuthMode.login && (
           <MainForm {...commonMainFormProps} onSubmit={onLogin}>
             <InputWithErrorField {...commonInputUserIDProps} />
             <InputWithErrorField
@@ -211,7 +211,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             </div>
           </MainForm>
         )}
-        {currentAuthMode === "forgotPassword" && (
+        {currentAuthMode === AuthMode.forgotPassword && (
           <MainForm
             {...commonMainFormProps}
             showBackButton
@@ -221,7 +221,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             <InputWithErrorField {...commonInputUserIDProps} />
           </MainForm>
         )}
-        {currentAuthMode === "resetPassword" && (
+        {currentAuthMode === AuthMode.resetPassword && (
           <MainForm {...commonMainFormProps} onSubmit={onResetPassword}>
             <InputWithErrorField
               {...commonInputUserIDProps}
@@ -250,7 +250,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
             />
           </MainForm>
         )}
-        {currentAuthMode === "expiredAccessToken" && (
+        {currentAuthMode === AuthMode.expiredAccessToken && (
           <MainForm
             {...commonMainFormProps}
             showBackButton
