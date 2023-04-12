@@ -110,11 +110,14 @@ const list = authProcedure.input(inputSchema).query(async ({ input }) => {
                   },
                 },
                 {
-                  openedCourse: {
-                    some: {
-                      AND: [{ year }, { semester }],
-                    },
-                  },
+                  openedCourse:
+                    year || semester
+                      ? {
+                          some: {
+                            AND: [{ year }, { semester }],
+                          },
+                        }
+                      : undefined,
                 },
               ],
             }
