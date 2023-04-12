@@ -31,7 +31,7 @@ const EnrollmentRequestInfo: React.FC<EnrollmentRequestInfoProps> = (props) => {
       </div>
       <div className={styles.buttons}>
         <Button color="orange">Refresh</Button>
-        <Button color="#DEDEDE">Cancel Request</Button>
+        <Button>Cancel Request</Button>
       </div>
     </div>
   );
