@@ -88,7 +88,7 @@ model OpenedCourse {
   semester    String   @map("semester")
   timeSlotIds String[] @map("time_slot_ids")
   venue       String   @map("venue")
-  lecturer    String   @map("lecturer")
+  instructor  String   @map("instructor")
   outline     String?  @map("outline")
   capacity    Int      @map("capacity")
 
@@ -98,6 +98,7 @@ model OpenedCourse {
   EnrolledCourse EnrolledCourse[]
   WorkerQueue    WorkerQueue[]
 
+  @@unique([subject, number, section, year, semester])
   @@map("opened_course")
 }
 

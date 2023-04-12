@@ -63,7 +63,7 @@ CREATE TABLE "opened_course" (
     "semester" TEXT NOT NULL,
     "time_slot_ids" TEXT[] NOT NULL,
     "venue" TEXT NOT NULL,
-    "lecturer" TEXT NOT NULL,
+    "instructor" TEXT NOT NULL,
     "outline" TEXT,
     "capacity" INTEGER NOT NULL,
 
@@ -132,3 +132,6 @@ ALTER TABLE "worker_queue" ADD CONSTRAINT "worker_queue_user_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "worker_queue" ADD CONSTRAINT "worker_queue_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "opened_course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- CreateIndex
+CREATE UNIQUE INDEX "opened_course_subject_number_section_year_semester_key" ON "opened_course"("subject", "number", "section", "year", "semester");
