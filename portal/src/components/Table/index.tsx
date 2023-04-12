@@ -12,15 +12,15 @@ interface TableProps<T> {
   totalPages?: number;
   currentPage?: number;
   onChangePage?: (page: number) => void;
-  searchBarItems: SearchBarItem[];
+  searchBarItems?: SearchBarItem[];
   columnOptions: TableColumnOption[];
   showHeaderButton?: boolean;
   headerButtonLabelID?: string;
   tableData: T[];
   onRenderRow: (data: T) => ReactNode;
   onClickHeaderButton?: () => void;
-  onSearch: () => void;
-  onClearFilter: () => void;
+  onSearch?: () => void;
+  onClearFilter?: () => void;
 }
 
 const Table = <T,>(props: TableProps<T>): JSX.Element => {
@@ -53,11 +53,13 @@ const Table = <T,>(props: TableProps<T>): JSX.Element => {
 
   return (
     <div className={styles.container}>
-      <SearchBar
-        items={searchBarItems}
-        onClearFilter={onClearFilter}
-        onSearch={onSearch}
-      />
+      {searchBarItems && onClearFilter && onSearch && (
+        <SearchBar
+          items={searchBarItems}
+          onClearFilter={onClearFilter}
+          onSearch={onSearch}
+        />
+      )}
       <div className={styles.header}>
         <div className={styles.headerColumns}>
           {columnOptions.map((item) => (
