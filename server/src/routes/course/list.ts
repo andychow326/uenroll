@@ -1,3 +1,4 @@
+import { Course, OpenedCourse } from "@prisma/client";
 import { z } from "zod";
 import prisma from "../../prisma";
 import { authProcedure } from "../../procedure";
@@ -30,110 +31,115 @@ const list = authProcedure.input(inputSchema).query(async ({ input }) => {
     const openedCourses = await prisma.openedCourse.findMany({
       skip: (offset - 1) * MAX_COURSE_LIST_SIZE,
       take: MAX_COURSE_LIST_SIZE,
-      where:
-        subject || number || title || year || semester
-          ? {
-              OR: [
+      where: {
+        AND: [
+          {
+            course: {
+              AND: [
                 {
-                  course: {
-                    OR: [
-                      {
-                        title: {
-                          contains: title,
-                          mode: "insensitive",
-                        },
-                      },
-                      {
-                        subject: {
-                          contains: subject,
-                          mode: "insensitive",
-                        },
-                      },
-                      {
-                        number: {
-                          contains: number,
-                        },
-                      },
-                    ],
-                  },
+                  title: title
+                    ? {
+                        contains: title,
+                        mode: "insensitive",
+                      }
+                    : undefined,
                 },
                 {
-                  AND: [
-                    {
-                      year,
-                    },
-                    {
-                      semester,
-                    },
-                  ],
+                  subject: subject
+                    ? {
+                        contains: subject,
+                        mode: "insensitive",
+                      }
+                    : undefined,
+                },
+                {
+                  number: number
+                    ? {
+                        contains: number,
+                      }
+                    : undefined,
                 },
               ],
-            }
-          : undefined,
+            },
+          },
+          {
+            AND: [
+              {
+                year,
+              },
+              {
+                semester,
+              },
+            ],
+          },
+        ],
+      },
       include: {
         course: true,
       },
     });
 
-    return openedCourses.map((openedCourse) => ({
-      type: "openedCourse",
-      ...openedCourse,
-      course: {
-        ...openedCourse.course,
-      },
-    }));
-  }
-
-  if (input.type === "course") {
-    const courses = await prisma.course.findMany({
-      skip: (offset - 1) * MAX_COURSE_LIST_SIZE,
-      take: MAX_COURSE_LIST_SIZE,
-      where:
-        subject || number || title || year || semester
-          ? {
-              OR: [
-                {
-                  title: {
-                    contains: title,
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  subject: {
-                    contains: subject,
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  number: {
-                    contains: number,
-                  },
-                },
-                {
-                  openedCourse:
-                    year || semester
-                      ? {
-                          some: {
-                            AND: [{ year }, { semester }],
-                          },
-                        }
-                      : undefined,
-                },
-              ],
-            }
-          : undefined,
-      include: {
-        openedCourse: true,
-      },
+    const map1 = new Map<string, OpenedCourse[]>();
+    const map2 = new Map<string, Course>();
+    openedCourses.forEach((openedCourse) => {
+      const key = `${openedCourse.subject}${openedCourse.number}`;
+      map1.set(key, map1.get(key)?.concat([openedCourse]) ?? [openedCourse]);
+      map2.set(key, openedCourse.course);
     });
 
-    return courses.map((course) => ({
-      type: "course",
-      ...course,
+    return Object.entries(Object.fromEntries(map1)).map((value) => ({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      ...map2.get(value[0])!,
+      openedCourse: value[1],
     }));
   }
 
-  return null;
+  const courses = await prisma.course.findMany({
+    skip: (offset - 1) * MAX_COURSE_LIST_SIZE,
+    take: MAX_COURSE_LIST_SIZE,
+    where: {
+      AND: [
+        {
+          title: title
+            ? {
+                contains: title,
+                mode: "insensitive",
+              }
+            : undefined,
+        },
+        {
+          subject: subject
+            ? {
+                contains: subject,
+                mode: "insensitive",
+              }
+            : undefined,
+        },
+        {
+          number: number
+            ? {
+                contains: number,
+              }
+            : undefined,
+        },
+        {
+          openedCourse:
+            year || semester
+              ? {
+                  some: {
+                    AND: [{ year }, { semester }],
+                  },
+                }
+              : undefined,
+        },
+      ],
+    },
+    include: {
+      openedCourse: true,
+    },
+  });
+
+  return courses;
 });
 
 export default list;

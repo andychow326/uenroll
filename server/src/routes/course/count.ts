@@ -24,91 +24,97 @@ const count = authProcedure.input(inputSchema).query(async ({ input }) => {
   const semester = input?.period?.semester || undefined;
 
   if (input.type === "openedCourse") {
-    const result = await prisma.openedCourse.count({
-      where:
-        subject || number || title || year || semester
-          ? {
-              OR: [
+    const result = await prisma.openedCourse.findMany({
+      distinct: ["subject", "number"],
+      where: {
+        AND: [
+          {
+            course: {
+              AND: [
                 {
-                  course: {
-                    OR: [
-                      {
-                        title: {
-                          contains: title,
-                          mode: "insensitive",
-                        },
-                      },
-                      {
-                        subject: {
-                          contains: subject,
-                          mode: "insensitive",
-                        },
-                      },
-                      {
-                        number: {
-                          contains: number,
-                        },
-                      },
-                    ],
-                  },
+                  title: title
+                    ? {
+                        contains: title,
+                        mode: "insensitive",
+                      }
+                    : undefined,
                 },
                 {
-                  AND: [
-                    {
-                      year,
-                    },
-                    {
-                      semester,
-                    },
-                  ],
+                  subject: subject
+                    ? {
+                        contains: subject,
+                        mode: "insensitive",
+                      }
+                    : undefined,
+                },
+                {
+                  number: number
+                    ? {
+                        contains: number,
+                      }
+                    : undefined,
                 },
               ],
-            }
-          : undefined,
+            },
+          },
+          {
+            AND: [
+              {
+                year,
+              },
+              {
+                semester,
+              },
+            ],
+          },
+        ],
+      },
     });
 
-    return result / MAX_COURSE_LIST_SIZE;
+    return result.length / MAX_COURSE_LIST_SIZE;
   }
 
-  if (input.type === "course") {
-    const result = await prisma.course.count({
-      where:
-        subject || number || title || year || semester
-          ? {
-              OR: [
-                {
-                  title: {
-                    contains: title,
-                    mode: "insensitive",
+  const result = await prisma.course.count({
+    where: {
+      AND: [
+        {
+          title: title
+            ? {
+                contains: title,
+                mode: "insensitive",
+              }
+            : undefined,
+        },
+        {
+          subject: subject
+            ? {
+                contains: subject,
+                mode: "insensitive",
+              }
+            : undefined,
+        },
+        {
+          number: number
+            ? {
+                contains: number,
+              }
+            : undefined,
+        },
+        {
+          openedCourse:
+            year || semester
+              ? {
+                  some: {
+                    AND: [{ year }, { semester }],
                   },
-                },
-                {
-                  subject: {
-                    contains: subject,
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  number: {
-                    contains: number,
-                  },
-                },
-                {
-                  openedCourse: {
-                    some: {
-                      AND: [{ year }, { semester }],
-                    },
-                  },
-                },
-              ],
-            }
-          : undefined,
-    });
+                }
+              : undefined,
+        },
+      ],
+    },
+  });
 
-    return result / MAX_COURSE_LIST_SIZE;
-  }
-
-  return null;
+  return result / MAX_COURSE_LIST_SIZE;
 });
 
 export default count;
