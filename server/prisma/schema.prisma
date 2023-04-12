@@ -105,8 +105,8 @@ model ShoppingCart {
   userId   String @map("user_id")
   courseId String @map("course_id")
 
-  user   User         @relation(fields: [userId], references: [id])
-  course OpenedCourse @relation(fields: [courseId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  openedCourse OpenedCourse @relation(fields: [courseId], references: [id])
 
   @@id([userId, courseId])
   @@map("shopping_cart")
@@ -117,8 +117,8 @@ model RecentlyViewed {
   userId   String @map("user_id")
   courseId String @map("course_id")
 
-  user   User         @relation(fields: [userId], references: [id])
-  course OpenedCourse @relation(fields: [courseId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  openedCourse OpenedCourse @relation(fields: [courseId], references: [id])
 
   @@map("recently_viewed")
 }
@@ -127,8 +127,8 @@ model EnrolledCourse {
   userId   String @map("user_id")
   courseId String @map("course_id")
 
-  user   User         @relation(fields: [userId], references: [id])
-  course OpenedCourse @relation(fields: [courseId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  openedCourse OpenedCourse @relation(fields: [courseId], references: [id])
 
   @@id([userId, courseId])
   @@map("enrolled_course")
