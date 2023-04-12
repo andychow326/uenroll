@@ -1,6 +1,7 @@
 import trpc from "../../trpc";
 import create from "./create";
 import edit from "./edit";
+import enrolledCourse from "./enrolledCourse";
 import list from "./list";
 import profile from "./profile";
 import sendInvitation from "./sendInvitation";
@@ -13,6 +14,7 @@ const user = trpc.router({
   list,
   validateSession,
   sendInvitation,
+  enrolledCourse,
 });
 
 export default user;
