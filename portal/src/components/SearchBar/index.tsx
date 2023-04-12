@@ -27,27 +27,30 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.options}>
-        {items.map((item, index) => (
-          <div className={styles.option} key={`${id}-${index}`}>
-            <FormattedMessage id={item.labelID} />
-            {item.type === "textField" ? (
-              <Input
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                onChange={useTextFieldChange(item.onChange)}
-                value={item.value}
-                key={item.labelID}
-              />
-            ) : item.type === "dropdown" ? (
-              <Dropdown
-                selection
-                options={item.options}
-                value={item.value}
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                onChange={useDropdownChange(item.onChange)}
-              />
-            ) : null}
-          </div>
-        ))}
+        {items.map((item, index) => {
+          if (item == null) return null;
+          return (
+            <div className={styles.option} key={`${id}-${index}`}>
+              <FormattedMessage id={item.labelID} />
+              {item.type === "textField" ? (
+                <Input
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  onChange={useTextFieldChange(item.onChange)}
+                  value={item.value}
+                  key={item.labelID}
+                />
+              ) : item.type === "dropdown" ? (
+                <Dropdown
+                  selection
+                  options={item.options}
+                  value={item.value}
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  onChange={useDropdownChange(item.onChange)}
+                />
+              ) : null}
+            </div>
+          );
+        })}
       </div>
       <div className={styles.buttonSet}>
         <Button animated onClick={onClickClearFilter}>

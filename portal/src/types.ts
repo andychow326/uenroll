@@ -59,7 +59,10 @@ export type SearchBarItemDropdown = {
   onChange: (value: string) => void;
 };
 
-export type SearchBarItem = SearchBarItemTextField | SearchBarItemDropdown;
+export type SearchBarItem =
+  | SearchBarItemTextField
+  | SearchBarItemDropdown
+  | null;
 
 export type TableColumnOption = {
   headerLabelID: string;
