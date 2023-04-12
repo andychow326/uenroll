@@ -14,6 +14,7 @@ import { useCourseSearchBar } from "../hooks/searchBar";
 import {
   CourseListFilter,
   CourseListItem,
+  CoursePeriod,
   CourseType,
   SearchBarItem,
   TableColumnOption,
@@ -25,21 +26,28 @@ export function useCourseSearch<T extends CourseType>(
   onChangeCourseType: (type: T) => void
 ) {
   const searchBar = useCourseSearchBar(courseType);
-  const { loading, fetchCourseList, fetchCourseCount } =
-    useCourseActionCreator();
+  const {
+    loading,
+    fetchCourseList,
+    fetchCourseCount,
+    fetchAvailableCoursePeriods,
+  } = useCourseActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [availableCoursePeriods, setAvailableCoursePeriods] = useState<
+    CoursePeriod[]
+  >([]);
   const [courseList, setCourseList] = useState<CourseListItem<T>[] | null>([]);
 
   const onSearch = useCallback(
-    (page?: number, withFilter = true) => {
+    (overrideType?: CourseType, page?: number, withFilter = true) => {
       searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
-        const result = await fetchCourseList(type, {
+        const result = await fetchCourseList(overrideType ?? type, {
           ...filter,
           offset: page,
         });
-        const pages = await fetchCourseCount(type, {
+        const pages = await fetchCourseCount(overrideType ?? type, {
           ...filter,
           offset: page,
         });
@@ -53,15 +61,15 @@ export function useCourseSearch<T extends CourseType>(
 
   const onClearFilter = useCallback(() => {
     searchBar.onClearFilter();
-    onSearch(undefined, false);
-  }, [onSearch, searchBar]);
+    onSearch(courseType, undefined, false);
+  }, [courseType, onSearch, searchBar]);
 
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      onSearch(page);
+      onSearch(courseType, page);
     },
-    [onSearch]
+    [courseType, onSearch]
   );
 
   const searchBarItems = useMemo(
@@ -96,17 +104,53 @@ export function useCourseSearch<T extends CourseType>(
           },
         ],
         value: courseType,
-        onChange: (value) => onChangeCourseType(value as T),
+        onChange: async (value) => {
+          const periods = await fetchAvailableCoursePeriods();
+          setAvailableCoursePeriods(periods);
+          onChangeCourseType(value as T);
+          onSearch(value as T);
+        },
+      },
+      {
+        labelID: "CourseSearch.search-bar.course-period.label",
+        type: "dropdown",
+        hidden: courseType !== CourseType.openedCourse,
+        options: [
+          {
+            text: intl.formatMessage({
+              id: "CourseSearch.search-bar.course-period.option.default",
+            }),
+            value: "-",
+          },
+        ].concat(
+          availableCoursePeriods.map((period) => ({
+            text: intl.formatMessage(
+              { id: "CourseSearch.search-bar.course-period.option" },
+              { year: period.year, semester: period.semester }
+            ),
+            value: `${period.year}-${period.semester}`,
+          }))
+        ),
+        onChange: (value) => {
+          const [year, semester] = value.split("-");
+          searchBar.onChangeCoursePeriod(
+            year && semester ? { year: Number(year), semester } : undefined
+          );
+        },
+        value:
+          searchBar.coursePeriod != null
+            ? `${searchBar.coursePeriod.year}-${searchBar.coursePeriod.semester}`
+            : "-",
       },
     ],
     [
+      availableCoursePeriods,
       courseType,
+      fetchAvailableCoursePeriods,
       intl,
       onChangeCourseType,
-      searchBar.courseCode,
-      searchBar.courseTitle,
-      searchBar.onChangeCourseCode,
-      searchBar.onChangeCourseTitle,
+      onSearch,
+      searchBar,
     ]
   );
 
