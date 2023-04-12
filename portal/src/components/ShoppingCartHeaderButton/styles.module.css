@@ -1,0 +1,7 @@
+.container {
+  align-self: self-end;
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  gap: 12px;
+}
