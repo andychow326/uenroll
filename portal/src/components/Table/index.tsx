@@ -22,6 +22,7 @@ interface TableProps {
   onRenderRow: (data: any) => ReactNode;
   onClickHeaderButton?: () => void;
   onSearch: () => void;
+  onClearFilter: () => void;
 }
 
 const Table: React.FC<TableProps> = (props) => {
@@ -39,6 +40,7 @@ const Table: React.FC<TableProps> = (props) => {
     onRenderRow,
     onClickHeaderButton,
     onSearch,
+    onClearFilter,
   } = props;
 
   const onChangeCurrentPage = useCallback(
@@ -53,7 +55,11 @@ const Table: React.FC<TableProps> = (props) => {
 
   return (
     <div className={styles.container}>
-      <SearchBar items={searchBarItems} onSearch={onSearch} />
+      <SearchBar
+        items={searchBarItems}
+        onClearFilter={onClearFilter}
+        onSearch={onSearch}
+      />
       <div className={styles.header}>
         <div className={styles.headerColumns}>
           {columnOptions.map((item) => (

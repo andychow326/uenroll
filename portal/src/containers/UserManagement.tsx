@@ -62,9 +62,17 @@ function useUserManagement() {
     ]
   );
 
-  const onSearch = useCallback(() => {
-    searchBar.onSearch(fetchUserProfiles);
-  }, [fetchUserProfiles, searchBar]);
+  const onSearch = useCallback(
+    (withFilter = true) => {
+      searchBar.onSearch(fetchUserProfiles, withFilter);
+    },
+    [fetchUserProfiles, searchBar]
+  );
+
+  const onClearFilter = useCallback(() => {
+    searchBar.onClearFilter();
+    onSearch(false);
+  }, [onSearch, searchBar]);
 
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
@@ -179,6 +187,7 @@ function useUserManagement() {
       editUserModalOptions,
       resendInvitationModalOptions,
       onSearch,
+      onClearFilter,
       onRenderTableRow,
       onSaveEditUserModal,
     }),
@@ -191,6 +200,7 @@ function useUserManagement() {
       editUserModalOptions,
       resendInvitationModalOptions,
       onSearch,
+      onClearFilter,
       onRenderTableRow,
       onSaveEditUserModal,
     ]
@@ -207,6 +217,7 @@ const UserManagement: React.FC = () => {
     editUserModalOptions,
     resendInvitationModalOptions,
     onSearch,
+    onClearFilter,
     onRenderTableRow,
     onSaveEditUserModal,
   } = useUserManagement();
@@ -220,6 +231,7 @@ const UserManagement: React.FC = () => {
         loading={loading}
         searchBarItems={searchBarItems}
         onSearch={onSearch}
+        onClearFilter={onClearFilter}
         columnOptions={tableColumnOptions}
         showHeaderButton
         headerButtonLabelID="UserManagement.table.header.add-button.label"

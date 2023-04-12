@@ -19,6 +19,9 @@
   "SideBar.menu.admin.course-management.label": "Course Management",
   "SideBar.menu.admin.user-management.label": "User Management",
 
+  "SearchBar.button.clear-filter.label": "Clear",
+  "SearchBar.button.search.label": "Search",
+
   "ConfirmModal.button.confirm.label": "Confirm",
   "ConfirmModal.button.cancel.label": "Cancel",
 

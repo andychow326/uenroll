@@ -6,11 +6,22 @@ export function useUserSearchBar() {
   const [username, setUsername] = useState<string>("");
 
   const onSearch = useCallback(
-    (callback: (options: { userID: string; username: string }) => void) => {
-      callback({ userID, username });
+    (
+      callback: (options: { userID: string; username: string }) => void,
+      withFilter: boolean
+    ) => {
+      callback({
+        userID: withFilter ? userID : "",
+        username: withFilter ? username : "",
+      });
     },
     [userID, username]
   );
+
+  const onClearFilter = useCallback(() => {
+    setUserID("");
+    setUsername("");
+  }, []);
 
   return useMemo(
     () => ({
@@ -19,8 +30,9 @@ export function useUserSearchBar() {
       onChangeUserID: setUserID,
       onChangeUsername: setUsername,
       onSearch,
+      onClearFilter,
     }),
-    [userID, username, setUserID, setUsername, onSearch]
+    [userID, username, setUserID, setUsername, onSearch, onClearFilter]
   );
 }
 
@@ -34,16 +46,23 @@ export function useCourseSearchBar<T extends CourseType>(type: T) {
       callback: <CT extends CourseType>(
         type: CT,
         options: CourseListFilter
-      ) => void
+      ) => void,
+      withFilter: boolean
     ) => {
       callback(type, {
-        code: courseCode,
-        title: courseTitle,
-        period: coursePeriod,
+        code: withFilter ? courseCode : "",
+        title: withFilter ? courseTitle : "",
+        period: withFilter ? coursePeriod : undefined,
       });
     },
     [courseCode, coursePeriod, courseTitle, type]
   );
+
+  const onClearFilter = useCallback(() => {
+    setCourseCode("");
+    setCourseTitle("");
+    setCoursePeriod(undefined);
+  }, []);
 
   return useMemo(
     () => ({
@@ -54,6 +73,7 @@ export function useCourseSearchBar<T extends CourseType>(type: T) {
       onChangeCourseTitle: setCourseTitle,
       onChangeCoursePeriod: setCoursePeriod,
       onSearch,
+      onClearFilter,
     }),
     [
       courseCode,
@@ -63,6 +83,7 @@ export function useCourseSearchBar<T extends CourseType>(type: T) {
       setCourseTitle,
       setCoursePeriod,
       onSearch,
+      onClearFilter,
     ]
   );
 }

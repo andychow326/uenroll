@@ -30,7 +30,7 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
   const [courseList, setCourseList] = useState<CourseListItem<T>[] | null>([]);
 
   const onSearch = useCallback(
-    (page?: number) => {
+    (page?: number, withFilter = true) => {
       searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
         const result = await fetchCourseList(type, {
           ...filter,
@@ -43,10 +43,15 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
         setCourseList(result as CourseListItem<T>[]);
         setTotalPages(pages);
         setCurrentPage(page ?? 1);
-      });
+      }, withFilter);
     },
     [fetchCourseCount, fetchCourseList, searchBar]
   );
+
+  const onClearFilter = useCallback(() => {
+    searchBar.onClearFilter();
+    onSearch(undefined, false);
+  }, [onSearch, searchBar]);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -143,6 +148,7 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
       searchBarItems,
       tableColumnOptions,
       onSearch,
+      onClearFilter,
       onRenderTableRow,
       onChangePage,
     }),
@@ -154,6 +160,7 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
       searchBarItems,
       tableColumnOptions,
       onSearch,
+      onClearFilter,
       onRenderTableRow,
       onChangePage,
     ]
@@ -169,6 +176,7 @@ const CourseSearch: React.FC = () => {
     searchBarItems,
     tableColumnOptions,
     onSearch,
+    onClearFilter,
     onRenderTableRow,
     onChangePage,
   } = useCourseSearch(CourseType.openedCourse);
@@ -182,6 +190,7 @@ const CourseSearch: React.FC = () => {
         loading={loading}
         searchBarItems={searchBarItems}
         onSearch={onSearch}
+        onClearFilter={onClearFilter}
         columnOptions={tableColumnOptions}
         tableData={courseList ?? []}
         onRenderRow={onRenderTableRow}

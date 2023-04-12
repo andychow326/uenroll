@@ -14,6 +14,7 @@ const CourseManagement: React.FC = () => {
     searchBarItems,
     tableColumnOptions,
     onSearch,
+    onClearFilter,
     onRenderTableRow,
     onChangePage,
   } = useCourseSearch(CourseType.course);
@@ -27,6 +28,7 @@ const CourseManagement: React.FC = () => {
         loading={loading}
         searchBarItems={searchBarItems}
         onSearch={onSearch}
+        onClearFilter={onClearFilter}
         columnOptions={tableColumnOptions}
         tableData={courseList ?? []}
         onRenderRow={onRenderTableRow}

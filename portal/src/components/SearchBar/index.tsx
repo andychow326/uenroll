@@ -1,6 +1,6 @@
 import React, { useCallback, useId } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button, Input } from "semantic-ui-react";
+import { Button, Icon, Input } from "semantic-ui-react";
 import { useTextFieldChange } from "../../hooks/component";
 import { SearchBarItem } from "../../types";
 
@@ -9,15 +9,20 @@ import styles from "./styles.module.css";
 interface SearchBarProps {
   items: SearchBarItem[];
   onSearch: () => void;
+  onClearFilter: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = (props) => {
-  const { items, onSearch } = props;
+  const { items, onSearch, onClearFilter } = props;
   const id = useId();
 
   const onClickSearchButton = useCallback(() => {
     onSearch();
   }, [onSearch]);
+
+  const onClickClearFilter = useCallback(() => {
+    onClearFilter();
+  }, [onClearFilter]);
 
   return (
     <div className={styles.container}>
@@ -36,9 +41,19 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
           </div>
         ))}
       </div>
-      <Button color="orange" onClick={onClickSearchButton}>
-        Search
-      </Button>
+      <div>
+        <Button animated onClick={onClickClearFilter}>
+          <Button.Content visible>
+            <FormattedMessage id="SearchBar.button.clear-filter.label" />
+          </Button.Content>
+          <Button.Content hidden>
+            <Icon name="undo" />
+          </Button.Content>
+        </Button>
+        <Button color="orange" onClick={onClickSearchButton}>
+          <FormattedMessage id="SearchBar.button.search.label" />
+        </Button>
+      </div>
     </div>
   );
 };
