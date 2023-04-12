@@ -1,7 +1,12 @@
 import { useCallback, useMemo } from "react";
 import { useSafeQuery } from "../hooks/query";
 import trpc from "../trpc";
-import { CourseListFilter, CourseListItem, CourseType } from "../types";
+import {
+  CourseListFilter,
+  CourseListItem,
+  CoursePeriod,
+  CourseType,
+} from "../types";
 
 function useCourseActionCreator() {
   const apiClient = trpc.useContext();
@@ -33,9 +38,30 @@ function useCourseActionCreator() {
     [apiClient.course.count, safeQuery]
   );
 
+  const fetchAvailableCoursePeriods = useCallback(async () => {
+    const result = await safeQuery(() =>
+      apiClient.course.availablePeriod.fetch()
+    );
+    return result as CoursePeriod[] | [];
+  }, [apiClient.course.availablePeriod, safeQuery]);
+
   return useMemo(
-    () => ({ loading, error, clearQuery, fetchCourseList, fetchCourseCount }),
-    [loading, error, clearQuery, fetchCourseList, fetchCourseCount]
+    () => ({
+      loading,
+      error,
+      clearQuery,
+      fetchCourseList,
+      fetchCourseCount,
+      fetchAvailableCoursePeriods,
+    }),
+    [
+      loading,
+      error,
+      clearQuery,
+      fetchCourseList,
+      fetchCourseCount,
+      fetchAvailableCoursePeriods,
+    ]
   );
 }
 
