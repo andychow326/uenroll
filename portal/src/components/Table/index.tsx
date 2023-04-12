@@ -6,7 +6,7 @@ import SearchBar from "../SearchBar";
 
 import styles from "./styles.module.css";
 
-interface TableProps {
+interface TableProps<T> {
   loading?: boolean;
   showPagination?: boolean;
   totalPages?: number;
@@ -16,16 +16,14 @@ interface TableProps {
   columnOptions: TableColumnOption[];
   showHeaderButton?: boolean;
   headerButtonLabelID?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tableData: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onRenderRow: (data: any) => ReactNode;
+  tableData: T[];
+  onRenderRow: (data: T) => ReactNode;
   onClickHeaderButton?: () => void;
   onSearch: () => void;
   onClearFilter: () => void;
 }
 
-const Table: React.FC<TableProps> = (props) => {
+const Table = <T,>(props: TableProps<T>): JSX.Element => {
   const {
     loading,
     showPagination,
