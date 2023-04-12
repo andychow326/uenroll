@@ -88,7 +88,6 @@ export enum CourseType {
 }
 
 export type Course = {
-  type: CourseType.course;
   subject: string;
   number: string;
   title: string;
@@ -102,8 +101,14 @@ export type Course = {
   openedCourse: OpenedCourse[];
 };
 
+export type TimeSlot = {
+  id: string;
+  dayOfWeek: string;
+  start: string;
+  end: string;
+};
+
 export type OpenedCourse = {
-  type: CourseType.openedCourse;
   id: string;
   subject: string;
   number: string;
@@ -112,8 +117,9 @@ export type OpenedCourse = {
   semester: string;
   timeSlotIds: string[];
   venue: string;
-  lecturer: string;
+  instructor: string;
   outline?: string;
+  openSeats?: number;
   capacity: number;
   course: Course;
 };
