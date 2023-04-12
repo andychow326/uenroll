@@ -1,7 +1,6 @@
 import React from "react";
 import { FormattedDate } from "react-intl";
 import { Button } from "semantic-ui-react";
-import { useCheckboxChange } from "../../hooks/component";
 
 import styles from "./styles.module.css";
 
