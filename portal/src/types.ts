@@ -118,12 +118,6 @@ export type OpenedCourse = {
   course: Course;
 };
 
-export type CourseListItem<T> = T extends CourseType.course
-  ? Course
-  : T extends CourseType.openedCourse
-  ? OpenedCourse
-  : never;
-
 export type CoursePeriod = {
   year: number;
   semester: string;

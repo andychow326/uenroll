@@ -36,29 +36,28 @@ export function useUserSearchBar() {
   );
 }
 
-export function useCourseSearchBar<T extends CourseType>(type: T) {
+export function useCourseSearchBar() {
+  const [courseType, setCourseType] = useState<CourseType>(CourseType.course);
   const [courseCode, setCourseCode] = useState<string>("");
   const [courseTitle, setCourseTitle] = useState<string>("");
   const [coursePeriod, setCoursePeriod] = useState<CoursePeriod | undefined>();
 
   const onSearch = useCallback(
     (
-      callback: <CT extends CourseType>(
-        type: CT,
-        options: CourseListFilter
-      ) => void,
+      callback: (courseType: CourseType, options: CourseListFilter) => void,
       withFilter: boolean
     ) => {
-      callback(type, {
+      callback(courseType, {
         code: withFilter ? courseCode : "",
         title: withFilter ? courseTitle : "",
         period: withFilter ? coursePeriod : undefined,
       });
     },
-    [courseCode, coursePeriod, courseTitle, type]
+    [courseCode, coursePeriod, courseTitle, courseType]
   );
 
   const onClearFilter = useCallback(() => {
+    setCourseType(CourseType.course);
     setCourseCode("");
     setCourseTitle("");
     setCoursePeriod(undefined);
@@ -66,9 +65,11 @@ export function useCourseSearchBar<T extends CourseType>(type: T) {
 
   return useMemo(
     () => ({
+      courseType,
       courseCode,
       courseTitle,
       coursePeriod,
+      onChangeCourseType: setCourseType,
       onChangeCourseCode: setCourseCode,
       onChangeCourseTitle: setCourseTitle,
       onChangeCoursePeriod: setCoursePeriod,
@@ -76,9 +77,11 @@ export function useCourseSearchBar<T extends CourseType>(type: T) {
       onClearFilter,
     }),
     [
+      courseType,
       courseCode,
       courseTitle,
       coursePeriod,
+      setCourseType,
       setCourseCode,
       setCourseTitle,
       setCoursePeriod,

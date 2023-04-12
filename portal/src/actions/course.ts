@@ -1,12 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useSafeQuery } from "../hooks/query";
 import trpc from "../trpc";
-import {
-  CourseListFilter,
-  CourseListItem,
-  CoursePeriod,
-  CourseType,
-} from "../types";
+import { Course, CourseListFilter, CoursePeriod, CourseType } from "../types";
 
 function useCourseActionCreator() {
   const apiClient = trpc.useContext();
@@ -15,15 +10,9 @@ function useCourseActionCreator() {
   const fetchCourseList = useCallback(
     async <T extends CourseType>(type: T, filter: CourseListFilter) => {
       const result = await safeQuery(() =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         apiClient.course.list.fetch({ ...filter, type })
       );
-      if (result != null) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return result as CourseListItem<T>[];
-      }
-      return null;
+      return result as Course[];
     },
     [apiClient.course.list, safeQuery]
   );

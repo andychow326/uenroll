@@ -12,8 +12,8 @@ import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import { useCourseSearchBar } from "../hooks/searchBar";
 import {
+  Course,
   CourseListFilter,
-  CourseListItem,
   CoursePeriod,
   CourseType,
   SearchBarItem,
@@ -21,11 +21,8 @@ import {
   TableRowCellOption,
 } from "../types";
 
-export function useCourseSearch<T extends CourseType>(
-  courseType: T,
-  onChangeCourseType: (type: T) => void
-) {
-  const searchBar = useCourseSearchBar(courseType);
+export function useCourseSearch() {
+  const searchBar = useCourseSearchBar();
   const {
     loading,
     fetchCourseList,
@@ -38,20 +35,29 @@ export function useCourseSearch<T extends CourseType>(
   const [availableCoursePeriods, setAvailableCoursePeriods] = useState<
     CoursePeriod[]
   >([]);
-  const [courseList, setCourseList] = useState<CourseListItem<T>[] | null>([]);
+  const [courseList, setCourseList] = useState<Course[]>([]);
 
   const onSearch = useCallback(
-    (overrideType?: CourseType, page?: number, withFilter = true) => {
+    (
+      overrideType?: CourseType,
+      overridePeriod?: CoursePeriod,
+      page?: number,
+      withFilter = true
+    ) => {
       searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
         const result = await fetchCourseList(overrideType ?? type, {
-          ...filter,
+          code: filter.code,
+          title: filter.title,
+          period: overridePeriod ?? filter.period,
           offset: page,
         });
         const pages = await fetchCourseCount(overrideType ?? type, {
-          ...filter,
+          code: filter.code,
+          title: filter.title,
+          period: overridePeriod ?? filter.period,
           offset: page,
         });
-        setCourseList(result as CourseListItem<T>[]);
+        setCourseList(result);
         setTotalPages(pages);
         setCurrentPage(page ?? 1);
       }, withFilter);
@@ -61,15 +67,15 @@ export function useCourseSearch<T extends CourseType>(
 
   const onClearFilter = useCallback(() => {
     searchBar.onClearFilter();
-    onSearch(courseType, undefined, false);
-  }, [courseType, onSearch, searchBar]);
+    onSearch(CourseType.course, undefined, undefined, false);
+  }, [onSearch, searchBar]);
 
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      onSearch(courseType, page);
+      onSearch(undefined, undefined, page);
     },
-    [courseType, onSearch]
+    [onSearch]
   );
 
   const searchBarItems = useMemo(
@@ -103,52 +109,45 @@ export function useCourseSearch<T extends CourseType>(
             value: CourseType.openedCourse,
           },
         ],
-        value: courseType,
+        value: searchBar.courseType,
         onChange: async (value) => {
-          const periods = await fetchAvailableCoursePeriods();
-          setAvailableCoursePeriods(periods);
-          onChangeCourseType(value as T);
-          onSearch(value as T);
+          const newAvailableCoursePeriods = await fetchAvailableCoursePeriods();
+          setAvailableCoursePeriods(newAvailableCoursePeriods);
+          const newPeriod =
+            value === CourseType.openedCourse
+              ? newAvailableCoursePeriods[0]
+              : { year: 0, semester: "" };
+          searchBar.onChangeCoursePeriod(newPeriod);
+          searchBar.onChangeCourseType(value as CourseType);
+          onSearch(value as CourseType, newPeriod);
         },
       },
       {
         labelID: "CourseSearch.search-bar.course-period.label",
         type: "dropdown",
-        hidden: courseType !== CourseType.openedCourse,
-        options: [
-          {
-            text: intl.formatMessage({
-              id: "CourseSearch.search-bar.course-period.option.default",
-            }),
-            value: "-",
-          },
-        ].concat(
-          availableCoursePeriods.map((period) => ({
-            text: intl.formatMessage(
-              { id: "CourseSearch.search-bar.course-period.option" },
-              { year: period.year, semester: period.semester }
-            ),
-            value: `${period.year}-${period.semester}`,
-          }))
-        ),
+        hidden: searchBar.courseType !== CourseType.openedCourse,
+        options: availableCoursePeriods.map((period) => ({
+          text: intl.formatMessage(
+            { id: "CourseSearch.search-bar.course-period.option" },
+            { year: period.year, semester: period.semester }
+          ),
+          value: `${period.year}-${period.semester}`,
+        })),
         onChange: (value) => {
           const [year, semester] = value.split("-");
           searchBar.onChangeCoursePeriod(
             year && semester ? { year: Number(year), semester } : undefined
           );
         },
-        value:
-          searchBar.coursePeriod != null
-            ? `${searchBar.coursePeriod.year}-${searchBar.coursePeriod.semester}`
-            : "-",
+        value: `${searchBar.coursePeriod?.year ?? ""}-${
+          searchBar.coursePeriod?.semester ?? ""
+        }`,
       },
     ],
     [
       availableCoursePeriods,
-      courseType,
       fetchAvailableCoursePeriods,
       intl,
-      onChangeCourseType,
       onSearch,
       searchBar,
     ]
@@ -190,16 +189,12 @@ export function useCourseSearch<T extends CourseType>(
   );
 
   const onRenderTableRow = useCallback(
-    (data: CourseListItem<T>): ReactNode => (
+    (data: Course): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
           data.subject,
           data.number,
-          data.type === CourseType.course
-            ? data.title
-            : data.type === CourseType.openedCourse
-            ? data.course.title
-            : ""
+          data.title
         )}
         showDetailButton
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
@@ -243,7 +238,6 @@ export function useCourseSearch<T extends CourseType>(
 }
 
 const CourseSearch: React.FC = () => {
-  const [type, setType] = useState<CourseType>(CourseType.course);
   const {
     loading,
     currentPage,
@@ -255,7 +249,7 @@ const CourseSearch: React.FC = () => {
     onClearFilter,
     onRenderTableRow,
     onChangePage,
-  } = useCourseSearch(type, setType);
+  } = useCourseSearch();
 
   return (
     <>
