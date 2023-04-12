@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 15px;
+  padding: 40px 0;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+}
+
+.requestInfo {
+  display: flex;
+  flex-direction: row;
+  width: 1000px;
+  padding-bottom: 10px;
+}
+
+.rightAlign {
+  text-align: right;
+  width: 200px;
+}
