@@ -1,3 +1,4 @@
+import cn from "classnames";
 import React, { useCallback, useId } from "react";
 import { FormattedMessage } from "react-intl";
 import { Button, Dropdown, Icon, Input } from "semantic-ui-react";
@@ -30,10 +31,17 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
         {items.map((item, index) => {
           if (item == null) return null;
           return (
-            <div className={styles.option} key={`${id}-${index}`}>
+            <div
+              className={cn(
+                styles.option,
+                item.hidden ? styles.hidden : undefined
+              )}
+              key={`${id}-${index}`}
+            >
               <FormattedMessage id={item.labelID} />
               {item.type === "textField" ? (
                 <Input
+                  className={item.hidden ? styles.hidden : undefined}
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   onChange={useTextFieldChange(item.onChange)}
                   value={item.value}
@@ -41,6 +49,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
                 />
               ) : item.type === "dropdown" ? (
                 <Dropdown
+                  className={item.hidden ? styles.hidden : undefined}
                   selection
                   options={item.options}
                   value={item.value}

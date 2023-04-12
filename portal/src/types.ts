@@ -41,6 +41,7 @@ export type SearchBarItemType = "textField" | "dropdown";
 
 export type SearchBarItemTextField = {
   type: "textField";
+  hidden?: boolean;
   labelID: string;
   value: string;
   onChange: (value: string) => void;
@@ -53,6 +54,7 @@ export type SearchBarItemDropdownOptions = {
 
 export type SearchBarItemDropdown = {
   type: "dropdown";
+  hidden?: boolean;
   labelID: string;
   value: string;
   options: SearchBarItemDropdownOptions[];
