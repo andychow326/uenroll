@@ -34,17 +34,18 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
       searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
         const result = await fetchCourseList(type, {
           ...filter,
-          offset: page ?? currentPage,
+          offset: page,
         });
         const pages = await fetchCourseCount(type, {
           ...filter,
-          offset: page ?? currentPage,
+          offset: page,
         });
         setCourseList(result as CourseListItem<T>[]);
         setTotalPages(pages);
+        setCurrentPage(page ?? 1);
       });
     },
-    [currentPage, fetchCourseCount, fetchCourseList, searchBar]
+    [fetchCourseCount, fetchCourseList, searchBar]
   );
 
   const onChangePage = useCallback(

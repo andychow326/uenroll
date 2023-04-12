@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React, { useCallback, useId } from "react";
 import { FormattedMessage } from "react-intl";
 import { Button, Input } from "semantic-ui-react";
 import { useTextFieldChange } from "../../hooks/component";
@@ -14,6 +14,10 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = (props) => {
   const { items, onSearch } = props;
   const id = useId();
+
+  const onClickSearchButton = useCallback(() => {
+    onSearch();
+  }, [onSearch]);
 
   return (
     <div className={styles.container}>
@@ -32,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
           </div>
         ))}
       </div>
-      <Button color="orange" onClick={onSearch}>
+      <Button color="orange" onClick={onClickSearchButton}>
         Search
       </Button>
     </div>
