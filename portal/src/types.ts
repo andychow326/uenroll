@@ -46,11 +46,16 @@ export type SearchBarItemTextField = {
   onChange: (value: string) => void;
 };
 
+export type SearchBarItemDropdownOptions = {
+  text: string;
+  value: string;
+};
+
 export type SearchBarItemDropdown = {
   type: "dropdown";
   labelID: string;
   value: string;
-  options: string[];
+  options: SearchBarItemDropdownOptions[];
   onChange: (value: string) => void;
 };
 

@@ -21,3 +21,10 @@
   padding: 4px 16px 4px 0;
   gap: 8px;
 }
+
+.buttonSet {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

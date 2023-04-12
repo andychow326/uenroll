@@ -20,7 +20,10 @@ import {
   TableRowCellOption,
 } from "../types";
 
-export function useCourseSearch<T extends CourseType>(courseType: T) {
+export function useCourseSearch<T extends CourseType>(
+  courseType: T,
+  onChangeCourseType: (type: T) => void
+) {
   const searchBar = useCourseSearchBar(courseType);
   const { loading, fetchCourseList, fetchCourseCount } =
     useCourseActionCreator();
@@ -75,8 +78,36 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
         value: searchBar.courseTitle,
         onChange: searchBar.onChangeCourseTitle,
       },
+      {
+        labelID: "CourseSearch.search-bar.course-type.label",
+        type: "dropdown",
+        options: [
+          {
+            text: intl.formatMessage({
+              id: "CourseSearch.search-bar.course-type.course",
+            }),
+            value: CourseType.course,
+          },
+          {
+            text: intl.formatMessage({
+              id: "CourseSearch.search-bar.course-type.opened-course",
+            }),
+            value: CourseType.openedCourse,
+          },
+        ],
+        value: courseType,
+        onChange: (value) => onChangeCourseType(value as T),
+      },
     ],
-    [searchBar]
+    [
+      courseType,
+      intl,
+      onChangeCourseType,
+      searchBar.courseCode,
+      searchBar.courseTitle,
+      searchBar.onChangeCourseCode,
+      searchBar.onChangeCourseTitle,
+    ]
   );
 
   const tableColumnOptions = useMemo(
@@ -168,6 +199,7 @@ export function useCourseSearch<T extends CourseType>(courseType: T) {
 }
 
 const CourseSearch: React.FC = () => {
+  const [type, setType] = useState<CourseType>(CourseType.course);
   const {
     loading,
     currentPage,
@@ -179,7 +211,7 @@ const CourseSearch: React.FC = () => {
     onClearFilter,
     onRenderTableRow,
     onChangePage,
-  } = useCourseSearch(CourseType.openedCourse);
+  } = useCourseSearch(type, setType);
 
   return (
     <>

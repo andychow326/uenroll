@@ -1,7 +1,7 @@
 import React, { useCallback, useId } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button, Icon, Input } from "semantic-ui-react";
-import { useTextFieldChange } from "../../hooks/component";
+import { Button, Dropdown, Icon, Input } from "semantic-ui-react";
+import { useDropdownChange, useTextFieldChange } from "../../hooks/component";
 import { SearchBarItem } from "../../types";
 
 import styles from "./styles.module.css";
@@ -37,11 +37,19 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
                 value={item.value}
                 key={item.labelID}
               />
+            ) : item.type === "dropdown" ? (
+              <Dropdown
+                selection
+                options={item.options}
+                value={item.value}
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                onChange={useDropdownChange(item.onChange)}
+              />
             ) : null}
           </div>
         ))}
       </div>
-      <div>
+      <div className={styles.buttonSet}>
         <Button animated onClick={onClickClearFilter}>
           <Button.Content visible>
             <FormattedMessage id="SearchBar.button.clear-filter.label" />

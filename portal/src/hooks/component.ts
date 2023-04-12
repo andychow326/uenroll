@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
 import { ChangeEvent, useCallback } from "react";
-import { CheckboxProps, InputOnChangeData } from "semantic-ui-react";
+import {
+  CheckboxProps,
+  DropdownProps,
+  InputOnChangeData,
+} from "semantic-ui-react";
 
 export function useTextFieldChange(cb: (value: string) => void) {
   return useCallback(
@@ -15,6 +19,15 @@ export function useTextFieldChange(cb: (value: string) => void) {
 export function useCheckboxChange(cb: (value: any) => void) {
   return useCallback(
     (_event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+      cb(data.value);
+    },
+    [cb]
+  );
+}
+
+export function useDropdownChange(cb: (value: any) => void) {
+  return useCallback(
+    (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
       cb(data.value);
     },
     [cb]

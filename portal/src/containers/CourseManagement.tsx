@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { Header } from "semantic-ui-react";
 import Table from "../components/Table";
@@ -6,6 +6,7 @@ import { CourseType } from "../types";
 import { useCourseSearch } from "./CourseSearch";
 
 const CourseManagement: React.FC = () => {
+  const [type, setType] = useState<CourseType>(CourseType.course);
   const {
     loading,
     currentPage,
@@ -17,7 +18,7 @@ const CourseManagement: React.FC = () => {
     onClearFilter,
     onRenderTableRow,
     onChangePage,
-  } = useCourseSearch(CourseType.course);
+  } = useCourseSearch(type, setType);
 
   return (
     <>
