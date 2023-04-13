@@ -12,6 +12,7 @@ interface EditCourseModalProps {
   loading: boolean;
   error: Error | null;
   isCreateNewCourse: boolean;
+  isReadOnly: boolean;
   isOpen: boolean;
   course: Course;
   onChangeSubject: (value: string) => void;
@@ -31,6 +32,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
     loading,
     error,
     isCreateNewCourse = false,
+    isReadOnly = false,
     isOpen,
     course,
     onChangeSubject,
@@ -74,7 +76,9 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
       <Modal.Header>
         <FormattedMessage
           id={
-            isCreateNewCourse
+            isReadOnly
+              ? "EditCourseModal.header.course-details"
+              : isCreateNewCourse
               ? "EditCourseModal.header.create-course"
               : "EditCourseModal.header.edit-course"
           }
@@ -87,7 +91,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
           placeholderID="EditCourseModal.input.subject.placeholder"
           name="subject"
           value={course.subject}
-          onChange={onChangeSubjectField}
+          onChange={isReadOnly ? undefined : onChangeSubjectField}
         />
         <InputWithErrorField
           {...commonInputFieldProps}
@@ -95,7 +99,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
           placeholderID="EditCourseModal.input.number.placeholder"
           name="number"
           value={course.number}
-          onChange={onChangeNumberField}
+          onChange={isReadOnly ? undefined : onChangeNumberField}
         />
         <InputWithErrorField
           {...commonInputFieldProps}
@@ -103,7 +107,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
           placeholderID="EditCourseModal.input.title.placeholder"
           name="title"
           value={course.title}
-          onChange={onChangeTitleField}
+          onChange={isReadOnly ? undefined : onChangeTitleField}
         />
         <div className={styles.label}>
           <FormattedMessage id="EditCourseModal.input.description.label" />
@@ -111,7 +115,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
         <TextArea
           className={styles.textarea}
           value={course.description}
-          onChange={onChangeDescriptionField}
+          onChange={isReadOnly ? undefined : onChangeDescriptionField}
         />
         <div className={styles.label}>
           <FormattedMessage id="EditCourseModal.input.learning-outcome.label" />
@@ -119,7 +123,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
         <TextArea
           className={styles.textarea}
           value={course.learningOutcome}
-          onChange={onChangeLearningOutcomeField}
+          onChange={isReadOnly ? undefined : onChangeLearningOutcomeField}
         />
         <div className={styles.label}>
           <FormattedMessage id="EditCourseModal.input.syllabus.label" />
@@ -127,7 +131,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
         <TextArea
           className={styles.textarea}
           value={course.syllabus}
-          onChange={onChangeSyllabusField}
+          onChange={isReadOnly ? undefined : onChangeSyllabusField}
         />
         <div className={styles.label}>
           <FormattedMessage id="EditCourseModal.input.required-readings.label" />
@@ -135,7 +139,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
         <TextArea
           className={styles.textarea}
           value={course.requiredReadings}
-          onChange={onChangeRequiredReadingsField}
+          onChange={isReadOnly ? undefined : onChangeRequiredReadingsField}
         />
         <div className={styles.label}>
           <FormattedMessage id="EditCourseModal.input.recommended-readings.label" />
@@ -143,11 +147,13 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
         <TextArea
           className={styles.textarea}
           value={course.recommendedReadings}
-          onChange={onChangeRecommendedReadingsField}
+          onChange={isReadOnly ? undefined : onChangeRecommendedReadingsField}
         />
-        <Button color="green" onClick={onSave} loading={loading}>
-          <FormattedMessage id="EditCourseModal.save-button.label" />
-        </Button>
+        {!isReadOnly && (
+          <Button color="green" onClick={onSave} loading={loading}>
+            <FormattedMessage id="EditCourseModal.save-button.label" />
+          </Button>
+        )}
       </Modal.Content>
     </Modal>
   );

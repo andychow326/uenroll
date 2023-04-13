@@ -206,6 +206,9 @@ export function useCourseSearch() {
         showDetailButton
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
+        showSecondaryButton
+        secondaryButtonLabelID="CourseSearch.table.row.secondary-button.label"
+        onClickSecondaryButton={editCourseModalOptions.onReadOnly(data)}
         DetailInfo={
           <CourseTableDetailsCell
             isAdmin={userProfile?.isAdmin}

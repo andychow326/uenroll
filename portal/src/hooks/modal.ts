@@ -216,16 +216,25 @@ export function useEditCourseModal(
   actions: Partial<ReturnType<typeof useAdminActionCreator>>
 ) {
   const [isCreateNewCourse, setIsCreateNewCourse] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(false);
   const [isEditCourseModalOpen, setIsEditCourseModalOpen] = useState(false);
   const [currentCourse, setCurrentCourse] = useState<Course>(NEW_COURSE);
 
   const onOpenCreateCourseModal = useCallback(() => {
     setIsCreateNewCourse(true);
+    setIsReadOnly(false);
     setIsEditCourseModalOpen(true);
   }, []);
 
   const onOpenEditCourseModal = useCallback(() => {
     setIsCreateNewCourse(false);
+    setIsReadOnly(false);
+    setIsEditCourseModalOpen(true);
+  }, []);
+
+  const onOpenReadOnlyCourseModal = useCallback(() => {
+    setIsCreateNewCourse(false);
+    setIsReadOnly(true);
     setIsEditCourseModalOpen(true);
   }, []);
 
@@ -241,6 +250,14 @@ export function useEditCourseModal(
       onOpenEditCourseModal();
     },
     [onOpenEditCourseModal]
+  );
+
+  const onReadOnly = useCallback(
+    (course: Course) => () => {
+      setCurrentCourse(course);
+      onOpenReadOnlyCourseModal();
+    },
+    [onOpenReadOnlyCourseModal]
   );
 
   const onSave = useCallback(async () => {}, []);
@@ -305,6 +322,7 @@ export function useEditCourseModal(
     () => ({
       currentCourse,
       isCreateNewCourse,
+      isReadOnly,
       isEditCourseModalOpen,
       onChangeSubject,
       onChangeNumber,
@@ -315,14 +333,17 @@ export function useEditCourseModal(
       onChangeRequiredReadings,
       onChangeRecommendedReadings,
       onEdit,
+      onReadOnly,
       onSave,
       onOpenCreateCourseModal,
       onOpenEditCourseModal,
+      onOpenReadOnlyCourseModal,
       onCloseEditCourseModal,
     }),
     [
       currentCourse,
       isCreateNewCourse,
+      isReadOnly,
       isEditCourseModalOpen,
       onChangeSubject,
       onChangeNumber,
@@ -333,9 +354,11 @@ export function useEditCourseModal(
       onChangeRequiredReadings,
       onChangeRecommendedReadings,
       onEdit,
+      onReadOnly,
       onSave,
       onOpenCreateCourseModal,
       onOpenEditCourseModal,
+      onOpenReadOnlyCourseModal,
       onCloseEditCourseModal,
     ]
   );

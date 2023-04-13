@@ -100,6 +100,7 @@
   "CourseSearch.table.row.course-code.label": "{subject}{number}",
   "CourseSearch.table.row.more-button.label": "More",
   "CourseSearch.table.row.hidden-button.label": "Hide",
+  "CourseSearch.table.row.secondary-button.label": "View Details",
 
   "CourseManagement.title": "Course Management",
   "CourseManagement.table.header.add-button.label": "+ Add",
@@ -121,6 +122,7 @@
 
   "EditCourseModal.header.create-course": "Create Course",
   "EditCourseModal.header.edit-course": "Edit Course",
+  "EditCourseModal.header.course-details": "Course Details",
   "EditCourseModal.input.subject.label": "Subject",
   "EditCourseModal.input.subject.placeholder": "e.g. CSCI",
   "EditCourseModal.input.number.label": "Number / Level",

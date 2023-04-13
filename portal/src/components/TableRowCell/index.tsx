@@ -10,8 +10,11 @@ interface TableRowCellProps {
   showDetailButton?: boolean;
   detailButtonLabelID?: string;
   hideDetailButtonLabelID?: string;
+  showSecondaryButton?: boolean;
+  secondaryButtonLabelID?: string;
   DetailInfo?: ReactNode;
   onClickDetailButton?: () => void;
+  onClickSecondaryButton?: () => void;
 }
 
 const TableRowCell: React.FC<TableRowCellProps> = (props) => {
@@ -20,7 +23,10 @@ const TableRowCell: React.FC<TableRowCellProps> = (props) => {
     showDetailButton = false,
     detailButtonLabelID,
     hideDetailButtonLabelID,
+    showSecondaryButton,
+    secondaryButtonLabelID,
     onClickDetailButton,
+    onClickSecondaryButton,
     DetailInfo,
   } = props;
   const id = useId();
@@ -41,17 +47,24 @@ const TableRowCell: React.FC<TableRowCellProps> = (props) => {
             </div>
           ))}
         </div>
-        {showDetailButton && (
-          <Button circular onClick={onClickedDetailButton}>
-            <FormattedMessage
-              id={
-                isDetailInfoVisible
-                  ? hideDetailButtonLabelID
-                  : detailButtonLabelID
-              }
-            />
-          </Button>
-        )}
+        <div>
+          {showSecondaryButton && (
+            <Button circular onClick={onClickSecondaryButton}>
+              <FormattedMessage id={secondaryButtonLabelID} />
+            </Button>
+          )}
+          {showDetailButton && (
+            <Button circular onClick={onClickedDetailButton}>
+              <FormattedMessage
+                id={
+                  isDetailInfoVisible
+                    ? hideDetailButtonLabelID
+                    : detailButtonLabelID
+                }
+              />
+            </Button>
+          )}
+        </div>
       </div>
       {isDetailInfoVisible && (
         <div className={styles.details}>{DetailInfo}</div>
