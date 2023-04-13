@@ -34,11 +34,12 @@ const TimeSlotProvider: React.FC<TimeSlotProviderProps> = (props) => {
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
 
   useEffect(() => {
-    safeQuery(() => apiClient.course.timeSlot.fetch())
-      .then((result) => setTimeSlots((result as TimeSlot[]) ?? []))
-      .catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (timeSlots.length === 0) {
+      safeQuery(() => apiClient.course.timeSlot.fetch())
+        .then((result) => setTimeSlots((result as TimeSlot[]) ?? []))
+        .catch(() => {});
+    }
+  }, [apiClient.course.timeSlot, safeQuery, timeSlots.length]);
 
   const getTimeSlotsByIDs = useCallback(
     (ids: string[]) => timeSlots.filter((item) => ids.includes(item.id)),
