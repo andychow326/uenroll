@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
 import useAdminActionCreator from "../actions/admin";
 import useCourseActionCreator from "../actions/course";
+import useUserActionCreator from "../actions/user";
 import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
 import EditCourseModal from "../components/EditCourseModal";
 import Table from "../components/Table";
@@ -29,6 +30,7 @@ import {
 
 export function useCourseSearch() {
   const searchBar = useCourseSearchBar();
+  const { addShoppingCart } = useUserActionCreator();
   const {
     loading,
     fetchCourseList,
@@ -237,6 +239,16 @@ export function useCourseSearch() {
     [deleteCourse, onSearch]
   );
 
+  const onAddToShoppingCart = useCallback(
+    (courseID: string) => async () => {
+      const result = await addShoppingCart(courseID);
+      if (result) {
+        // TODO: fetch shopping cart list and set button disabled
+      }
+    },
+    [addShoppingCart]
+  );
+
   const onRenderTableRow = useCallback(
     (data: Course): ReactNode => (
       <TableRowCell
@@ -260,6 +272,7 @@ export function useCourseSearch() {
             onDeleteOpenedCourse={onDeleteOpenedCourse}
             onAddOpenedCourse={editOpenedCourseModalOptions.onCreate(data)}
             onEditOpenedCourse={editOpenedCourseModalOptions.onEdit}
+            onAddToShoppingCart={onAddToShoppingCart}
           />
         }
       />
@@ -268,6 +281,7 @@ export function useCourseSearch() {
       editCourseModalOptions,
       editOpenedCourseModalOptions,
       getTableRowCellColumnOptions,
+      onAddToShoppingCart,
       onDeleteCourse,
       onDeleteOpenedCourse,
       userProfile?.isAdmin,

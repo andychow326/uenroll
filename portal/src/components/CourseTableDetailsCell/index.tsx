@@ -9,7 +9,7 @@ import ConfirmModal from "../ConfirmModal";
 import styles from "./styles.module.css";
 
 interface CourseTableDetailsCellRowItemProps {
-  showActionButtonSet?: boolean;
+  showAdminActionButtonSet?: boolean;
   year: number;
   semester: string;
   section: string;
@@ -20,13 +20,14 @@ interface CourseTableDetailsCellRowItemProps {
   openSeats: number;
   onEdit?: () => void;
   onDelete?: () => void;
+  onAddToShoppingCart?: () => void;
 }
 
 const CourseTableDetailsCellRowItem: React.FC<
   CourseTableDetailsCellRowItemProps
 > = (props) => {
   const {
-    showActionButtonSet = false,
+    showAdminActionButtonSet = false,
     year,
     semester,
     section,
@@ -37,6 +38,7 @@ const CourseTableDetailsCellRowItem: React.FC<
     openSeats,
     onEdit,
     onDelete,
+    onAddToShoppingCart,
   } = props;
   const intl = useIntl();
 
@@ -84,20 +86,27 @@ const CourseTableDetailsCellRowItem: React.FC<
       </div>
       <div style={{ width: 200 }}>{venue}</div>
       <div style={{ width: 200 }}>{instructor}</div>
-      <div style={{ width: 100 }}>
-        {showActionButtonSet && (
+      {showAdminActionButtonSet && (
+        <div style={{ width: 100 }}>
           <Button color="blue" onClick={onEdit}>
             <FormattedMessage id="CourseTableDetailsCellRowItem.edit-button.label" />
           </Button>
-        )}
-      </div>
-      <div style={{ width: 100 }}>
-        {showActionButtonSet && (
+        </div>
+      )}
+      {showAdminActionButtonSet && (
+        <div style={{ width: 100 }}>
           <Button color="red" onClick={onDelete}>
             <FormattedMessage id="CourseTableDetailsCellRowItem.delete-button.label" />
           </Button>
-        )}
-      </div>
+        </div>
+      )}
+      {!showAdminActionButtonSet && (
+        <div style={{ width: 200 }}>
+          <Button color="orange" onClick={onAddToShoppingCart}>
+            <FormattedMessage id="CourseTableDetailsCell.add-to-cart-button.label" />
+          </Button>
+        </div>
+      )}
       <div style={{ width: 200 }}>
         <FormattedMessage
           id="CourseTableDetailsCellRowItem.seats.label"
@@ -116,7 +125,7 @@ interface CourseTableDetailsCellProps {
   onAddOpenedCourse?: () => void;
   onEditCourse?: () => void;
   onDeleteCourse?: () => void;
-  onAddToShoppingCart?: () => void;
+  onAddToShoppingCart?: (courseID: string) => () => void;
 }
 
 const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
@@ -198,11 +207,12 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
               {openedCourses.map((course) => (
                 <CourseTableDetailsCellRowItem
                   {...course}
-                  showActionButtonSet={isAdmin}
+                  showAdminActionButtonSet={isAdmin}
                   timeSlots={getTimeSlotsByIDs(course.timeSlotIds)}
                   openSeats={course.openSeats}
                   onEdit={onEditOpenedCourse?.(course)}
                   onDelete={onClickDeleteOpenedCourse(course)}
+                  onAddToShoppingCart={onAddToShoppingCart?.(course.id)}
                 />
               ))}
             </div>
@@ -216,7 +226,7 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
         )}
       </div>
       <div className={styles.footer}>
-        {isAdmin ? (
+        {isAdmin && (
           <>
             <Button color="green" onClick={onAddOpenedCourse}>
               <FormattedMessage id="CourseTableDetailsCell.add-button.label" />
@@ -228,11 +238,7 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
               <FormattedMessage id="CourseTableDetailsCell.delete-button.label" />
             </Button>
           </>
-        ) : openedCourses.length > 0 ? (
-          <Button color="orange" onClick={onAddToShoppingCart}>
-            <FormattedMessage id="CourseTableDetailsCell.add-to-cart-button.label" />
-          </Button>
-        ) : null}
+        )}
       </div>
       <ConfirmModal
         isOpen={isConfirmModalOpen}

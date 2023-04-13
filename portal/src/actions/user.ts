@@ -25,12 +25,23 @@ function useUserActionCreator() {
     }
   }, [apiClient.user.validateSession, safeQuery, updateSessionID]);
 
+  const addShoppingCart = useCallback(
+    async (courseID: string) => {
+      const conflictedItems = await safeQuery(() =>
+        apiClient.user.addShoppingCart.fetch(courseID)
+      );
+      return conflictedItems ?? false;
+    },
+    [apiClient.user.addShoppingCart, safeQuery]
+  );
+
   return useMemo(
     () => ({
       fetchUserProfile,
       validateSession,
+      addShoppingCart,
     }),
-    [fetchUserProfile, validateSession]
+    [fetchUserProfile, validateSession, addShoppingCart]
   );
 }
 
