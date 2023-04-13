@@ -2,11 +2,11 @@ import { useCallback, useMemo } from "react";
 import { useUser } from "../contexts/UserProvider";
 import { useSafeQuery } from "../hooks/query";
 import trpc from "../trpc";
-import type { UserProfile } from "../types";
+import type { OpenedCourse, UserProfile } from "../types";
 
 function useUserActionCreator() {
   const apiClient = trpc.useContext();
-  const { safeQuery } = useSafeQuery();
+  const { loading, safeQuery } = useSafeQuery();
   const { updateSessionID, updateUserProfile } = useUser();
 
   const fetchUserProfile = useCallback(async () => {
@@ -35,13 +35,28 @@ function useUserActionCreator() {
     [apiClient.user.addShoppingCart, safeQuery]
   );
 
+  const fetchShoppingCart = useCallback(async () => {
+    const result = await safeQuery(() =>
+      apiClient.user.getShoppingCart.fetch()
+    );
+    return (result as OpenedCourse[]) ?? [];
+  }, [apiClient.user.getShoppingCart, safeQuery]);
+
   return useMemo(
     () => ({
       fetchUserProfile,
       validateSession,
       addShoppingCart,
+      fetchShoppingCart,
+      loading,
     }),
-    [fetchUserProfile, validateSession, addShoppingCart]
+    [
+      fetchUserProfile,
+      validateSession,
+      addShoppingCart,
+      fetchShoppingCart,
+      loading,
+    ]
   );
 }
 
