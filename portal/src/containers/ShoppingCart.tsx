@@ -14,7 +14,6 @@ import {
   CourseListItem,
   CourseType,
   OpenedCourse,
-  ShoppingCartType,
   TableColumnOption,
   TableRowCellOption,
 } from "../types";
@@ -24,8 +23,8 @@ import {
 // onVaildate: check time crash
 
 function useShoppingCart() {
-  const { loading, fetchShoppingCart } = useUserActionCreator;
-  const [courseList, setCourseList] = useState<ShoppingCartType[]>([]);
+  const { loading, fetchShoppingCart } = useUserActionCreator();
+  const [courseList, setCourseList] = useState<OpenedCourse[]>([]);
   const [courseChecked, setCourseChecked] = useState<string[]>([]);
   const intl = useIntl();
 
@@ -38,49 +37,54 @@ function useShoppingCart() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSelectAll = () => {
-    setCourseChecked(...courseList);
-  };
+  const onSelectAll = useCallback(() => {
+    setCourseChecked(
+      courseList.map((course) => `${course.subject}${course.number}`)
+    );
+  }, []);
 
-  const onUnSelectAll = () => {
+  const onUnSelectAll = useCallback(() => {
     setCourseChecked([]);
-  };
+  }, []);
 
-  const onEnroll = () => {
+  const onEnroll = useCallback(() => {
     // check vaildate
     // if vaildate, enroll and direct to enrollment status
     // if not vaildate, error message is displayed
-  };
+  }, []);
 
-  const onDelete = () => {
+  const onDelete = useCallback(() => {
     // remove courseChecked from courseList
     //
-  };
+  }, []);
 
-  const onVaildate = () => {
+  const onVaildate = useCallback(() => {
     // check if there is a time conflict
-  };
+  }, []);
 
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
-        headerLabelID:
+        type: "component",
+        headerLabel:
           courseList.length === courseChecked.length ? (
-            <Button onClick={onSelectAll}>
+            <Button onClick={onSelectAll} size="mini">
               <FormattedMessage id="ShoppingCart.table.header.select-all.label" />
             </Button>
           ) : (
-            <Button onClick={onUnSelectAll}>
+            <Button onClick={onUnSelectAll} size="mini">
               <FormattedMessage id="ShoppingCart.table.header.unselect-all.label" />
             </Button>
           ),
-        width: 100,
+        width: 150,
       },
       {
+        type: "text",
         headerLabelID: "ShoppingCart.table.header.course-code.label",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "ShoppingCart.table.header.title.label",
         width: 200,
       },
@@ -151,17 +155,35 @@ function useShoppingCart() {
   return useMemo(
     () => ({
       loading,
-      courses,
+      courseList,
       tableColumnOptions,
       onRenderTableRow,
+      onEnroll,
+      onDelete,
+      onVaildate,
     }),
-    [loading, courses, tableColumnOptions, onRenderTableRow]
+    [
+      loading,
+      courseList,
+      tableColumnOptions,
+      onRenderTableRow,
+      onEnroll,
+      onDelete,
+      onVaildate,
+    ]
   );
 }
 
 const ShoppingCart: React.FC = () => {
-  const { loading, courses, tableColumnOptions, onRenderTableRow } =
-    useShoppingCart();
+  const {
+    loading,
+    courseList,
+    tableColumnOptions,
+    onRenderTableRow,
+    onEnroll,
+    onDelete,
+    onVaildate,
+  } = useShoppingCart();
 
   return (
     <>
@@ -169,19 +191,19 @@ const ShoppingCart: React.FC = () => {
         <FormattedMessage id="ShoppingCart.title" />
       </Header>
       <div align="right">
-        <Button color="orange">
+        <Button color="orange" onClick={onEnroll}>
           <FormattedMessage id="ShoppingCart.enroll-button.label" />
         </Button>
-        <Button>
+        <Button onClick={onDelete}>
           <FormattedMessage id="ShoppingCart.delete-button.label" />
         </Button>
-        <Button>
+        <Button onClick={onVaildate}>
           <FormattedMessage id="ShoppingCart.vaildate-button.label" />
         </Button>
       </div>
       <Table
         loading={loading}
-        tableData={courses}
+        tableData={courseList}
         columnOptions={tableColumnOptions}
         onRenderRow={onRenderTableRow}
       />
