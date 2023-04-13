@@ -1,5 +1,5 @@
 import React from "react";
-import { FormattedDate } from "react-intl";
+import { FormattedDate, FormattedMessage } from "react-intl";
 import { Button } from "semantic-ui-react";
 
 import styles from "./styles.module.css";
@@ -18,13 +18,13 @@ const EnrollmentRequestInfo: React.FC<EnrollmentRequestInfoProps> = (props) => {
       <div className={styles.hero}>
         <div className={styles.requestInfo}>
           <div className={styles.rightAlign}>
-            <p>Enrollment Request ID:&emsp;</p>
+            <FormattedMessage id="EnrollmentStatus.request.id.label" />
           </div>
           <p>{requestID}</p>
         </div>
         <div className={styles.requestInfo}>
           <div className={styles.rightAlign}>
-            <p>Submission Date:&emsp;</p>
+            <FormattedMessage id="EnrollmentStatus.request.submission-date.label" />
           </div>
           <FormattedDate value={submissionDate} />
         </div>

@@ -157,5 +157,17 @@
   "EditOpenedCourseModal.input.capacity.label": "Capacity",
   "EditOpenedCourseModal.save-button.label": "Save",
 
-  "TimeSlotTable.time-slot": "{start}-{end}"
+  "TimeSlotTable.time-slot": "{start}-{end}",
+
+  "EnrollmentStatus.title": "Enrollment Status",
+
+  "EnrollmentStatus.request.id.label": "Enrollment Request ID :     ",
+  "EnrollmentStatus.request.submission-date.label": "Submission Date :     ",
+
+  "EnrollmentStatus.table.header.sequence": "Sequence",
+  "EnrollmentStatus.table.header.status": "Status",
+  "EnrollmentStatus.table.header.course-code": "Course Code",
+  "EnrollmentStatus.table.header.course-title": "Course Title",
+  "EnrollmentStatus.table.header.request-type": "Request Type",
+  "EnrollmentStatus.table.header.message": "Message/Warning/Error"
 }
