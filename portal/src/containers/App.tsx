@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ApiClientProvider from "../contexts/ApiClientProvider";
+import TimeSlotProvider from "../contexts/TimeSlotProvider";
 import UserProvider from "../contexts/UserProvider";
 import MESSAGES from "../locale-data/en.json";
 import routes from "../routes";
@@ -147,7 +148,9 @@ const App: React.FC = () => (
   <IntlProvider messages={MESSAGES} locale="en">
     <UserProvider>
       <ApiClientProvider>
-        <RouterProvider router={router} />
+        <TimeSlotProvider>
+          <RouterProvider router={router} />
+        </TimeSlotProvider>
       </ApiClientProvider>
     </UserProvider>
   </IntlProvider>
