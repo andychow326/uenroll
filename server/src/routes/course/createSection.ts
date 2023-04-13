@@ -59,6 +59,7 @@ const createSection = adminProcedure
     await prisma.openedCourse.create({
       data: {
         ...input,
+        id: undefined,
       },
     });
   });
