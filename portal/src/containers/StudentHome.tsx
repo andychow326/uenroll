@@ -8,11 +8,12 @@ import React, {
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
+import StudentCourseTableDetailsCell from "../components/StudentCourseTableDetailsCell";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 
-function useStudentHome() {
+export function useStudentHome() {
   const [courses, setCourses] = useState<OpenedCourse[]>([]);
   const { loading, fetchEnrolledCourse } = useUserActionCreator();
   const intl = useIntl();
@@ -41,11 +42,16 @@ function useStudentHome() {
   );
 
   const getTableRowCellColumnOptions = useCallback(
-    (subject: string, number: string, title: string): TableRowCellOption[] => [
+    (
+      subject: string,
+      number: string,
+      title: string,
+      section: string
+    ): TableRowCellOption[] => [
       {
         value: intl.formatMessage(
           { id: "StudentHome.table.row.course-code.label" },
-          { subject, number }
+          { subject, number, section }
         ),
         styles: {
           width: 200,
@@ -67,8 +73,13 @@ function useStudentHome() {
         columnOptions={getTableRowCellColumnOptions(
           data.subject,
           data.number,
-          data.course.title
+          data.course.title,
+          data.section === "-" ? "" : data.section
         )}
+        showDetailButton
+        detailButtonLabelID="StudentHome.table.row.more-button.label"
+        hideDetailButtonLabelID="StudentHome.table.row.hidden-button.label"
+        DetailInfo={<StudentCourseTableDetailsCell openedCourse={data} />}
       />
     ),
     [getTableRowCellColumnOptions]
