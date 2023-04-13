@@ -161,8 +161,8 @@
 
   "EnrollmentStatus.title": "Enrollment Status",
 
-  "EnrollmentStatus.request.id.label": "Enrollment Request ID :     ",
-  "EnrollmentStatus.request.submission-date.label": "Submission Date :     ",
+  "EnrollmentStatus.request.id.label": "Enrollment Request ID : ",
+  "EnrollmentStatus.request.submission-date.label": "Submission Date : ",
 
   "EnrollmentStatus.table.header.sequence": "Sequence",
   "EnrollmentStatus.table.header.status": "Status",
