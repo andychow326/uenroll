@@ -183,10 +183,12 @@ export function useCourseSearch() {
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
+        type: "text",
         headerLabelID: "CourseSearch.table.header.course-code.label",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "CourseSearch.table.header.course-title.label",
         width: 200,
       },

@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 export enum AuthMode {
   login = "login",
@@ -66,10 +66,21 @@ export type SearchBarItem =
   | SearchBarItemDropdown
   | null;
 
-export type TableColumnOption = {
+export type TableColumnOptionString = {
+  type: "text";
   headerLabelID: string;
   width: number;
 };
+
+export type TableColumnOptionReactNode = {
+  type: "component";
+  headerLabel: ReactNode;
+  width: number;
+};
+
+export type TableColumnOption =
+  | TableColumnOptionString
+  | TableColumnOptionReactNode;
 
 export type TableRowCellOption = {
   styles: CSSProperties;

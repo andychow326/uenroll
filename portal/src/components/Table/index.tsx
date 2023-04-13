@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from "react";
+import React, { ReactNode, useCallback, useId } from "react";
 import { FormattedMessage } from "react-intl";
 import { Button, Loader, Pagination, PaginationProps } from "semantic-ui-react";
 import { SearchBarItem, TableColumnOption } from "../../types";
@@ -40,6 +40,7 @@ const Table = <T,>(props: TableProps<T>): JSX.Element => {
     onSearch,
     onClearFilter,
   } = props;
+  const id = useId();
 
   const onChangeCurrentPage = useCallback(
     (
@@ -62,11 +63,17 @@ const Table = <T,>(props: TableProps<T>): JSX.Element => {
       )}
       <div className={styles.header}>
         <div className={styles.headerColumns}>
-          {columnOptions.map((item) => (
-            <div key={item.headerLabelID} style={{ width: item.width }}>
-              <FormattedMessage id={item.headerLabelID} />
-            </div>
-          ))}
+          {columnOptions.map((item, index) =>
+            item.type === "text" ? (
+              <div key={`${id}-${index}`} style={{ width: item.width }}>
+                <FormattedMessage id={item.headerLabelID} />
+              </div>
+            ) : item.type === "component" ? (
+              <div key={`${id}-${index}`} style={{ width: item.width }}>
+                {item.headerLabel}
+              </div>
+            ) : null
+          )}
         </div>
         {showHeaderButton && (
           <Button color="green" onClick={onClickHeaderButton}>

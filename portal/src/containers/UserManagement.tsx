@@ -77,10 +77,12 @@ function useUserManagement() {
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
+        type: "text",
         headerLabelID: "UserManagement.table.header.user-id.label",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "UserManagement.table.header.user-name.label",
         width: 200,
       },
