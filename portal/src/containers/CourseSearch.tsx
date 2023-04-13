@@ -53,18 +53,19 @@ export function useCourseSearch() {
     (
       overrideType?: CourseType,
       overridePeriod?: CoursePeriod,
+      overrideCode?: string,
       page?: number,
       withFilter = true
     ) => {
       searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
         const result = await fetchCourseList(overrideType ?? type, {
-          code: filter.code,
+          code: overrideCode ?? filter.code,
           title: filter.title,
           period: overridePeriod ?? filter.period,
           offset: page,
         });
         const pages = await fetchCourseCount(overrideType ?? type, {
-          code: filter.code,
+          code: overrideCode ?? filter.code,
           title: filter.title,
           period: overridePeriod ?? filter.period,
           offset: page,
@@ -79,13 +80,13 @@ export function useCourseSearch() {
 
   const onClearFilter = useCallback(() => {
     searchBar.onClearFilter();
-    onSearch(CourseType.course, undefined, undefined, false);
+    onSearch(CourseType.course, undefined, undefined, undefined, false);
   }, [onSearch, searchBar]);
 
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      onSearch(undefined, undefined, page);
+      onSearch(undefined, undefined, undefined, page);
     },
     [onSearch]
   );
@@ -259,8 +260,18 @@ export function useCourseSearch() {
   );
 
   const onSaveEditUserModal = useCallback(() => {
-    editCourseModalOptions.onSave(onSearch);
-  }, [editCourseModalOptions, onSearch]);
+    editCourseModalOptions.onSave((subject: string, number: string) => {
+      searchBar.onClearFilter();
+      searchBar.onChangeCourseCode(subject + number);
+      onSearch(
+        CourseType.course,
+        undefined,
+        subject + number,
+        undefined,
+        false
+      );
+    });
+  }, [editCourseModalOptions, onSearch, searchBar]);
 
   useEffect(() => {
     onSearch();

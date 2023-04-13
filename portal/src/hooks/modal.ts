@@ -261,11 +261,11 @@ export function useEditCourseModal(
   );
 
   const onSave = useCallback(
-    (cb?: () => void) => {
+    (cb?: (subject: string, number: string) => void) => {
       actions.createCourse?.(currentCourse, () => {
+        cb?.(currentCourse.subject, currentCourse.number);
         onCloseEditCourseModal();
         setCurrentCourse(NEW_COURSE);
-        cb?.();
       });
     },
     [actions, currentCourse, onCloseEditCourseModal]
