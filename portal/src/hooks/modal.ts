@@ -262,13 +262,21 @@ export function useEditCourseModal(
 
   const onSave = useCallback(
     (cb?: (subject: string, number: string) => void) => {
-      actions.createCourse?.(currentCourse, () => {
-        cb?.(currentCourse.subject, currentCourse.number);
-        onCloseEditCourseModal();
-        setCurrentCourse(NEW_COURSE);
-      });
+      if (isCreateNewCourse) {
+        actions.createCourse?.(currentCourse, () => {
+          cb?.(currentCourse.subject, currentCourse.number);
+          onCloseEditCourseModal();
+          setCurrentCourse(NEW_COURSE);
+        });
+      } else {
+        actions.editCourse?.(currentCourse, () => {
+          cb?.(currentCourse.subject, currentCourse.number);
+          onCloseEditCourseModal();
+          setCurrentCourse(NEW_COURSE);
+        });
+      }
     },
-    [actions, currentCourse, onCloseEditCourseModal]
+    [actions, currentCourse, isCreateNewCourse, onCloseEditCourseModal]
   );
 
   const onChangeSubject = useCallback((value: string) => {

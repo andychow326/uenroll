@@ -13,6 +13,7 @@ function useAdminActionCreator() {
   const { safeQuery, loading, error, clearQuery, setError } = useSafeQuery();
   const [userProfiles, setUserProfiles] = useState<UserProfile[] | null>([]);
   const createCourseMutation = trpc.course.create.useMutation();
+  const editCourseMutation = trpc.course.edit.useMutation();
 
   const fetchUserProfiles = useCallback(
     async (filter: UserProfileListFilter) => {
@@ -67,7 +68,6 @@ function useAdminActionCreator() {
   const createCourse = useCallback(
     (course: Course, cb?: () => void) => {
       createCourseMutation.mutate(course, {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onError: (err) => {
           setError(err?.shape as Error);
         },
@@ -75,6 +75,18 @@ function useAdminActionCreator() {
       });
     },
     [createCourseMutation, setError]
+  );
+
+  const editCourse = useCallback(
+    (course: Course, cb?: () => void) => {
+      editCourseMutation.mutate(course, {
+        onError: (err) => {
+          setError(err?.shape as Error);
+        },
+        onSuccess: cb,
+      });
+    },
+    [editCourseMutation, setError]
   );
 
   const deleteCourse = useCallback(
@@ -99,6 +111,7 @@ function useAdminActionCreator() {
       editUser,
       createCourse,
       deleteCourse,
+      editCourse,
     }),
     [
       loading,
@@ -112,6 +125,7 @@ function useAdminActionCreator() {
       editUser,
       createCourse,
       deleteCourse,
+      editCourse,
     ]
   );
 }

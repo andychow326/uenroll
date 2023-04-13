@@ -35,7 +35,7 @@ export function useCourseSearch() {
     fetchCourseCount,
     fetchAvailableCoursePeriods,
   } = useCourseActionCreator();
-  const { error, createCourse, deleteCourse, clearQuery } =
+  const { error, createCourse, deleteCourse, editCourse, clearQuery } =
     useAdminActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
@@ -48,6 +48,7 @@ export function useCourseSearch() {
   const editCourseModalOptions = useEditCourseModal({
     clearQuery,
     createCourse,
+    editCourse,
   });
 
   const onSearch = useCallback(

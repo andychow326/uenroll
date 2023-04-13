@@ -5,6 +5,7 @@
   "error.server.incorrect_user_id_or_password": "User ID or Password is incorrect",
   "error.server.user_not_found": "User not found",
   "error.server.course.already_exists": "Course already exists",
+  "error.server.course.not_found": "Course not found",
 
   "LoadingSpinner.text": "Loading...",
 
@@ -125,7 +126,7 @@
   "CourseTableDetailsCellRowItem.seats.label": "Open Seats {openSeats} of {capacity}",
 
   "EditCourseModal.header.create-course": "Create Course",
-  "EditCourseModal.header.edit-course": "Edit Course",
+  "EditCourseModal.header.edit-course": "Edit Course - {subject}{number}",
   "EditCourseModal.header.course-details": "Course Details",
   "EditCourseModal.input.subject.label": "Subject",
   "EditCourseModal.input.subject.placeholder": "e.g. CSCI",
