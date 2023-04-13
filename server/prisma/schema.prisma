@@ -17,21 +17,22 @@ enum Gender {
 }
 
 model User {
-  id             String           @id @map("id")
-  password       String           @map("password")
-  firstName      String           @map("first_name")
-  lastName       String           @map("last_name")
-  isAdmin        Boolean          @default(false) @map("is_admin")
-  email          String           @map("email")
-  dateOfBirth    DateTime         @map("date_of_birth") @db.Date
-  phoneNumber    String           @map("phone_number")
-  gender         Gender           @map("gender")
-  major          String           @map("major")
-  address        String           @map("address")
-  ShoppingCart   ShoppingCart[]
-  RecentlyViewed RecentlyViewed[]
-  EnrolledCourse EnrolledCourse[]
-  WorkerQueue    WorkerQueue[]
+  id               String             @id @map("id")
+  password         String             @map("password")
+  firstName        String             @map("first_name")
+  lastName         String             @map("last_name")
+  isAdmin          Boolean            @default(false) @map("is_admin")
+  email            String             @map("email")
+  dateOfBirth      DateTime           @map("date_of_birth") @db.Date
+  phoneNumber      String             @map("phone_number")
+  gender           Gender             @map("gender")
+  major            String             @map("major")
+  address          String             @map("address")
+  ShoppingCart     ShoppingCart[]
+  RecentlyViewed   RecentlyViewed[]
+  EnrolledCourse   EnrolledCourse[]
+  WorkerQueue      WorkerQueue[]
+  EnrollmentStatus EnrollmentStatus[]
 
   @@map("user")
 }
@@ -92,11 +93,12 @@ model OpenedCourse {
   outline     String?  @map("outline")
   capacity    Int      @map("capacity")
 
-  course         Course           @relation(fields: [subject, number], references: [subject, number])
-  ShoppingCart   ShoppingCart[]
-  RecentlyViewed RecentlyViewed[]
-  EnrolledCourse EnrolledCourse[]
-  WorkerQueue    WorkerQueue[]
+  course           Course             @relation(fields: [subject, number], references: [subject, number])
+  ShoppingCart     ShoppingCart[]
+  RecentlyViewed   RecentlyViewed[]
+  EnrolledCourse   EnrolledCourse[]
+  WorkerQueue      WorkerQueue[]
+  EnrollmentStatus EnrollmentStatus[]
 
   @@unique([subject, number, section, year, semester])
   @@map("opened_course")
@@ -133,6 +135,31 @@ model EnrolledCourse {
 
   @@id([userId, courseId])
   @@map("enrolled_course")
+}
+
+enum StatusType {
+  SUCCESS
+  ERROR
+}
+
+enum RequestType {
+  ENROLL
+  DROP
+}
+
+model EnrollmentStatus {
+  userId   String @map("user_id")
+  courseId String @map("course_id")
+
+  status      StatusType  @map("status")
+  requestType RequestType @map("request_type")
+  message     String      @map("message")
+
+  user         User         @relation(fields: [userId], references: [id])
+  openedCourse OpenedCourse @relation(fields: [courseId], references: [id])
+
+  @@id([userId, courseId])
+  @@map("enrollment_status")
 }
 
 enum WorkerAction {
