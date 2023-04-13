@@ -21,26 +21,32 @@ function useEnrollmentStatus() {
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
+        type: "text",
         headerLabelID: "EnrollmentStatus.table.header.sequence",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "EnrollmentStatus.table.header.status",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "EnrollmentStatus.table.header.course-code",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "EnrollmentStatus.table.header.course-title",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "EnrollmentStatus.table.header.request-type",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "EnrollmentStatus.table.header.message",
         width: 200,
       },
