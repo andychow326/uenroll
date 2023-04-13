@@ -107,6 +107,7 @@
   "CourseManagement.title": "Course Management",
   "CourseManagement.table.header.add-button.label": "+ Add",
 
+  "CourseTableDetailsCell.period.label": "Period",
   "CourseTableDetailsCell.section.label": "Section",
   "CourseTableDetailsCell.time-slot.label": "Days and Times",
   "CourseTableDetailsCell.venue.label": "Venue",
@@ -120,6 +121,7 @@
   "CourseTableDetailsCell.confirm-delete-modal.header": "Delete Course",
   "CourseTableDetailsCell.confirm-delete-modal.description": "Are you sure you want to delete this course?",
 
+  "CourseTableDetailsCellRowItem.period.semester": "Semester {semester}",
   "CourseTableDetailsCellRowItem.time-slot.time": "{start} - {end}",
   "CourseTableDetailsCellRowItem.edit-button.label": "Edit",
   "CourseTableDetailsCellRowItem.delete-button.label": "Delete",

@@ -10,6 +10,8 @@ import styles from "./styles.module.css";
 
 interface CourseTableDetailsCellRowItemProps {
   showActionButtonSet?: boolean;
+  year: number;
+  semester: string;
   section: string;
   instructor: string;
   timeSlots: TimeSlot[];
@@ -25,6 +27,8 @@ const CourseTableDetailsCellRowItem: React.FC<
 > = (props) => {
   const {
     showActionButtonSet = false,
+    year,
+    semester,
     section,
     instructor,
     timeSlots,
@@ -42,7 +46,16 @@ const CourseTableDetailsCellRowItem: React.FC<
   );
 
   return (
-    <div className={styles.row} style={{ minWidth: 1000 }}>
+    <div className={styles.row} style={{ minWidth: 1100 }}>
+      <div style={{ width: 100 }}>
+        <div>{year}</div>
+        <p>
+          <FormattedMessage
+            id="CourseTableDetailsCellRowItem.period.semester"
+            values={{ semester }}
+          />
+        </p>
+      </div>
       <div style={{ width: 50 }}>{section}</div>
       <div style={{ width: 150 }}>
         {Object.values(DayOfWeek).map((day) =>
@@ -159,7 +172,10 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
       <div className={styles.content}>
         {openedCourses.length > 0 ? (
           <>
-            <div className={styles.header} style={{ minWidth: 1000 }}>
+            <div className={styles.header} style={{ minWidth: 1100 }}>
+              <div style={{ width: 100 }}>
+                <FormattedMessage id="CourseTableDetailsCell.period.label" />
+              </div>
               <div style={{ width: 50 }}>
                 <FormattedMessage id="CourseTableDetailsCell.section.label" />
               </div>
