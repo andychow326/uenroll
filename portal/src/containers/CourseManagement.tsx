@@ -21,7 +21,7 @@ const CourseManagement: React.FC = () => {
     onClearFilter,
     onRenderTableRow,
     onChangePage,
-    onSaveEditUserModal,
+    onSaveEditCourseModal,
   } = useCourseSearch();
 
   return (
@@ -50,7 +50,7 @@ const CourseManagement: React.FC = () => {
         error={error}
         {...editCourseModalOptions}
         course={editCourseModalOptions.currentCourse}
-        onSave={onSaveEditUserModal}
+        onSave={onSaveEditCourseModal}
         isOpen={editCourseModalOptions.isEditCourseModalOpen}
         onClose={editCourseModalOptions.onCloseEditCourseModal}
       />
