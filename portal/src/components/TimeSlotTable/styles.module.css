@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header > div {
+  width: 100px;
+  text-align: center;
+}
+
+.body {
+  border: 1px solid black;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.timeSlot {
+  width: 100px;
+  height: 50px;
+  border: 1px solid black;
+  display: flex;
+  text-align: center;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: aquamarine;
+}
