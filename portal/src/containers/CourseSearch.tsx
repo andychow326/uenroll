@@ -8,8 +8,10 @@ import React, {
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
 import useCourseActionCreator from "../actions/course";
+import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
+import { useUser } from "../contexts/UserProvider";
 import { useCourseSearchBar } from "../hooks/searchBar";
 import {
   Course,
@@ -36,6 +38,7 @@ export function useCourseSearch() {
     CoursePeriod[]
   >([]);
   const [courseList, setCourseList] = useState<Course[]>([]);
+  const { userProfile } = useUser();
 
   const onSearch = useCallback(
     (
@@ -199,9 +202,15 @@ export function useCourseSearch() {
         showDetailButton
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
+        DetailInfo={
+          <CourseTableDetailsCell
+            isAdmin={userProfile?.isAdmin}
+            openedCourses={data.openedCourse}
+          />
+        }
       />
     ),
-    [getTableRowCellColumnOptions]
+    [getTableRowCellColumnOptions, userProfile?.isAdmin]
   );
 
   useEffect(() => {

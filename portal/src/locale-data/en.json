@@ -102,5 +102,20 @@
   "CourseSearch.table.row.hidden-button.label": "Hide",
 
   "CourseManagement.title": "Course Management",
-  "CourseManagement.table.header.add-button.label": "+ Add"
+  "CourseManagement.table.header.add-button.label": "+ Add",
+
+  "CourseTableDetailsCell.section.label": "Section",
+  "CourseTableDetailsCell.time-slot.label": "Days and Times",
+  "CourseTableDetailsCell.venue.label": "Venue",
+  "CourseTableDetailsCell.instructor.label": "Instructor",
+  "CourseTableDetailsCell.seats.label": "Seats",
+  "CourseTableDetailsCell.add-button.label": "Add Section",
+  "CourseTableDetailsCell.edit-button.label": "Edit",
+  "CourseTableDetailsCell.delete-button.label": "Delete",
+  "CourseTableDetailsCell.add-to-cart-button.label": "Add to Cart",
+
+  "CourseTableDetailsCellRowItem.time-slot.time": "{start} - {end}",
+  "CourseTableDetailsCellRowItem.edit-button.label": "Edit",
+  "CourseTableDetailsCellRowItem.delete-button.label": "Delete",
+  "CourseTableDetailsCellRowItem.seats.label": "Open Seats {openSeats} of {capacity}"
 }
