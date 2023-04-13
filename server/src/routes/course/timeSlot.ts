@@ -1,7 +1,7 @@
 import prisma from "../../prisma";
-import { authProcedure } from "../../procedure";
+import { publicProcedure } from "../../procedure";
 
-const timeSlot = authProcedure.query(async () => {
+const timeSlot = publicProcedure.query(async () => {
   const timeSlots = await prisma.timeSlot.findMany();
   return timeSlots;
 });
