@@ -115,6 +115,7 @@
   "CourseTableDetailsCell.edit-button.label": "Edit",
   "CourseTableDetailsCell.delete-button.label": "Delete",
   "CourseTableDetailsCell.add-to-cart-button.label": "Add to Cart",
+  "CourseTableDetailsCell.no-opened-courses": "No Opened Courses",
 
   "CourseTableDetailsCellRowItem.time-slot.time": "{start} - {end}",
   "CourseTableDetailsCellRowItem.edit-button.label": "Edit",

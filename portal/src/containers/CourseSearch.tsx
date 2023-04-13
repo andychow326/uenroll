@@ -206,7 +206,10 @@ export function useCourseSearch() {
           data.number,
           data.title
         )}
-        showDetailButton={searchBar.courseType === CourseType.openedCourse}
+        showDetailButton={
+          userProfile?.isAdmin ||
+          searchBar.courseType === CourseType.openedCourse
+        }
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
         showSecondaryButton

@@ -1,6 +1,6 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Button } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import { OpenedCourse, TimeSlot } from "../../types";
 
 import { useTimeSlot } from "../../contexts/TimeSlotProvider";
@@ -98,25 +98,33 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.header} style={{ minWidth: 1000 }}>
-          <div style={{ width: 50 }}>
-            <FormattedMessage id="CourseTableDetailsCell.section.label" />
+        {openedCourses.length > 0 ? (
+          <div className={styles.header} style={{ minWidth: 1000 }}>
+            <div style={{ width: 50 }}>
+              <FormattedMessage id="CourseTableDetailsCell.section.label" />
+            </div>
+            <div style={{ width: 150 }}>
+              <FormattedMessage id="CourseTableDetailsCell.time-slot.label" />
+            </div>
+            <div style={{ width: 200 }}>
+              <FormattedMessage id="CourseTableDetailsCell.venue.label" />
+            </div>
+            <div style={{ width: 200 }}>
+              <FormattedMessage id="CourseTableDetailsCell.instructor.label" />
+            </div>
+            <div style={{ width: 100, visibility: "hidden" }} />
+            <div style={{ width: 100, visibility: "hidden" }} />
+            <div style={{ width: 200 }}>
+              <FormattedMessage id="CourseTableDetailsCell.seats.label" />
+            </div>
           </div>
-          <div style={{ width: 150 }}>
-            <FormattedMessage id="CourseTableDetailsCell.time-slot.label" />
+        ) : (
+          <div className={styles.header}>
+            <Header>
+              <FormattedMessage id="CourseTableDetailsCell.no-opened-courses" />
+            </Header>
           </div>
-          <div style={{ width: 200 }}>
-            <FormattedMessage id="CourseTableDetailsCell.venue.label" />
-          </div>
-          <div style={{ width: 200 }}>
-            <FormattedMessage id="CourseTableDetailsCell.instructor.label" />
-          </div>
-          <div style={{ width: 100, visibility: "hidden" }} />
-          <div style={{ width: 100, visibility: "hidden" }} />
-          <div style={{ width: 200 }}>
-            <FormattedMessage id="CourseTableDetailsCell.seats.label" />
-          </div>
-        </div>
+        )}
         <div className={styles.body} style={{ minWidth: 1000 }}>
           {openedCourses.map((course) => (
             <CourseTableDetailsCellRowItem
