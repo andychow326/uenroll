@@ -35,7 +35,7 @@ const TimeSlotProvider: React.FC<TimeSlotProviderProps> = (props) => {
 
   useEffect(() => {
     safeQuery(() => apiClient.course.timeSlot.fetch())
-      .then((result) => setTimeSlots(result ?? []))
+      .then((result) => setTimeSlots((result as TimeSlot[]) ?? []))
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

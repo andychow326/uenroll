@@ -101,9 +101,19 @@ export type Course = {
   openedCourse: OpenedCourse[];
 };
 
+export enum DayOfWeek {
+  MONDAY = "MONDAY",
+  TUESDAY = "TUESDAY",
+  WEDNESDAY = "WEDNESDAY",
+  THURSDAY = "THURSDAY",
+  FRIDAY = "FRIDAY",
+  SATURDAY = "SATURDAY",
+  SUNDAY = "SUNDAY",
+}
+
 export type TimeSlot = {
   id: string;
-  dayOfWeek: string;
+  dayOfWeek: DayOfWeek;
   start: string;
   end: string;
 };
