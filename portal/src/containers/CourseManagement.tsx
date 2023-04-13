@@ -1,21 +1,25 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { Header } from "semantic-ui-react";
+import EditCourseModal from "../components/EditCourseModal";
 import Table from "../components/Table";
 import { useCourseSearch } from "./CourseSearch";
 
 const CourseManagement: React.FC = () => {
   const {
     loading,
+    error,
     currentPage,
     totalPages,
     courseList,
     searchBarItems,
     tableColumnOptions,
+    editCourseModalOptions,
     onSearch,
     onClearFilter,
     onRenderTableRow,
     onChangePage,
+    onSaveEditUserModal,
   } = useCourseSearch();
 
   return (
@@ -37,7 +41,16 @@ const CourseManagement: React.FC = () => {
         onChangePage={onChangePage}
         showHeaderButton
         headerButtonLabelID="CourseManagement.table.header.add-button.label"
-        // TODO: Implement header button
+        onClickHeaderButton={editCourseModalOptions.onOpenCreateCourseModal}
+      />
+      <EditCourseModal
+        loading={loading}
+        error={error}
+        {...editCourseModalOptions}
+        course={editCourseModalOptions.currentCourse}
+        onSave={onSaveEditUserModal}
+        isOpen={editCourseModalOptions.isEditCourseModalOpen}
+        onClose={editCourseModalOptions.onCloseEditCourseModal}
       />
     </>
   );

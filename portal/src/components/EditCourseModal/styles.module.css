@@ -1,0 +1,11 @@
+.label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.textarea {
+  margin-bottom: 20px;
+  padding: 0.67857143em 1em;
+  min-width: 100%;
+  max-width: 100%;
+}

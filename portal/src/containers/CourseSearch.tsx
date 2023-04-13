@@ -12,6 +12,7 @@ import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import { useUser } from "../contexts/UserProvider";
+import { useEditCourseModal } from "../hooks/modal";
 import { useCourseSearchBar } from "../hooks/searchBar";
 import {
   Course,
@@ -27,9 +28,11 @@ export function useCourseSearch() {
   const searchBar = useCourseSearchBar();
   const {
     loading,
+    error,
     fetchCourseList,
     fetchCourseCount,
     fetchAvailableCoursePeriods,
+    clearQuery,
   } = useCourseActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
@@ -39,6 +42,7 @@ export function useCourseSearch() {
   >([]);
   const [courseList, setCourseList] = useState<Course[]>([]);
   const { userProfile } = useUser();
+  const editCourseModalOptions = useEditCourseModal({ clearQuery });
 
   const onSearch = useCallback(
     (
@@ -206,12 +210,19 @@ export function useCourseSearch() {
           <CourseTableDetailsCell
             isAdmin={userProfile?.isAdmin}
             openedCourses={data.openedCourse}
+            onEditCourse={editCourseModalOptions.onEdit(data)}
           />
         }
       />
     ),
-    [getTableRowCellColumnOptions, userProfile?.isAdmin]
+    [editCourseModalOptions, getTableRowCellColumnOptions, userProfile?.isAdmin]
   );
+
+  const onSaveEditUserModal = useCallback(() => {
+    editCourseModalOptions.onSave().finally(() => {
+      onSearch();
+    });
+  }, [editCourseModalOptions, onSearch]);
 
   useEffect(() => {
     onSearch();
@@ -221,27 +232,33 @@ export function useCourseSearch() {
   return useMemo(
     () => ({
       loading,
+      error,
       currentPage,
       totalPages,
       courseList,
       searchBarItems,
       tableColumnOptions,
+      editCourseModalOptions,
       onSearch,
       onClearFilter,
       onRenderTableRow,
       onChangePage,
+      onSaveEditUserModal,
     }),
     [
       loading,
+      error,
       currentPage,
       totalPages,
       courseList,
       searchBarItems,
       tableColumnOptions,
+      editCourseModalOptions,
       onSearch,
       onClearFilter,
       onRenderTableRow,
       onChangePage,
+      onSaveEditUserModal,
     ]
   );
 }

@@ -117,5 +117,20 @@
   "CourseTableDetailsCellRowItem.time-slot.time": "{start} - {end}",
   "CourseTableDetailsCellRowItem.edit-button.label": "Edit",
   "CourseTableDetailsCellRowItem.delete-button.label": "Delete",
-  "CourseTableDetailsCellRowItem.seats.label": "Open Seats {openSeats} of {capacity}"
+  "CourseTableDetailsCellRowItem.seats.label": "Open Seats {openSeats} of {capacity}",
+
+  "EditCourseModal.header.create-course": "Create Course",
+  "EditCourseModal.header.edit-course": "Edit Course",
+  "EditCourseModal.input.subject.label": "Subject",
+  "EditCourseModal.input.subject.placeholder": "e.g. CSCI",
+  "EditCourseModal.input.number.label": "Number / Level",
+  "EditCourseModal.input.number.placeholder": "e.g. 3100",
+  "EditCourseModal.input.title.label": "Title",
+  "EditCourseModal.input.title.placeholder": "e.g. Software Engineering",
+  "EditCourseModal.input.description.label": "Description (Optional)",
+  "EditCourseModal.input.learning-outcome.label": "Learning Outcome (Optional)",
+  "EditCourseModal.input.syllabus.label": "Syllabus (Optional)",
+  "EditCourseModal.input.required-readings.label": "Required Readings (Optional)",
+  "EditCourseModal.input.recommended-readings.label": "Recommended Readings (Optional)",
+  "EditCourseModal.save-button.label": "Save"
 }

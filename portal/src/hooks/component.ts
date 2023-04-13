@@ -5,12 +5,22 @@ import {
   CheckboxProps,
   DropdownProps,
   InputOnChangeData,
+  TextAreaProps,
 } from "semantic-ui-react";
 
 export function useTextFieldChange(cb: (value: string) => void) {
   return useCallback(
     (_event: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
       cb(data.value || "");
+    },
+    [cb]
+  );
+}
+
+export function useTextAreaChange(cb: (value: string) => void) {
+  return useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>, data: TextAreaProps) => {
+      cb(data.value?.toString() || "");
     },
     [cb]
   );

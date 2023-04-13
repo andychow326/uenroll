@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import { UserGender, UserProfile } from "./types";
+import { Course, UserGender, UserProfile } from "./types";
 
 export const NEW_USER_PROFILE: UserProfile = {
   id: "",
@@ -13,3 +12,17 @@ export const NEW_USER_PROFILE: UserProfile = {
   major: "",
   address: "",
 } as const;
+
+export const NEW_COURSE: Course = {
+  subject: "",
+  number: "",
+  title: "",
+  career: "Undergraduate",
+  units: 3.0,
+  description: "",
+  learningOutcome: "",
+  syllabus: "",
+  requiredReadings: "",
+  recommendedReadings: "",
+  openedCourse: [],
+};

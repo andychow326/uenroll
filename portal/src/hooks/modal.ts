@@ -1,8 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import { useCallback, useMemo, useState } from "react";
 import useAdminActionCreator from "../actions/admin";
-import { NEW_USER_PROFILE } from "../constants";
-import { UserGender, UserProfile } from "../types";
+import { NEW_COURSE, NEW_USER_PROFILE } from "../constants";
+import { Course, UserGender, UserProfile } from "../types";
 
 export function useEditUserModal(
   actions: Partial<ReturnType<typeof useAdminActionCreator>>
@@ -208,6 +208,135 @@ export function useResendInvitationModal(
       onOpenResendInvitationModal,
       onCloseResendInvitationModal,
       onResendInvitation,
+    ]
+  );
+}
+
+export function useEditCourseModal(
+  actions: Partial<ReturnType<typeof useAdminActionCreator>>
+) {
+  const [isCreateNewCourse, setIsCreateNewCourse] = useState(false);
+  const [isEditCourseModalOpen, setIsEditCourseModalOpen] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState<Course>(NEW_COURSE);
+
+  const onOpenCreateCourseModal = useCallback(() => {
+    setIsCreateNewCourse(true);
+    setIsEditCourseModalOpen(true);
+  }, []);
+
+  const onOpenEditCourseModal = useCallback(() => {
+    setIsCreateNewCourse(false);
+    setIsEditCourseModalOpen(true);
+  }, []);
+
+  const onCloseEditCourseModal = useCallback(() => {
+    setIsEditCourseModalOpen(false);
+    setCurrentCourse(NEW_COURSE);
+    actions?.clearQuery?.();
+  }, [actions]);
+
+  const onEdit = useCallback(
+    (course: Course) => () => {
+      setCurrentCourse(course);
+      onOpenEditCourseModal();
+    },
+    [onOpenEditCourseModal]
+  );
+
+  const onSave = useCallback(async () => {}, []);
+
+  const onChangeSubject = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      subject: value,
+    }));
+  }, []);
+
+  const onChangeNumber = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      number: value,
+    }));
+  }, []);
+
+  const onChangeTitle = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      title: value,
+    }));
+  }, []);
+
+  const onChangeDescription = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      description: value,
+    }));
+  }, []);
+
+  const onChangeLearningOutcome = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      learningOutcome: value,
+    }));
+  }, []);
+
+  const onChangeSyllabus = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      syllabus: value,
+    }));
+  }, []);
+
+  const onChangeRequiredReadings = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      requiredReadings: value,
+    }));
+  }, []);
+
+  const onChangeRecommendedReadings = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      recommendedReadings: value,
+    }));
+  }, []);
+
+  return useMemo(
+    () => ({
+      currentCourse,
+      isCreateNewCourse,
+      isEditCourseModalOpen,
+      onChangeSubject,
+      onChangeNumber,
+      onChangeTitle,
+      onChangeDescription,
+      onChangeLearningOutcome,
+      onChangeSyllabus,
+      onChangeRequiredReadings,
+      onChangeRecommendedReadings,
+      onEdit,
+      onSave,
+      onOpenCreateCourseModal,
+      onOpenEditCourseModal,
+      onCloseEditCourseModal,
+    }),
+    [
+      currentCourse,
+      isCreateNewCourse,
+      isEditCourseModalOpen,
+      onChangeSubject,
+      onChangeNumber,
+      onChangeTitle,
+      onChangeDescription,
+      onChangeLearningOutcome,
+      onChangeSyllabus,
+      onChangeRequiredReadings,
+      onChangeRecommendedReadings,
+      onEdit,
+      onSave,
+      onOpenCreateCourseModal,
+      onOpenEditCourseModal,
+      onCloseEditCourseModal,
     ]
   );
 }
