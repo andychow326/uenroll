@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Button, Header } from "semantic-ui-react";
-import { OpenedCourse, TimeSlot } from "../../types";
+import { DayOfWeek, OpenedCourse, TimeSlot } from "../../types";
 
 import { useTimeSlot } from "../../contexts/TimeSlotProvider";
+import { groupBy } from "../../utils/array";
 import ConfirmModal from "../ConfirmModal";
 import styles from "./styles.module.css";
 
@@ -33,20 +34,38 @@ const CourseTableDetailsCellRowItem: React.FC<
   } = props;
   const intl = useIntl();
 
+  const timeSlotsByDayOfWeek = useMemo(
+    () => groupBy(timeSlots, (x: TimeSlot) => x.dayOfWeek),
+    [timeSlots]
+  );
+
   return (
     <div className={styles.row} style={{ minWidth: 1000 }}>
       <div style={{ width: 50 }}>{section}</div>
       <div style={{ width: 150 }}>
-        <p>{timeSlots[0].dayOfWeek}</p>
-        <p>
-          <FormattedMessage
-            id="CourseTableDetailsCellRowItem.time-slot.time"
-            values={{
-              start: intl.formatTime(timeSlots[0].start),
-              end: intl.formatTime(timeSlots.slice(-1)[0].end),
-            }}
-          />
-        </p>
+        {Object.values(DayOfWeek).map((day) =>
+          day in timeSlotsByDayOfWeek ? (
+            <>
+              <div>{day}</div>
+              <p>
+                <FormattedMessage
+                  id="CourseTableDetailsCellRowItem.time-slot.time"
+                  values={{
+                    start: intl.formatTime(timeSlotsByDayOfWeek[day][0].start, {
+                      timeZone: "UTC",
+                    }),
+                    end: intl.formatTime(
+                      timeSlotsByDayOfWeek[day].slice(-1)[0].end,
+                      {
+                        timeZone: "UTC",
+                      }
+                    ),
+                  }}
+                />
+              </p>
+            </>
+          ) : null
+        )}
       </div>
       <div style={{ width: 200 }}>{venue}</div>
       <div style={{ width: 200 }}>{instructor}</div>
