@@ -3,10 +3,10 @@ import { z } from "zod";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
-const inputSchema = z
+export const inputSchema = z
   .object({
-    subject: z.string().trim().min(4),
-    number: z.string().trim().min(4),
+    subject: z.string().trim().length(4).toUpperCase(),
+    number: z.string().trim().length(4),
     title: z.string().trim().nonempty(),
     career: z.string().trim(),
     units: z.number().gt(0),
