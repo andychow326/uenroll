@@ -14,7 +14,7 @@ import EditCourseModal from "../components/EditCourseModal";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import { useUser } from "../contexts/UserProvider";
-import { useEditCourseModal } from "../hooks/modal";
+import { useEditCourseModal, useEditOpenedCourseModal } from "../hooks/modal";
 import { useCourseSearchBar } from "../hooks/searchBar";
 import {
   Course,
@@ -49,6 +49,9 @@ export function useCourseSearch() {
     clearQuery,
     createCourse,
     editCourse,
+  });
+  const editOpenedCourseModalOptions = useEditOpenedCourseModal({
+    clearQuery,
   });
 
   const onSearch = useCallback(
@@ -244,12 +247,15 @@ export function useCourseSearch() {
             onEditCourse={editCourseModalOptions.onEdit(data)}
             onDeleteCourse={onDeleteCourse(data)}
             onDeleteOpenedCourse={onDeleteOpenedCourse}
+            onAddOpenedCourse={editOpenedCourseModalOptions.onCreate(data)}
+            onEditOpenedCourse={editOpenedCourseModalOptions.onEdit}
           />
         }
       />
     ),
     [
       editCourseModalOptions,
+      editOpenedCourseModalOptions,
       getTableRowCellColumnOptions,
       onDeleteCourse,
       onDeleteOpenedCourse,
@@ -286,6 +292,7 @@ export function useCourseSearch() {
       searchBarItems,
       tableColumnOptions,
       editCourseModalOptions,
+      editOpenedCourseModalOptions,
       onSearch,
       onClearFilter,
       onRenderTableRow,
@@ -301,6 +308,7 @@ export function useCourseSearch() {
       searchBarItems,
       tableColumnOptions,
       editCourseModalOptions,
+      editOpenedCourseModalOptions,
       onSearch,
       onClearFilter,
       onRenderTableRow,

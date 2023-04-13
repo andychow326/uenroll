@@ -2,6 +2,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { Header } from "semantic-ui-react";
 import EditCourseModal from "../components/EditCourseModal";
+import EditOpenedCourseModal from "../components/EditOpenedCourseModal";
 import Table from "../components/Table";
 import { useCourseSearch } from "./CourseSearch";
 
@@ -15,6 +16,7 @@ const CourseManagement: React.FC = () => {
     searchBarItems,
     tableColumnOptions,
     editCourseModalOptions,
+    editOpenedCourseModalOptions,
     onSearch,
     onClearFilter,
     onRenderTableRow,
@@ -51,6 +53,11 @@ const CourseManagement: React.FC = () => {
         onSave={onSaveEditUserModal}
         isOpen={editCourseModalOptions.isEditCourseModalOpen}
         onClose={editCourseModalOptions.onCloseEditCourseModal}
+      />
+      <EditOpenedCourseModal
+        loading={loading}
+        error={error}
+        {...editOpenedCourseModalOptions}
       />
     </>
   );

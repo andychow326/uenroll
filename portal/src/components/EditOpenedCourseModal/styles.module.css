@@ -1,0 +1,11 @@
+.submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.error {
+  height: 20px;
+  color: red;
+}
