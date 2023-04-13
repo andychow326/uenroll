@@ -46,6 +46,7 @@
   "StudentHome.title": "My Classes",
   "StudentHome.table.header.course-code.label": "Course Code",
   "StudentHome.table.header.course-title.label": "Course Title",
+  "StudentHome.table.row.course-code.label": "{subject}{number}",
 
   "UserManagement.title": "User Management",
   "UserManagement.search-bar.user-id.label": "User ID: ",

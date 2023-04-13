@@ -65,8 +65,8 @@ function useStudentHome() {
     (data: OpenedCourse): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
-          data.course.subject,
-          data.course.number,
+          data.subject,
+          data.number,
           data.course.title
         )}
       />
