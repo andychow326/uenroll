@@ -444,6 +444,11 @@ export function useEditOpenedCourseModal(
           cb?.(currentOpenedCourse.subject, currentOpenedCourse.number);
           onCloseEditOpenedCourseModal();
         });
+      } else {
+        actions.editCourseSection?.(currentOpenedCourse, () => {
+          cb?.(currentOpenedCourse.subject, currentOpenedCourse.number);
+          onCloseEditOpenedCourseModal();
+        });
       }
     },
     [

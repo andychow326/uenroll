@@ -42,6 +42,7 @@ export function useCourseSearch() {
     editCourse,
     clearQuery,
     createCourseSection,
+    editCourseSection,
   } = useAdminActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
@@ -59,6 +60,7 @@ export function useCourseSearch() {
   const editOpenedCourseModalOptions = useEditOpenedCourseModal({
     clearQuery,
     createCourseSection,
+    editCourseSection,
   });
 
   const onSearch = useCallback(

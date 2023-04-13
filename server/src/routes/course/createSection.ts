@@ -3,8 +3,9 @@ import { z } from "zod";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
-const inputSchema = z
+export const inputSchema = z
   .object({
+    id: z.string().trim().optional(),
     subject: z.string().trim().nonempty(),
     number: z.string().trim().nonempty(),
     section: z.string().trim().nonempty().toUpperCase(),

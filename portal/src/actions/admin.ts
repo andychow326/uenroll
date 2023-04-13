@@ -16,6 +16,7 @@ function useAdminActionCreator() {
   const createCourseMutation = trpc.course.create.useMutation();
   const editCourseMutation = trpc.course.edit.useMutation();
   const createCourseSectionMutation = trpc.course.createSection.useMutation();
+  const editCourseSectionMutation = trpc.course.editSection.useMutation();
 
   const fetchUserProfiles = useCallback(
     async (filter: UserProfileListFilter) => {
@@ -103,6 +104,18 @@ function useAdminActionCreator() {
     [editCourseMutation, setError]
   );
 
+  const editCourseSection = useCallback(
+    (course: OpenedCourse, cb?: () => void) => {
+      editCourseSectionMutation.mutate(course, {
+        onError: (err) => {
+          setError(err?.shape as Error);
+        },
+        onSuccess: cb,
+      });
+    },
+    [editCourseSectionMutation, setError]
+  );
+
   const deleteCourse = useCallback(
     async (filter: DeleteCourseFilter) => {
       const result = await safeQuery(() =>
@@ -127,6 +140,7 @@ function useAdminActionCreator() {
       createCourseSection,
       deleteCourse,
       editCourse,
+      editCourseSection,
     }),
     [
       loading,
@@ -142,6 +156,7 @@ function useAdminActionCreator() {
       createCourseSection,
       deleteCourse,
       editCourse,
+      editCourseSection,
     ]
   );
 }
