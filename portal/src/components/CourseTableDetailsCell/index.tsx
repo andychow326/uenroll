@@ -9,6 +9,7 @@ import ConfirmModal from "../ConfirmModal";
 import styles from "./styles.module.css";
 
 interface CourseTableDetailsCellRowItemProps {
+  showActionButtonSet?: boolean;
   section: string;
   instructor: string;
   timeSlots: TimeSlot[];
@@ -23,6 +24,7 @@ const CourseTableDetailsCellRowItem: React.FC<
   CourseTableDetailsCellRowItemProps
 > = (props) => {
   const {
+    showActionButtonSet = false,
     section,
     instructor,
     timeSlots,
@@ -70,14 +72,18 @@ const CourseTableDetailsCellRowItem: React.FC<
       <div style={{ width: 200 }}>{venue}</div>
       <div style={{ width: 200 }}>{instructor}</div>
       <div style={{ width: 100 }}>
-        <Button color="blue" onClick={onEdit}>
-          <FormattedMessage id="CourseTableDetailsCellRowItem.edit-button.label" />
-        </Button>
+        {showActionButtonSet && (
+          <Button color="blue" onClick={onEdit}>
+            <FormattedMessage id="CourseTableDetailsCellRowItem.edit-button.label" />
+          </Button>
+        )}
       </div>
       <div style={{ width: 100 }}>
-        <Button color="red" onClick={onDelete}>
-          <FormattedMessage id="CourseTableDetailsCellRowItem.delete-button.label" />
-        </Button>
+        {showActionButtonSet && (
+          <Button color="red" onClick={onDelete}>
+            <FormattedMessage id="CourseTableDetailsCellRowItem.delete-button.label" />
+          </Button>
+        )}
       </div>
       <div style={{ width: 200 }}>
         <FormattedMessage
@@ -176,6 +182,7 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
               {openedCourses.map((course) => (
                 <CourseTableDetailsCellRowItem
                   {...course}
+                  showActionButtonSet={isAdmin}
                   timeSlots={getTimeSlotsByIDs(course.timeSlotIds)}
                   openSeats={course.openSeats}
                   onEdit={onEditOpenedCourse?.(course)}
