@@ -76,14 +76,24 @@ const list = authProcedure.input(inputSchema).query(async ({ input }) => {
       },
       include: {
         course: true,
+        _count: { select: { EnrolledCourse: true } },
       },
     });
 
-    const map1 = new Map<string, OpenedCourse[]>();
+    const map1 = new Map<string, (OpenedCourse & { openSeats: number })[]>();
     const map2 = new Map<string, Course>();
     openedCourses.forEach((openedCourse) => {
       const key = `${openedCourse.subject}${openedCourse.number}`;
-      map1.set(key, map1.get(key)?.concat([openedCourse]) ?? [openedCourse]);
+      const openedCourseData = {
+        ...openedCourse,
+        // eslint-disable-next-line no-underscore-dangle
+        openSeats: openedCourse.capacity - openedCourse._count.EnrolledCourse,
+        _count: undefined,
+      };
+      map1.set(
+        key,
+        map1.get(key)?.concat([openedCourseData]) ?? [openedCourseData]
+      );
       map2.set(key, openedCourse.course);
     });
 

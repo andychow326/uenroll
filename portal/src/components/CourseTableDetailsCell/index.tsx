@@ -122,7 +122,7 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
             <CourseTableDetailsCellRowItem
               {...course}
               timeSlots={getTimeSlotsByIDs(course.timeSlotIds)}
-              openSeats={course.openSeats || 0}
+              openSeats={course.openSeats}
               onEdit={onEditOpenedCourse?.(course)}
               onDelete={onDeleteOpenedCourse?.(course)}
             />

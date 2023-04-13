@@ -119,7 +119,7 @@ export type OpenedCourse = {
   venue: string;
   instructor: string;
   outline?: string;
-  openSeats?: number;
+  openSeats: number;
   capacity: number;
   course: Course;
 };
