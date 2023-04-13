@@ -203,7 +203,7 @@ export function useCourseSearch() {
           data.number,
           data.title
         )}
-        showDetailButton
+        showDetailButton={searchBar.courseType === CourseType.openedCourse}
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
         showSecondaryButton
@@ -218,7 +218,12 @@ export function useCourseSearch() {
         }
       />
     ),
-    [editCourseModalOptions, getTableRowCellColumnOptions, userProfile?.isAdmin]
+    [
+      editCourseModalOptions,
+      getTableRowCellColumnOptions,
+      searchBar.courseType,
+      userProfile?.isAdmin,
+    ]
   );
 
   const onSaveEditUserModal = useCallback(() => {
