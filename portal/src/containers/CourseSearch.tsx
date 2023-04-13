@@ -20,6 +20,7 @@ import {
   CourseListFilter,
   CoursePeriod,
   CourseType,
+  OpenedCourse,
   SearchBarItem,
   TableColumnOption,
   TableRowCellOption,
@@ -33,7 +34,8 @@ export function useCourseSearch() {
     fetchCourseCount,
     fetchAvailableCoursePeriods,
   } = useCourseActionCreator();
-  const { error, createCourse, clearQuery } = useAdminActionCreator();
+  const { error, createCourse, deleteCourse, clearQuery } =
+    useAdminActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -198,6 +200,26 @@ export function useCourseSearch() {
     [intl]
   );
 
+  const onDeleteCourse = useCallback(
+    (course: Course) => () => {
+      deleteCourse({
+        type: CourseType.course,
+        subject: course.subject,
+        number: course.number,
+      }).finally(onSearch);
+    },
+    [deleteCourse, onSearch]
+  );
+
+  const onDeleteOpenedCourse = useCallback(
+    (course: OpenedCourse) => {
+      deleteCourse({ type: CourseType.openedCourse, id: course.id }).finally(
+        onSearch
+      );
+    },
+    [deleteCourse, onSearch]
+  );
+
   const onRenderTableRow = useCallback(
     (data: Course): ReactNode => (
       <TableRowCell
@@ -220,6 +242,8 @@ export function useCourseSearch() {
             isAdmin={userProfile?.isAdmin}
             openedCourses={data.openedCourse}
             onEditCourse={editCourseModalOptions.onEdit(data)}
+            onDeleteCourse={onDeleteCourse(data)}
+            onDeleteOpenedCourse={onDeleteOpenedCourse}
           />
         }
       />
@@ -227,6 +251,8 @@ export function useCourseSearch() {
     [
       editCourseModalOptions,
       getTableRowCellColumnOptions,
+      onDeleteCourse,
+      onDeleteOpenedCourse,
       searchBar.courseType,
       userProfile?.isAdmin,
     ]

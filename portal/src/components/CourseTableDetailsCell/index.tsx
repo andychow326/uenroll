@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Button, Header } from "semantic-ui-react";
 import { OpenedCourse, TimeSlot } from "../../types";
 
 import { useTimeSlot } from "../../contexts/TimeSlotProvider";
+import ConfirmModal from "../ConfirmModal";
 import styles from "./styles.module.css";
 
 interface CourseTableDetailsCellRowItemProps {
@@ -73,7 +74,7 @@ interface CourseTableDetailsCellProps {
   isAdmin?: boolean;
   openedCourses: OpenedCourse[];
   onEditOpenedCourse?: (course: OpenedCourse) => () => void;
-  onDeleteOpenedCourse?: (course: OpenedCourse) => () => void;
+  onDeleteOpenedCourse?: (course: OpenedCourse) => void;
   onAddOpenedCourse?: () => void;
   onEditCourse?: () => void;
   onDeleteCourse?: () => void;
@@ -94,6 +95,39 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
     onAddToShoppingCart,
   } = props;
   const { getTimeSlotsByIDs } = useTimeSlot();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [deleteOpenedCourseTarget, setDeleteOpenedCourseTarget] =
+    useState<OpenedCourse>();
+
+  const onOpenConfirmModal = useCallback(() => {
+    setIsConfirmModalOpen(true);
+  }, []);
+
+  const onCloseConfirmModal = useCallback(() => {
+    setIsConfirmModalOpen(false);
+  }, []);
+
+  const onConfirmDeleteCourse = useCallback(() => {
+    if (deleteOpenedCourseTarget) {
+      onDeleteOpenedCourse?.(deleteOpenedCourseTarget);
+    } else {
+      onDeleteCourse?.();
+    }
+    onCloseConfirmModal();
+  }, [
+    deleteOpenedCourseTarget,
+    onCloseConfirmModal,
+    onDeleteCourse,
+    onDeleteOpenedCourse,
+  ]);
+
+  const onClickDeleteOpenedCourse = useCallback(
+    (course: OpenedCourse) => () => {
+      setDeleteOpenedCourseTarget(course);
+      onOpenConfirmModal();
+    },
+    [onOpenConfirmModal]
+  );
 
   return (
     <div className={styles.container}>
@@ -132,7 +166,7 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
               timeSlots={getTimeSlotsByIDs(course.timeSlotIds)}
               openSeats={course.openSeats}
               onEdit={onEditOpenedCourse?.(course)}
-              onDelete={onDeleteOpenedCourse?.(course)}
+              onDelete={onClickDeleteOpenedCourse(course)}
             />
           ))}
         </div>
@@ -146,7 +180,7 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
             <Button color="blue" onClick={onEditCourse}>
               <FormattedMessage id="CourseTableDetailsCell.edit-button.label" />
             </Button>
-            <Button color="red" onClick={onDeleteCourse}>
+            <Button color="red" onClick={onOpenConfirmModal}>
               <FormattedMessage id="CourseTableDetailsCell.delete-button.label" />
             </Button>
           </>
@@ -156,6 +190,14 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
           </Button>
         )}
       </div>
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        onConfirm={onConfirmDeleteCourse}
+        onCancel={onCloseConfirmModal}
+        headerTextID="CourseTableDetailsCell.confirm-delete-modal.header"
+      >
+        <FormattedMessage id="CourseTableDetailsCell.confirm-delete-modal.description" />
+      </ConfirmModal>
     </div>
   );
 };

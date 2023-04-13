@@ -135,3 +135,16 @@ export type CourseListFilter = {
   period?: CoursePeriod;
   offset?: number;
 };
+
+export type DeleteOpenedCourseInput = {
+  type: CourseType.openedCourse;
+  id: string;
+};
+
+export type DeleteCourseInput = {
+  type: CourseType.course;
+  subject: string;
+  number: string;
+};
+
+export type DeleteCourseFilter = DeleteCourseInput | DeleteOpenedCourseInput;

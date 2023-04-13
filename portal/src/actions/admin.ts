@@ -1,7 +1,12 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSafeQuery } from "../hooks/query";
 import trpc, { Error } from "../trpc";
-import { Course, UserProfile, UserProfileListFilter } from "../types";
+import {
+  Course,
+  DeleteCourseFilter,
+  UserProfile,
+  UserProfileListFilter,
+} from "../types";
 
 function useAdminActionCreator() {
   const apiClient = trpc.useContext();
@@ -72,6 +77,16 @@ function useAdminActionCreator() {
     [createCourseMutation, setError]
   );
 
+  const deleteCourse = useCallback(
+    async (filter: DeleteCourseFilter) => {
+      const result = await safeQuery(() =>
+        apiClient.course.remove.fetch(filter)
+      );
+      return result ?? false;
+    },
+    [apiClient.course.remove, safeQuery]
+  );
+
   return useMemo(
     () => ({
       loading: loading || createCourseMutation.isLoading,
@@ -83,6 +98,7 @@ function useAdminActionCreator() {
       createUser,
       editUser,
       createCourse,
+      deleteCourse,
     }),
     [
       loading,
@@ -95,6 +111,7 @@ function useAdminActionCreator() {
       createUser,
       editUser,
       createCourse,
+      deleteCourse,
     ]
   );
 }
