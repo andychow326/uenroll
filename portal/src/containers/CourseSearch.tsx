@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
+import useAdminActionCreator from "../actions/admin";
 import useCourseActionCreator from "../actions/course";
 import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
 import Table from "../components/Table";
@@ -28,12 +29,11 @@ export function useCourseSearch() {
   const searchBar = useCourseSearchBar();
   const {
     loading,
-    error,
     fetchCourseList,
     fetchCourseCount,
     fetchAvailableCoursePeriods,
-    clearQuery,
   } = useCourseActionCreator();
+  const { error, createCourse, clearQuery } = useAdminActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,7 +42,10 @@ export function useCourseSearch() {
   >([]);
   const [courseList, setCourseList] = useState<Course[]>([]);
   const { userProfile } = useUser();
-  const editCourseModalOptions = useEditCourseModal({ clearQuery });
+  const editCourseModalOptions = useEditCourseModal({
+    clearQuery,
+    createCourse,
+  });
 
   const onSearch = useCallback(
     (
@@ -227,9 +230,7 @@ export function useCourseSearch() {
   );
 
   const onSaveEditUserModal = useCallback(() => {
-    editCourseModalOptions.onSave().finally(() => {
-      onSearch();
-    });
+    editCourseModalOptions.onSave(onSearch);
   }, [editCourseModalOptions, onSearch]);
 
   useEffect(() => {

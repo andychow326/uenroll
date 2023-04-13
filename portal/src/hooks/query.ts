@@ -26,7 +26,7 @@ export function useSafeQuery() {
   }, []);
 
   return useMemo(
-    () => ({ loading, error, safeQuery, clearQuery }),
-    [loading, error, safeQuery, clearQuery]
+    () => ({ loading, error, safeQuery, clearQuery, setError }),
+    [loading, error, safeQuery, clearQuery, setError]
   );
 }

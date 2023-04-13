@@ -260,7 +260,16 @@ export function useEditCourseModal(
     [onOpenReadOnlyCourseModal]
   );
 
-  const onSave = useCallback(async () => {}, []);
+  const onSave = useCallback(
+    (cb?: () => void) => {
+      actions.createCourse?.(currentCourse, () => {
+        onCloseEditCourseModal();
+        setCurrentCourse(NEW_COURSE);
+        cb?.();
+      });
+    },
+    [actions, currentCourse, onCloseEditCourseModal]
+  );
 
   const onChangeSubject = useCallback((value: string) => {
     setCurrentCourse((course) => ({

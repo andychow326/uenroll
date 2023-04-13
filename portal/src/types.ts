@@ -93,11 +93,11 @@ export type Course = {
   title: string;
   career: string;
   units: number;
-  description?: string;
-  learningOutcome?: string;
-  syllabus?: string;
-  requiredReadings?: string;
-  recommendedReadings?: string;
+  description: string;
+  learningOutcome: string;
+  syllabus: string;
+  requiredReadings: string;
+  recommendedReadings: string;
   openedCourse: OpenedCourse[];
 };
 

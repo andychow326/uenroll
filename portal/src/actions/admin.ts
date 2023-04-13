@@ -1,12 +1,13 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSafeQuery } from "../hooks/query";
-import trpc from "../trpc";
-import { UserProfile, UserProfileListFilter } from "../types";
+import trpc, { Error } from "../trpc";
+import { Course, UserProfile, UserProfileListFilter } from "../types";
 
 function useAdminActionCreator() {
   const apiClient = trpc.useContext();
-  const { safeQuery, loading, error, clearQuery } = useSafeQuery();
+  const { safeQuery, loading, error, clearQuery, setError } = useSafeQuery();
   const [userProfiles, setUserProfiles] = useState<UserProfile[] | null>([]);
+  const createCourseMutation = trpc.course.create.useMutation();
 
   const fetchUserProfiles = useCallback(
     async (filter: UserProfileListFilter) => {
@@ -58,9 +59,22 @@ function useAdminActionCreator() {
     [apiClient.user.edit, safeQuery]
   );
 
+  const createCourse = useCallback(
+    (course: Course, cb?: () => void) => {
+      createCourseMutation.mutate(course, {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        onError: (err) => {
+          setError(err?.shape as Error);
+        },
+        onSuccess: cb,
+      });
+    },
+    [createCourseMutation, setError]
+  );
+
   return useMemo(
     () => ({
-      loading,
+      loading: loading || createCourseMutation.isLoading,
       error,
       userProfiles,
       clearQuery,
@@ -68,9 +82,11 @@ function useAdminActionCreator() {
       sendInvitation,
       createUser,
       editUser,
+      createCourse,
     }),
     [
       loading,
+      createCourseMutation.isLoading,
       error,
       userProfiles,
       clearQuery,
@@ -78,6 +94,7 @@ function useAdminActionCreator() {
       sendInvitation,
       createUser,
       editUser,
+      createCourse,
     ]
   );
 }

@@ -161,9 +161,14 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
           onChange={isReadOnly ? undefined : onChangeRecommendedReadingsField}
         />
         {!isReadOnly && (
-          <Button color="green" onClick={onSave} loading={loading}>
-            <FormattedMessage id="EditCourseModal.save-button.label" />
-          </Button>
+          <div className={styles.submit}>
+            <Button color="green" onClick={onSave} loading={loading}>
+              <FormattedMessage id="EditCourseModal.save-button.label" />
+            </Button>
+            <div className={styles.error}>
+              {error?.message && <FormattedMessage id={error.message} />}
+            </div>
+          </div>
         )}
       </Modal.Content>
     </Modal>
