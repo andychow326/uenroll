@@ -31,7 +31,7 @@ const Root: React.FC = () => {
 
   useEffect(() => {
     // Handle auto-logout for expired sessions
-    const validateSessionInterval = setInterval(onValidateSession, 5000);
+    const validateSessionInterval = setInterval(onValidateSession, 60000);
 
     return () => {
       clearInterval(validateSessionInterval);
@@ -39,6 +39,7 @@ const Root: React.FC = () => {
   }, [onValidateSession]);
 
   useEffect(() => {
+    validateSession().finally(null);
     fetchUserProfile().finally(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
