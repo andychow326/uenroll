@@ -3,6 +3,7 @@ import availablePeriod from "./availablePeriod";
 import count from "./count";
 import create from "./create";
 import list from "./list";
+import remove from "./remove";
 import timeSlot from "./timeSlot";
 
 const course = trpc.router({
@@ -11,6 +12,7 @@ const course = trpc.router({
   list,
   timeSlot,
   create,
+  remove,
 });
 
 export default course;
