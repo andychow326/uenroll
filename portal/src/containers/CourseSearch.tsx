@@ -10,16 +10,18 @@ import { Header } from "semantic-ui-react";
 import useAdminActionCreator from "../actions/admin";
 import useCourseActionCreator from "../actions/course";
 import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
+import EditCourseModal from "../components/EditCourseModal";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import { useUser } from "../contexts/UserProvider";
-import { useEditCourseModal } from "../hooks/modal";
+import { useEditCourseModal, useEditOpenedCourseModal } from "../hooks/modal";
 import { useCourseSearchBar } from "../hooks/searchBar";
 import {
   Course,
   CourseListFilter,
   CoursePeriod,
   CourseType,
+  OpenedCourse,
   SearchBarItem,
   TableColumnOption,
   TableRowCellOption,
@@ -33,7 +35,8 @@ export function useCourseSearch() {
     fetchCourseCount,
     fetchAvailableCoursePeriods,
   } = useCourseActionCreator();
-  const { error, createCourse, clearQuery } = useAdminActionCreator();
+  const { error, createCourse, deleteCourse, editCourse, clearQuery } =
+    useAdminActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,24 +48,29 @@ export function useCourseSearch() {
   const editCourseModalOptions = useEditCourseModal({
     clearQuery,
     createCourse,
+    editCourse,
+  });
+  const editOpenedCourseModalOptions = useEditOpenedCourseModal({
+    clearQuery,
   });
 
   const onSearch = useCallback(
     (
       overrideType?: CourseType,
       overridePeriod?: CoursePeriod,
+      overrideCode?: string,
       page?: number,
       withFilter = true
     ) => {
       searchBar.onSearch(async (type: CourseType, filter: CourseListFilter) => {
         const result = await fetchCourseList(overrideType ?? type, {
-          code: filter.code,
+          code: overrideCode ?? filter.code,
           title: filter.title,
           period: overridePeriod ?? filter.period,
           offset: page,
         });
         const pages = await fetchCourseCount(overrideType ?? type, {
-          code: filter.code,
+          code: overrideCode ?? filter.code,
           title: filter.title,
           period: overridePeriod ?? filter.period,
           offset: page,
@@ -77,13 +85,13 @@ export function useCourseSearch() {
 
   const onClearFilter = useCallback(() => {
     searchBar.onClearFilter();
-    onSearch(CourseType.course, undefined, undefined, false);
+    onSearch(CourseType.course, undefined, undefined, undefined, false);
   }, [onSearch, searchBar]);
 
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      onSearch(undefined, undefined, page);
+      onSearch(undefined, undefined, undefined, page);
     },
     [onSearch]
   );
@@ -198,6 +206,26 @@ export function useCourseSearch() {
     [intl]
   );
 
+  const onDeleteCourse = useCallback(
+    (course: Course) => () => {
+      deleteCourse({
+        type: CourseType.course,
+        subject: course.subject,
+        number: course.number,
+      }).finally(onSearch);
+    },
+    [deleteCourse, onSearch]
+  );
+
+  const onDeleteOpenedCourse = useCallback(
+    (course: OpenedCourse) => {
+      deleteCourse({ type: CourseType.openedCourse, id: course.id }).finally(
+        onSearch
+      );
+    },
+    [deleteCourse, onSearch]
+  );
+
   const onRenderTableRow = useCallback(
     (data: Course): ReactNode => (
       <TableRowCell
@@ -206,7 +234,7 @@ export function useCourseSearch() {
           data.number,
           data.title
         )}
-        showDetailButton={searchBar.courseType === CourseType.openedCourse}
+        showDetailButton
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
         showSecondaryButton
@@ -217,21 +245,37 @@ export function useCourseSearch() {
             isAdmin={userProfile?.isAdmin}
             openedCourses={data.openedCourse}
             onEditCourse={editCourseModalOptions.onEdit(data)}
+            onDeleteCourse={onDeleteCourse(data)}
+            onDeleteOpenedCourse={onDeleteOpenedCourse}
+            onAddOpenedCourse={editOpenedCourseModalOptions.onCreate(data)}
+            onEditOpenedCourse={editOpenedCourseModalOptions.onEdit}
           />
         }
       />
     ),
     [
       editCourseModalOptions,
+      editOpenedCourseModalOptions,
       getTableRowCellColumnOptions,
-      searchBar.courseType,
+      onDeleteCourse,
+      onDeleteOpenedCourse,
       userProfile?.isAdmin,
     ]
   );
 
   const onSaveEditUserModal = useCallback(() => {
-    editCourseModalOptions.onSave(onSearch);
-  }, [editCourseModalOptions, onSearch]);
+    editCourseModalOptions.onSave((subject: string, number: string) => {
+      searchBar.onClearFilter();
+      searchBar.onChangeCourseCode(subject + number);
+      onSearch(
+        CourseType.course,
+        undefined,
+        subject + number,
+        undefined,
+        false
+      );
+    });
+  }, [editCourseModalOptions, onSearch, searchBar]);
 
   useEffect(() => {
     onSearch();
@@ -248,6 +292,7 @@ export function useCourseSearch() {
       searchBarItems,
       tableColumnOptions,
       editCourseModalOptions,
+      editOpenedCourseModalOptions,
       onSearch,
       onClearFilter,
       onRenderTableRow,
@@ -263,6 +308,7 @@ export function useCourseSearch() {
       searchBarItems,
       tableColumnOptions,
       editCourseModalOptions,
+      editOpenedCourseModalOptions,
       onSearch,
       onClearFilter,
       onRenderTableRow,
@@ -275,15 +321,18 @@ export function useCourseSearch() {
 const CourseSearch: React.FC = () => {
   const {
     loading,
+    error,
     currentPage,
     totalPages,
     courseList,
     searchBarItems,
     tableColumnOptions,
+    editCourseModalOptions,
     onSearch,
     onClearFilter,
     onRenderTableRow,
     onChangePage,
+    onSaveEditUserModal,
   } = useCourseSearch();
 
   return (
@@ -303,6 +352,15 @@ const CourseSearch: React.FC = () => {
         totalPages={totalPages}
         onChangePage={onChangePage}
         currentPage={currentPage}
+      />
+      <EditCourseModal
+        loading={loading}
+        error={error}
+        {...editCourseModalOptions}
+        course={editCourseModalOptions.currentCourse}
+        onSave={onSaveEditUserModal}
+        isOpen={editCourseModalOptions.isEditCourseModalOpen}
+        onClose={editCourseModalOptions.onCloseEditCourseModal}
       />
     </>
   );

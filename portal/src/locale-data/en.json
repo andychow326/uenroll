@@ -5,6 +5,7 @@
   "error.server.incorrect_user_id_or_password": "User ID or Password is incorrect",
   "error.server.user_not_found": "User not found",
   "error.server.course.already_exists": "Course already exists",
+  "error.server.course.not_found": "Course not found",
 
   "LoadingSpinner.text": "Loading...",
 
@@ -122,6 +123,9 @@
   "CourseTableDetailsCell.edit-button.label": "Edit",
   "CourseTableDetailsCell.delete-button.label": "Delete",
   "CourseTableDetailsCell.add-to-cart-button.label": "Add to Cart",
+  "CourseTableDetailsCell.no-opened-courses": "No Opened Courses",
+  "CourseTableDetailsCell.confirm-delete-modal.header": "Delete Course",
+  "CourseTableDetailsCell.confirm-delete-modal.description": "Are you sure you want to delete this course?",
 
   "CourseTableDetailsCellRowItem.time-slot.time": "{start} - {end}",
   "CourseTableDetailsCellRowItem.edit-button.label": "Edit",
@@ -129,7 +133,7 @@
   "CourseTableDetailsCellRowItem.seats.label": "Open Seats {openSeats} of {capacity}",
 
   "EditCourseModal.header.create-course": "Create Course",
-  "EditCourseModal.header.edit-course": "Edit Course",
+  "EditCourseModal.header.edit-course": "Edit Course - {subject}{number}",
   "EditCourseModal.header.course-details": "Course Details",
   "EditCourseModal.input.subject.label": "Subject",
   "EditCourseModal.input.subject.placeholder": "e.g. CSCI",
@@ -145,6 +149,23 @@
   "EditCourseModal.input.recommended-readings.label": "Recommended Readings (Optional)",
   "EditCourseModal.save-button.label": "Save",
 
+
   "DropClass.title": "My Classes",
   "DropClass.drop-button.label": "Drop"
+
+  "EditOpenedCourseModal.header.create-course": "Create Course Section - {subject}{number}",
+  "EditOpenedCourseModal.header.edit-course": "Edit Course Section",
+  "EditOpenedCourseModal.input.section.label": "Section Name",
+  "EditOpenedCourseModal.input.section.placeholder": "e.g. A",
+  "EditOpenedCourseModal.input.year.label": "Year",
+  "EditOpenedCourseModal.input.semester.label": "Semester",
+  "EditOpenedCourseModal.input.semester.placeholder": "e.g. 2",
+  "EditOpenedCourseModal.input.venue.label": "Venue",
+  "EditOpenedCourseModal.input.venue.placeholder": "e.g. Shaw College LT",
+  "EditOpenedCourseModal.input.instructor.label": "Instructor",
+  "EditOpenedCourseModal.input.capacity.label": "Capacity",
+  "EditOpenedCourseModal.save-button.label": "Save",
+
+  "TimeSlotTable.time-slot": "{start}-{end}"
+
 }

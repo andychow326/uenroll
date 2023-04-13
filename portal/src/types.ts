@@ -101,9 +101,19 @@ export type Course = {
   openedCourse: OpenedCourse[];
 };
 
+export enum DayOfWeek {
+  MONDAY = "MONDAY",
+  TUESDAY = "TUESDAY",
+  WEDNESDAY = "WEDNESDAY",
+  THURSDAY = "THURSDAY",
+  FRIDAY = "FRIDAY",
+  SATURDAY = "SATURDAY",
+  SUNDAY = "SUNDAY",
+}
+
 export type TimeSlot = {
   id: string;
-  dayOfWeek: string;
+  dayOfWeek: DayOfWeek;
   start: string;
   end: string;
 };
@@ -135,3 +145,16 @@ export type CourseListFilter = {
   period?: CoursePeriod;
   offset?: number;
 };
+
+export type DeleteOpenedCourseInput = {
+  type: CourseType.openedCourse;
+  id: string;
+};
+
+export type DeleteCourseInput = {
+  type: CourseType.course;
+  subject: string;
+  number: string;
+};
+
+export type DeleteCourseFilter = DeleteCourseInput | DeleteOpenedCourseInput;

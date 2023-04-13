@@ -1,13 +1,19 @@
 import { useCallback, useMemo, useState } from "react";
 import { useSafeQuery } from "../hooks/query";
 import trpc, { Error } from "../trpc";
-import { Course, UserProfile, UserProfileListFilter } from "../types";
+import {
+  Course,
+  DeleteCourseFilter,
+  UserProfile,
+  UserProfileListFilter,
+} from "../types";
 
 function useAdminActionCreator() {
   const apiClient = trpc.useContext();
   const { safeQuery, loading, error, clearQuery, setError } = useSafeQuery();
   const [userProfiles, setUserProfiles] = useState<UserProfile[] | null>([]);
   const createCourseMutation = trpc.course.create.useMutation();
+  const editCourseMutation = trpc.course.edit.useMutation();
 
   const fetchUserProfiles = useCallback(
     async (filter: UserProfileListFilter) => {
@@ -62,7 +68,6 @@ function useAdminActionCreator() {
   const createCourse = useCallback(
     (course: Course, cb?: () => void) => {
       createCourseMutation.mutate(course, {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         onError: (err) => {
           setError(err?.shape as Error);
         },
@@ -70,6 +75,28 @@ function useAdminActionCreator() {
       });
     },
     [createCourseMutation, setError]
+  );
+
+  const editCourse = useCallback(
+    (course: Course, cb?: () => void) => {
+      editCourseMutation.mutate(course, {
+        onError: (err) => {
+          setError(err?.shape as Error);
+        },
+        onSuccess: cb,
+      });
+    },
+    [editCourseMutation, setError]
+  );
+
+  const deleteCourse = useCallback(
+    async (filter: DeleteCourseFilter) => {
+      const result = await safeQuery(() =>
+        apiClient.course.remove.fetch(filter)
+      );
+      return result ?? false;
+    },
+    [apiClient.course.remove, safeQuery]
   );
 
   return useMemo(
@@ -83,6 +110,8 @@ function useAdminActionCreator() {
       createUser,
       editUser,
       createCourse,
+      deleteCourse,
+      editCourse,
     }),
     [
       loading,
@@ -95,6 +124,8 @@ function useAdminActionCreator() {
       createUser,
       editUser,
       createCourse,
+      deleteCourse,
+      editCourse,
     ]
   );
 }

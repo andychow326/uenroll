@@ -85,25 +85,34 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
               ? "EditCourseModal.header.create-course"
               : "EditCourseModal.header.edit-course"
           }
+          values={
+            isCreateNewCourse
+              ? undefined
+              : { subject: course.subject, number: course.number }
+          }
         />
       </Modal.Header>
       <Modal.Content>
-        <InputWithErrorField
-          {...commonInputFieldProps}
-          labelID="EditCourseModal.input.subject.label"
-          placeholderID="EditCourseModal.input.subject.placeholder"
-          name="subject"
-          value={course.subject}
-          onChange={isReadOnly ? undefined : onChangeSubjectField}
-        />
-        <InputWithErrorField
-          {...commonInputFieldProps}
-          labelID="EditCourseModal.input.number.label"
-          placeholderID="EditCourseModal.input.number.placeholder"
-          name="number"
-          value={course.number}
-          onChange={isReadOnly ? undefined : onChangeNumberField}
-        />
+        {isCreateNewCourse && (
+          <>
+            <InputWithErrorField
+              {...commonInputFieldProps}
+              labelID="EditCourseModal.input.subject.label"
+              placeholderID="EditCourseModal.input.subject.placeholder"
+              name="subject"
+              value={course.subject}
+              onChange={isReadOnly ? undefined : onChangeSubjectField}
+            />
+            <InputWithErrorField
+              {...commonInputFieldProps}
+              labelID="EditCourseModal.input.number.label"
+              placeholderID="EditCourseModal.input.number.placeholder"
+              name="number"
+              value={course.number}
+              onChange={isReadOnly ? undefined : onChangeNumberField}
+            />
+          </>
+        )}
         <InputWithErrorField
           {...commonInputFieldProps}
           labelID="EditCourseModal.input.title.label"
