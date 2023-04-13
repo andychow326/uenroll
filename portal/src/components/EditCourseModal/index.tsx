@@ -18,6 +18,7 @@ interface EditCourseModalProps {
   onChangeSubject: (value: string) => void;
   onChangeNumber: (value: string) => void;
   onChangeTitle: (value: string) => void;
+  onChangeUnits: (value: string) => void;
   onChangeDescription: (value: string) => void;
   onChangeLearningOutcome: (value: string) => void;
   onChangeSyllabus: (value: string) => void;
@@ -38,6 +39,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
     onChangeSubject,
     onChangeNumber,
     onChangeTitle,
+    onChangeUnits,
     onChangeDescription,
     onChangeLearningOutcome,
     onChangeSyllabus,
@@ -50,6 +52,7 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
   const onChangeSubjectField = useTextFieldChange(onChangeSubject);
   const onChangeNumberField = useTextFieldChange(onChangeNumber);
   const onChangeTitleField = useTextFieldChange(onChangeTitle);
+  const onChangeUnitsField = useTextFieldChange(onChangeUnits);
   const onChangeDescriptionField = useTextAreaChange(onChangeDescription);
   const onChangeLearningOutcomeField = useTextAreaChange(
     onChangeLearningOutcome
@@ -108,6 +111,14 @@ const EditCourseModal: React.FC<EditCourseModalProps> = (props) => {
           name="title"
           value={course.title}
           onChange={isReadOnly ? undefined : onChangeTitleField}
+        />
+        <InputWithErrorField
+          {...commonInputFieldProps}
+          type="number"
+          labelID="EditCourseModal.input.units.label"
+          name="units"
+          value={course.units}
+          onChange={isReadOnly ? undefined : onChangeUnitsField}
         />
         <div className={styles.label}>
           <FormattedMessage id="EditCourseModal.input.description.label" />

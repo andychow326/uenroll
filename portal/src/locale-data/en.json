@@ -129,6 +129,7 @@
   "EditCourseModal.input.number.placeholder": "e.g. 3100",
   "EditCourseModal.input.title.label": "Title",
   "EditCourseModal.input.title.placeholder": "e.g. Software Engineering",
+  "EditCourseModal.input.units.label": "Units",
   "EditCourseModal.input.description.label": "Description (Optional)",
   "EditCourseModal.input.learning-outcome.label": "Learning Outcome (Optional)",
   "EditCourseModal.input.syllabus.label": "Syllabus (Optional)",

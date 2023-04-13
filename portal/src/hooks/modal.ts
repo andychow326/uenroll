@@ -283,6 +283,13 @@ export function useEditCourseModal(
     }));
   }, []);
 
+  const onChangeUnits = useCallback((value: string) => {
+    setCurrentCourse((course) => ({
+      ...course,
+      units: Number(value),
+    }));
+  }, []);
+
   const onChangeDescription = useCallback((value: string) => {
     setCurrentCourse((course) => ({
       ...course,
@@ -327,6 +334,7 @@ export function useEditCourseModal(
       onChangeSubject,
       onChangeNumber,
       onChangeTitle,
+      onChangeUnits,
       onChangeDescription,
       onChangeLearningOutcome,
       onChangeSyllabus,
@@ -348,6 +356,7 @@ export function useEditCourseModal(
       onChangeSubject,
       onChangeNumber,
       onChangeTitle,
+      onChangeUnits,
       onChangeDescription,
       onChangeLearningOutcome,
       onChangeSyllabus,
