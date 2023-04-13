@@ -145,11 +145,20 @@ const list = authProcedure.input(inputSchema).query(async ({ input }) => {
       ],
     },
     include: {
-      openedCourse: true,
+      openedCourse: {
+        include: { _count: { select: { EnrolledCourse: true } } },
+      },
     },
   });
 
-  return courses;
+  return courses.map((course) => ({
+    ...course,
+    openedCourse: course.openedCourse.map((openedCourse) => ({
+      ...openedCourse,
+      // eslint-disable-next-line no-underscore-dangle
+      openSeats: openedCourse.capacity - openedCourse._count.EnrolledCourse,
+    })),
+  }));
 });
 
 export default list;

@@ -245,7 +245,7 @@ export function useCourseSearch() {
           data.number,
           data.title
         )}
-        showDetailButton={searchBar.courseType === CourseType.openedCourse}
+        showDetailButton
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
         showSecondaryButton
@@ -270,7 +270,6 @@ export function useCourseSearch() {
       getTableRowCellColumnOptions,
       onDeleteCourse,
       onDeleteOpenedCourse,
-      searchBar.courseType,
       userProfile?.isAdmin,
     ]
   );
