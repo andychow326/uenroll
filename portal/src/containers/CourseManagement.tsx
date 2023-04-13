@@ -22,6 +22,7 @@ const CourseManagement: React.FC = () => {
     onRenderTableRow,
     onChangePage,
     onSaveEditCourseModal,
+    onSaveEditOpenedCourseModal,
   } = useCourseSearch();
 
   return (
@@ -58,6 +59,7 @@ const CourseManagement: React.FC = () => {
         loading={loading}
         error={error}
         {...editOpenedCourseModalOptions}
+        onSave={onSaveEditOpenedCourseModal}
       />
     </>
   );

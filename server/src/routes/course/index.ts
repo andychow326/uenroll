@@ -2,6 +2,7 @@ import trpc from "../../trpc";
 import availablePeriod from "./availablePeriod";
 import count from "./count";
 import create from "./create";
+import createSection from "./createSection";
 import edit from "./edit";
 import list from "./list";
 import remove from "./remove";
@@ -15,6 +16,7 @@ const course = trpc.router({
   create,
   remove,
   edit,
+  createSection,
 });
 
 export default course;

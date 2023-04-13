@@ -4,6 +4,7 @@ import trpc, { Error } from "../trpc";
 import {
   Course,
   DeleteCourseFilter,
+  OpenedCourse,
   UserProfile,
   UserProfileListFilter,
 } from "../types";
@@ -14,6 +15,7 @@ function useAdminActionCreator() {
   const [userProfiles, setUserProfiles] = useState<UserProfile[] | null>([]);
   const createCourseMutation = trpc.course.create.useMutation();
   const editCourseMutation = trpc.course.edit.useMutation();
+  const createCourseSectionMutation = trpc.course.createSection.useMutation();
 
   const fetchUserProfiles = useCallback(
     async (filter: UserProfileListFilter) => {
@@ -77,6 +79,18 @@ function useAdminActionCreator() {
     [createCourseMutation, setError]
   );
 
+  const createCourseSection = useCallback(
+    (course: OpenedCourse, cb?: () => void) => {
+      createCourseSectionMutation.mutate(course, {
+        onError: (err) => {
+          setError(err?.shape as Error);
+        },
+        onSuccess: cb,
+      });
+    },
+    [createCourseSectionMutation, setError]
+  );
+
   const editCourse = useCallback(
     (course: Course, cb?: () => void) => {
       editCourseMutation.mutate(course, {
@@ -110,6 +124,7 @@ function useAdminActionCreator() {
       createUser,
       editUser,
       createCourse,
+      createCourseSection,
       deleteCourse,
       editCourse,
     }),
@@ -124,6 +139,7 @@ function useAdminActionCreator() {
       createUser,
       editUser,
       createCourse,
+      createCourseSection,
       deleteCourse,
       editCourse,
     ]

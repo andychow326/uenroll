@@ -35,8 +35,14 @@ export function useCourseSearch() {
     fetchCourseCount,
     fetchAvailableCoursePeriods,
   } = useCourseActionCreator();
-  const { error, createCourse, deleteCourse, editCourse, clearQuery } =
-    useAdminActionCreator();
+  const {
+    error,
+    createCourse,
+    deleteCourse,
+    editCourse,
+    clearQuery,
+    createCourseSection,
+  } = useAdminActionCreator();
   const intl = useIntl();
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,6 +58,7 @@ export function useCourseSearch() {
   });
   const editOpenedCourseModalOptions = useEditOpenedCourseModal({
     clearQuery,
+    createCourseSection,
   });
 
   const onSearch = useCallback(
@@ -234,7 +241,7 @@ export function useCourseSearch() {
           data.number,
           data.title
         )}
-        showDetailButton
+        showDetailButton={searchBar.courseType === CourseType.openedCourse}
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
         showSecondaryButton
@@ -259,6 +266,7 @@ export function useCourseSearch() {
       getTableRowCellColumnOptions,
       onDeleteCourse,
       onDeleteOpenedCourse,
+      searchBar.courseType,
       userProfile?.isAdmin,
     ]
   );
@@ -276,6 +284,32 @@ export function useCourseSearch() {
       );
     });
   }, [editCourseModalOptions, onSearch, searchBar]);
+
+  const onSaveEditOpenedCourseModal = useCallback(() => {
+    editOpenedCourseModalOptions.onSave((subject: string, number: string) => {
+      searchBar.onClearFilter();
+      fetchAvailableCoursePeriods()
+        .then((period) => {
+          searchBar.onChangeCourseType(CourseType.openedCourse);
+          searchBar.onChangeCourseCode(subject + number);
+          searchBar.onChangeCoursePeriod(period[0]);
+          setAvailableCoursePeriods(period);
+          onSearch(
+            CourseType.openedCourse,
+            period[0],
+            subject + number,
+            undefined,
+            false
+          );
+        })
+        .catch(null);
+    });
+  }, [
+    editOpenedCourseModalOptions,
+    fetchAvailableCoursePeriods,
+    onSearch,
+    searchBar,
+  ]);
 
   useEffect(() => {
     onSearch();
@@ -298,6 +332,7 @@ export function useCourseSearch() {
       onRenderTableRow,
       onChangePage,
       onSaveEditCourseModal,
+      onSaveEditOpenedCourseModal,
     }),
     [
       loading,
@@ -314,6 +349,7 @@ export function useCourseSearch() {
       onRenderTableRow,
       onChangePage,
       onSaveEditCourseModal,
+      onSaveEditOpenedCourseModal,
     ]
   );
 }

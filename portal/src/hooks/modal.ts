@@ -437,8 +437,22 @@ export function useEditOpenedCourseModal(
     [onOpenCreateOpenedCourseModal]
   );
 
-  // TODO: Implement onSave
-  const onSave = useCallback(() => {}, []);
+  const onSave = useCallback(
+    (cb?: (subject: string, number: string) => void) => {
+      if (isCreateNewOpenedCourse) {
+        actions.createCourseSection?.(currentOpenedCourse, () => {
+          cb?.(currentOpenedCourse.subject, currentOpenedCourse.number);
+          onCloseEditOpenedCourseModal();
+        });
+      }
+    },
+    [
+      actions,
+      currentOpenedCourse,
+      isCreateNewOpenedCourse,
+      onCloseEditOpenedCourseModal,
+    ]
+  );
 
   const onChangeSection = useCallback((value: string) => {
     setCurrentOpenedCourse((course) => ({
