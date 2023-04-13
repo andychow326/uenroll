@@ -133,25 +133,38 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
     <div className={styles.container}>
       <div className={styles.content}>
         {openedCourses.length > 0 ? (
-          <div className={styles.header} style={{ minWidth: 1000 }}>
-            <div style={{ width: 50 }}>
-              <FormattedMessage id="CourseTableDetailsCell.section.label" />
+          <>
+            <div className={styles.header} style={{ minWidth: 1000 }}>
+              <div style={{ width: 50 }}>
+                <FormattedMessage id="CourseTableDetailsCell.section.label" />
+              </div>
+              <div style={{ width: 150 }}>
+                <FormattedMessage id="CourseTableDetailsCell.time-slot.label" />
+              </div>
+              <div style={{ width: 200 }}>
+                <FormattedMessage id="CourseTableDetailsCell.venue.label" />
+              </div>
+              <div style={{ width: 200 }}>
+                <FormattedMessage id="CourseTableDetailsCell.instructor.label" />
+              </div>
+              <div style={{ width: 100, visibility: "hidden" }} />
+              <div style={{ width: 100, visibility: "hidden" }} />
+              <div style={{ width: 200 }}>
+                <FormattedMessage id="CourseTableDetailsCell.seats.label" />
+              </div>
             </div>
-            <div style={{ width: 150 }}>
-              <FormattedMessage id="CourseTableDetailsCell.time-slot.label" />
+            <div className={styles.body} style={{ minWidth: 1000 }}>
+              {openedCourses.map((course) => (
+                <CourseTableDetailsCellRowItem
+                  {...course}
+                  timeSlots={getTimeSlotsByIDs(course.timeSlotIds)}
+                  openSeats={course.openSeats}
+                  onEdit={onEditOpenedCourse?.(course)}
+                  onDelete={onClickDeleteOpenedCourse(course)}
+                />
+              ))}
             </div>
-            <div style={{ width: 200 }}>
-              <FormattedMessage id="CourseTableDetailsCell.venue.label" />
-            </div>
-            <div style={{ width: 200 }}>
-              <FormattedMessage id="CourseTableDetailsCell.instructor.label" />
-            </div>
-            <div style={{ width: 100, visibility: "hidden" }} />
-            <div style={{ width: 100, visibility: "hidden" }} />
-            <div style={{ width: 200 }}>
-              <FormattedMessage id="CourseTableDetailsCell.seats.label" />
-            </div>
-          </div>
+          </>
         ) : (
           <div className={styles.header}>
             <Header>
@@ -159,17 +172,6 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
             </Header>
           </div>
         )}
-        <div className={styles.body} style={{ minWidth: 1000 }}>
-          {openedCourses.map((course) => (
-            <CourseTableDetailsCellRowItem
-              {...course}
-              timeSlots={getTimeSlotsByIDs(course.timeSlotIds)}
-              openSeats={course.openSeats}
-              onEdit={onEditOpenedCourse?.(course)}
-              onDelete={onClickDeleteOpenedCourse(course)}
-            />
-          ))}
-        </div>
       </div>
       <div className={styles.footer}>
         {isAdmin ? (
@@ -184,11 +186,11 @@ const CourseTableDetailsCell: React.FC<CourseTableDetailsCellProps> = (
               <FormattedMessage id="CourseTableDetailsCell.delete-button.label" />
             </Button>
           </>
-        ) : (
+        ) : openedCourses.length > 0 ? (
           <Button color="orange" onClick={onAddToShoppingCart}>
             <FormattedMessage id="CourseTableDetailsCell.add-to-cart-button.label" />
           </Button>
-        )}
+        ) : null}
       </div>
       <ConfirmModal
         isOpen={isConfirmModalOpen}

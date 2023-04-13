@@ -10,6 +10,7 @@ import { Header } from "semantic-ui-react";
 import useAdminActionCreator from "../actions/admin";
 import useCourseActionCreator from "../actions/course";
 import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
+import EditCourseModal from "../components/EditCourseModal";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import { useUser } from "../contexts/UserProvider";
@@ -229,10 +230,7 @@ export function useCourseSearch() {
           data.number,
           data.title
         )}
-        showDetailButton={
-          userProfile?.isAdmin ||
-          searchBar.courseType === CourseType.openedCourse
-        }
+        showDetailButton
         detailButtonLabelID="CourseSearch.table.row.more-button.label"
         hideDetailButtonLabelID="CourseSearch.table.row.hidden-button.label"
         showSecondaryButton
@@ -254,7 +252,6 @@ export function useCourseSearch() {
       getTableRowCellColumnOptions,
       onDeleteCourse,
       onDeleteOpenedCourse,
-      searchBar.courseType,
       userProfile?.isAdmin,
     ]
   );
@@ -315,15 +312,18 @@ export function useCourseSearch() {
 const CourseSearch: React.FC = () => {
   const {
     loading,
+    error,
     currentPage,
     totalPages,
     courseList,
     searchBarItems,
     tableColumnOptions,
+    editCourseModalOptions,
     onSearch,
     onClearFilter,
     onRenderTableRow,
     onChangePage,
+    onSaveEditUserModal,
   } = useCourseSearch();
 
   return (
@@ -343,6 +343,15 @@ const CourseSearch: React.FC = () => {
         totalPages={totalPages}
         onChangePage={onChangePage}
         currentPage={currentPage}
+      />
+      <EditCourseModal
+        loading={loading}
+        error={error}
+        {...editCourseModalOptions}
+        course={editCourseModalOptions.currentCourse}
+        onSave={onSaveEditUserModal}
+        isOpen={editCourseModalOptions.isEditCourseModalOpen}
+        onClose={editCourseModalOptions.onCloseEditCourseModal}
       />
     </>
   );
