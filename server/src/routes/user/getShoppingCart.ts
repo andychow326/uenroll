@@ -4,7 +4,7 @@ import { authProcedure } from "../../procedure";
 const getShoppingCart = authProcedure.query(async ({ ctx }) => {
   const userID = ctx.user.id;
 
-  const courses = await prisma.getShoppingCart.findMany({
+  const courses = await prisma.shoppingCart.findMany({
     where: { userId: userID },
     include: {
       openedCourse: {
