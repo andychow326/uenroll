@@ -10,6 +10,7 @@ const enrolledCourse = authProcedure.query(async ({ ctx }) => {
       openedCourse: {
         include: {
           course: true,
+          _count: { select: { EnrolledCourse: true } },
         },
       },
     },
