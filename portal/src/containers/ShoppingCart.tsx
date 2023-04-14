@@ -186,7 +186,6 @@ const ShoppingCart: React.FC = () => {
     onRenderTableRow,
     onEnroll,
     onDelete,
-    onVaildate,
   } = useShoppingCart();
 
   return (
@@ -201,9 +200,9 @@ const ShoppingCart: React.FC = () => {
         <Button onClick={onDelete}>
           <FormattedMessage id="ShoppingCart.delete-button.label" />
         </Button>
-        <Button onClick={onVaildate}>
+        {/* <Button onClick={onVaildate}>
           <FormattedMessage id="ShoppingCart.vaildate-button.label" />
-        </Button>
+        </Button> */}
       </div>
       <Table
         loading={loading}
