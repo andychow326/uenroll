@@ -170,6 +170,7 @@ export type DeleteCourseInput = {
 
 export type DeleteCourseFilter = DeleteCourseInput | DeleteOpenedCourseInput;
 export type EnrollmentStatusItem = {
+  id: string;
   sequence: string;
   status: string;
   subject: string;

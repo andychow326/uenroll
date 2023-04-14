@@ -1,6 +1,13 @@
-import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
+import useUserActionCreator from "../actions/user";
 import EnrollmentRequestInfo from "../components/EnrollmentRequestInfo";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
@@ -17,6 +24,23 @@ function useEnrollmentStatus() {
   const [enrollmentStatusItemList, setEnrollmentStatusItemList] = useState<
     EnrollmentStatusItem[]
   >([]);
+  const { fetchEnrollmentStatusItem } = useUserActionCreator();
+
+  const onFetch = useCallback(() => {
+    fetchEnrollmentStatusItem()
+      .then((enrollmentStatusItem) => {
+        setEnrollmentStatusItemList(enrollmentStatusItem);
+      })
+      .catch(() => {});
+  }, [fetchEnrollmentStatusItem]);
+
+  const onRefresh = useCallback(() => {
+    onFetch();
+  }, [onFetch]);
+
+  // const onCancelRequest = useCallback(() => {
+  //   onFetch();
+  // }, [onFetch]);
 
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
@@ -111,12 +135,12 @@ function useEnrollmentStatus() {
     (data: EnrollmentStatusItem): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
+          data.id,
           data.sequence,
           data.status,
           data.subject,
           data.number,
           data.title,
-          data.sequence,
           data.message
         )}
       />
@@ -124,18 +148,29 @@ function useEnrollmentStatus() {
     [getTableRowCellColumnOptions]
   );
 
+  useEffect(() => {
+    onFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return useMemo(
     () => ({
       enrollmentStatusItemList,
       tableColumnOptions,
       getTableRowCellColumnOptions,
       onRenderTableRow,
+      onFetch,
+      onRefresh,
+      // onCancelRequest,
     }),
     [
       enrollmentStatusItemList,
       getTableRowCellColumnOptions,
       onRenderTableRow,
       tableColumnOptions,
+      onFetch,
+      onRefresh,
+      // onCancelRequest,
     ]
   );
 }
@@ -143,20 +178,28 @@ function useEnrollmentStatus() {
 const EnrollmentStatus: React.FC = () => {
   // const { loading, fetchCourseList, fetchCourseCount } =
   //   useCourseActionCreator();
-  const { tableColumnOptions, enrollmentStatusItemList, onRenderTableRow } =
-    useEnrollmentStatus();
+  const {
+    tableColumnOptions,
+    enrollmentStatusItemList,
+    onRenderTableRow,
+    onRefresh,
+    // onCancelRequest,
+  } = useEnrollmentStatus();
   const { loading } = useCourseSearch();
-  const requestID = "69696969";
   const submissionDate = new Date();
+  const requestID = enrollmentStatusItemList[0].id;
 
   return (
     <>
       <Header as="h1">
         <FormattedMessage id="EnrollmentStatus.title" />
       </Header>
+      {/* {console.log(enrollmentStatusItemList)} */}
       <EnrollmentRequestInfo
         requestID={requestID}
         submissionDate={submissionDate.toString()}
+        onRefresh={onRefresh}
+        // onCancelRequest={onCancelRequest}
       />
       <Table
         tableData={enrollmentStatusItemList ?? []}

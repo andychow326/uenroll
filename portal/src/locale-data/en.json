@@ -174,6 +174,8 @@
 
   "EnrollmentStatus.request.id.label": "Enrollment Request ID : ",
   "EnrollmentStatus.request.submission-date.label": "Submission Date : ",
+  "EnrollmentStatus.request.refresh-button.label": "Refresh",
+  "EnrollmentStatus.request.cancel-button.label": "Cancel Request",
 
   "EnrollmentStatus.table.header.sequence": "Sequence",
   "EnrollmentStatus.table.header.status": "Status",

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useUser } from "../contexts/UserProvider";
 import { useSafeQuery } from "../hooks/query";
 import trpc from "../trpc";
-import type { OpenedCourse, UserProfile } from "../types";
+import type { EnrollmentStatusItem, OpenedCourse, UserProfile } from "../types";
 
 function useUserActionCreator() {
   const apiClient = trpc.useContext();
@@ -15,6 +15,13 @@ function useUserActionCreator() {
       updateUserProfile(userProfile as UserProfile);
     }
   }, [apiClient.user.profile, safeQuery, updateUserProfile]);
+
+  const fetchEnrollmentStatusItem = useCallback(async () => {
+    const result = await safeQuery(() =>
+      apiClient.enrollmentStatusItem.list.fetch({ type })
+    );
+    return result as EnrollmentStatusItem[];
+  }, [apiClient.enrollmentStatusItem.list, safeQuery]);
 
   const validateSession = useCallback(async () => {
     const isValid = await safeQuery(() =>
@@ -76,6 +83,7 @@ function useUserActionCreator() {
       validateSession,
       addShoppingCart,
       fetchShoppingCart,
+      fetchEnrollmentStatusItem,
       enrollCourse,
       deleteShoppingCart,
       loading,
@@ -92,8 +100,8 @@ function useUserActionCreator() {
       loading,
       validateSession,
       dropCourse,
+      fetchEnrollmentStatusItem,
     ]
   );
 }
-
 export default useUserActionCreator;
