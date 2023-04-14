@@ -10,13 +10,7 @@ import { Button, Checkbox, Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
-import {
-  CourseListItem,
-  CourseType,
-  OpenedCourse,
-  TableColumnOption,
-  TableRowCellOption,
-} from "../types";
+import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 
 // onEnroll:
 // onDelete:
@@ -41,7 +35,7 @@ function useShoppingCart() {
     setCourseChecked(
       courseList.map((course) => `${course.subject}${course.number}`)
     );
-  }, []);
+  }, [courseList]);
 
   const onUnSelectAll = useCallback(() => {
     setCourseChecked([]);
@@ -67,7 +61,7 @@ function useShoppingCart() {
       {
         type: "component",
         headerLabel:
-          courseList.length === courseChecked.length ? (
+          courseList.length !== courseChecked.length ? (
             <Button onClick={onSelectAll} size="mini">
               <FormattedMessage id="ShoppingCart.table.header.select-all.label" />
             </Button>
@@ -89,7 +83,7 @@ function useShoppingCart() {
         width: 200,
       },
     ],
-    []
+    [courseChecked.length, courseList.length, onSelectAll, onUnSelectAll]
   );
 
   const getTableRowCellColumnOptions = useCallback(
@@ -136,7 +130,7 @@ function useShoppingCart() {
         },
       },
     ],
-    [intl]
+    [courseChecked, intl]
   );
 
   const onRenderTableRow = useCallback(
@@ -190,7 +184,7 @@ const ShoppingCart: React.FC = () => {
       <Header as="h1">
         <FormattedMessage id="ShoppingCart.title" />
       </Header>
-      <div align="right">
+      <div style={{ textAlign: "right" }}>
         <Button color="orange" onClick={onEnroll}>
           <FormattedMessage id="ShoppingCart.enroll-button.label" />
         </Button>

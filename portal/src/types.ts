@@ -84,7 +84,7 @@ export type TableColumnOption =
 
 export type TableRowCellOption = {
   styles: CSSProperties;
-  value: string;
+  value: ReactNode;
 };
 
 export type UserProfileListFilter = {

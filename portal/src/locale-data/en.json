@@ -176,6 +176,7 @@
   "ShoppingCart.delete-button.label": "Delete",
   "ShoppingCart.vaildate-button.label": "Vaildate",
   "ShoppingCart.table.header.select-all.label": "Select All",
+  "ShoppingCart.table.header.unselect-all.label": "Unselect All",
   "ShoppingCart.table.header.course-code.label": "Course Code",
   "ShoppingCart.table.header.title.label": "Title",
   "ShoppingCart.table.row.course-code.label": "{subject}{number}"
