@@ -61,3 +61,22 @@ spec:
         - name: volume-nginx-conf
           configMap:
             name: uenroll-portal
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uenroll-worker
+  namespace: uenroll
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: uenroll-worker
+  template:
+    metadata:
+      labels:
+        app: uenroll-worker
+    spec:
+      containers:
+        - name: uenroll-worker
+          image: andychow326/uenroll-worker:latest
