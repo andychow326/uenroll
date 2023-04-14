@@ -8,14 +8,17 @@ import React, {
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
+import EditCourseModal from "../components/EditCourseModal";
 import StudentCourseTableDetailsCell from "../components/StudentCourseTableDetailsCell";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
+import { useEditCourseModal } from "../hooks/modal";
 import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 
 export function useStudentHome() {
   const [courses, setCourses] = useState<OpenedCourse[]>([]);
   const { loading, fetchEnrolledCourse } = useUserActionCreator();
+  const editCourseModalOptions = useEditCourseModal({});
   const intl = useIntl();
 
   useEffect(() => {
@@ -76,15 +79,18 @@ export function useStudentHome() {
           data.subject,
           data.number,
           data.course.title,
-          data.section === "-" ? "" : data.section
+          data.section
         )}
         showDetailButton
         detailButtonLabelID="StudentHome.table.row.more-button.label"
         hideDetailButtonLabelID="StudentHome.table.row.hidden-button.label"
+        showSecondaryButton
+        secondaryButtonLabelID="StudentHome.table.row.detail-button.label"
+        onClickSecondaryButton={editCourseModalOptions.onReadOnly(data.course)}
         DetailInfo={<StudentCourseTableDetailsCell openedCourse={data} />}
       />
     ),
-    [getTableRowCellColumnOptions]
+    [editCourseModalOptions, getTableRowCellColumnOptions]
   );
 
   return useMemo(
@@ -93,14 +99,26 @@ export function useStudentHome() {
       courses,
       tableColumnOptions,
       onRenderTableRow,
+      editCourseModalOptions,
     }),
-    [courses, loading, onRenderTableRow, tableColumnOptions]
+    [
+      courses,
+      loading,
+      onRenderTableRow,
+      tableColumnOptions,
+      editCourseModalOptions,
+    ]
   );
 }
 
 const StudentHome: React.FC = () => {
-  const { loading, courses, tableColumnOptions, onRenderTableRow } =
-    useStudentHome();
+  const {
+    loading,
+    courses,
+    tableColumnOptions,
+    onRenderTableRow,
+    editCourseModalOptions,
+  } = useStudentHome();
 
   return (
     <>
@@ -112,6 +130,14 @@ const StudentHome: React.FC = () => {
         tableData={courses}
         columnOptions={tableColumnOptions}
         onRenderRow={onRenderTableRow}
+      />
+      <EditCourseModal
+        loading={loading}
+        error={null}
+        {...editCourseModalOptions}
+        course={editCourseModalOptions.currentCourse}
+        isOpen={editCourseModalOptions.isEditCourseModalOpen}
+        onClose={editCourseModalOptions.onCloseEditCourseModal}
       />
     </>
   );

@@ -47,8 +47,9 @@
   "StudentHome.title": "My Classes",
   "StudentHome.table.header.course-code.label": "Course Code",
   "StudentHome.table.header.course-title.label": "Course Title",
-  "StudentHome.table.row.course-code.label": "{subject}{number} {section}",
-  "StudentHome.table.row.more-button.label": "View Details",
+  "StudentHome.table.row.course-code.label": "{subject}{number}{section}",
+  "StudentHome.table.row.detail-button.label": "View Details",
+  "StudentHome.table.row.more-button.label": "More",
   "StudentHome.table.row.hidden-button.label": "Hide",
 
   "UserManagement.title": "User Management",
