@@ -19,18 +19,23 @@ import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 // onVaildate: check time crash
 
 function useShoppingCart() {
-  const { loading, fetchShoppingCart, enrollCourse } = useUserActionCreator();
+  const { loading, fetchShoppingCart, enrollCourse, deleteShoppingCart } =
+    useUserActionCreator();
   const [courseList, setCourseList] = useState<OpenedCourse[]>([]);
   const [courseChecked, setCourseChecked] = useState<string[]>([]);
   const intl = useIntl();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const onFetchShoppingCart = useCallback(() => {
     fetchShoppingCart()
       .then((course) => {
         setCourseList(course);
       })
       .catch(() => {});
+  }, [fetchShoppingCart]);
+
+  useEffect(() => {
+    onFetchShoppingCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,9 +54,10 @@ function useShoppingCart() {
   }, [courseChecked, enrollCourse, navigate]);
 
   const onDelete = useCallback(() => {
-    // remove courseChecked from courseList
-    //
-  }, []);
+    deleteShoppingCart(courseChecked).finally(() => {
+      onFetchShoppingCart();
+    });
+  }, [courseChecked, deleteShoppingCart, onFetchShoppingCart]);
 
   const onVaildate = useCallback(() => {
     // check if there is a time conflict
