@@ -6,25 +6,32 @@ import React, {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
 import StudentCourseTableDetailsCell from "../components/StudentCourseTableDetailsCell";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
+import routes from "../routes";
 import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 
 function useDropClass() {
   const [courseList, setCourseList] = useState<OpenedCourse[]>([]);
   const [courseChecked, setCourseChecked] = useState<string[]>([]);
-  const { loading, fetchEnrolledCourse } = useUserActionCreator();
+  const { loading, fetchEnrolledCourse, dropCourse } = useUserActionCreator();
   const intl = useIntl();
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  const onFetchCourse = useCallback(() => {
     fetchEnrolledCourse()
       .then((course) => {
         setCourseList(course);
       })
       .catch(() => {});
+  }, [fetchEnrolledCourse]);
+
+  useEffect(() => {
+    onFetchCourse();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -35,6 +42,12 @@ function useDropClass() {
   const onUnSelectAll = useCallback(() => {
     setCourseChecked([]);
   }, []);
+
+  const onDrop = useCallback(() => {
+    dropCourse(courseChecked).finally(() => {
+      navigate(routes.enrollmentStatus.path);
+    });
+  }, [courseChecked, dropCourse, navigate]);
 
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
@@ -138,13 +151,14 @@ function useDropClass() {
       courseList,
       tableColumnOptions,
       onRenderTableRow,
+      onDrop,
     }),
-    [courseList, loading, onRenderTableRow, tableColumnOptions]
+    [courseList, loading, onRenderTableRow, tableColumnOptions, onDrop]
   );
 }
 
 const DropClass: React.FC = () => {
-  const { loading, courseList, tableColumnOptions, onRenderTableRow } =
+  const { loading, courseList, tableColumnOptions, onRenderTableRow, onDrop } =
     useDropClass();
 
   return (
@@ -152,9 +166,11 @@ const DropClass: React.FC = () => {
       <Header as="h1">
         <FormattedMessage id="DropClass.title" />
       </Header>
-      <Button color="orange" size="small">
-        <FormattedMessage id="DropClass.drop-button.label" />
-      </Button>
+      <div style={{ textAlign: "right" }}>
+        <Button color="orange" onClick={onDrop}>
+          <FormattedMessage id="DropClass.drop-button.label" />
+        </Button>
+      </div>
       <Table
         loading={loading}
         tableData={courseList}

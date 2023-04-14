@@ -63,6 +63,13 @@ function useUserActionCreator() {
     return (result as OpenedCourse[]) ?? [];
   }, [apiClient.user.enrolledCourse, safeQuery]);
 
+  const dropCourse = useCallback(
+    async (courseIDList: string[]) => {
+      await safeQuery(() => apiClient.user.dropCourse.fetch(courseIDList));
+    },
+    [apiClient.user.dropCourse, safeQuery]
+  );
+
   return useMemo(
     () => ({
       fetchUserProfile,
@@ -73,6 +80,7 @@ function useUserActionCreator() {
       deleteShoppingCart,
       loading,
       fetchEnrolledCourse,
+      dropCourse,
     }),
     [
       addShoppingCart,
@@ -83,6 +91,7 @@ function useUserActionCreator() {
       fetchUserProfile,
       loading,
       validateSession,
+      dropCourse,
     ]
   );
 }
