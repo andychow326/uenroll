@@ -77,7 +77,7 @@ function useShoppingCart() {
               <FormattedMessage id="ShoppingCart.table.header.unselect-all.label" />
             </Button>
           ),
-        width: 150,
+        width: 100,
       },
       {
         type: "text",

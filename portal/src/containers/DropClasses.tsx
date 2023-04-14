@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
+import CourseTableDetailsCell from "../components/CourseTableDetailsCell";
 import StudentCourseTableDetailsCell from "../components/StudentCourseTableDetailsCell";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
@@ -63,7 +64,7 @@ function useDropClass() {
               <FormattedMessage id="ShoppingCart.table.header.unselect-all.label" />
             </Button>
           ),
-        width: 150,
+        width: 100,
       },
       {
         type: "text",
