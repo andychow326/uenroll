@@ -26,8 +26,10 @@ const StudentCourseTableDetailsCellRowItem: React.FC<
           <FormattedMessage
             id="CourseTableDetailsCellRowItem.time-slot.time"
             values={{
-              start: intl.formatTime(timeSlots[0].start),
-              end: intl.formatTime(timeSlots.slice(-1)[0].end),
+              start: intl.formatTime(timeSlots[0].start, { timeZone: "UTC" }),
+              end: intl.formatTime(timeSlots.slice(-1)[0].end, {
+                timeZone: "UTC",
+              }),
             }}
           />
         </p>
