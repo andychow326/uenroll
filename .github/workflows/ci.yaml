@@ -41,16 +41,29 @@ jobs:
       - run: npm run ci:server
         if: ${{ !cancelled() }}
 
+  test-worker:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.15.0"
+      - run: npm ci
+      - run: make init-prisma
+      - run: npm run ci:worker
+        if: ${{ !cancelled() }}
+
   build:
     runs-on: ubuntu-22.04
     if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
-    needs: [test-server, test-portal]
+    needs: [test-server, test-portal, test-worker]
 
     strategy:
       matrix:
         component:
           - portal
           - server
+          - worker
 
     steps:
       - uses: actions/checkout@v3
@@ -77,7 +90,7 @@ jobs:
   deploy:
     if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
     runs-on: ubuntu-22.04
-    needs: [test-server, test-portal, build]
+    needs: [test-server, test-portal, test-worker, build]
     steps:
       - uses: actions/checkout@v3
       - name: Generate image tag
@@ -97,3 +110,4 @@ jobs:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/uenroll-server:${{ env.IMAGE_TAG }}
             ${{ secrets.DOCKERHUB_USERNAME }}/uenroll-portal:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/uenroll-worker:${{ env.IMAGE_TAG }}

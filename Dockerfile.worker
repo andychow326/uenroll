@@ -10,17 +10,16 @@ RUN npm ci
 
 COPY . .
 RUN npx prisma generate --schema=./server/prisma/schema.prisma
-RUN npm run build:server
+RUN npm run build:worker
 
 FROM node:18.15.0-alpine
 
 WORKDIR /app
 
-COPY server/package.json package.json
+COPY worker/package.json package.json
 RUN npm install --omit=dev
-COPY server/prisma prisma
-COPY server/src/templates src/templates
+COPY worker/prisma prisma
 RUN npx prisma generate
 
-COPY --from=builder /app/server/dist .
+COPY --from=builder /app/worker/dist .
 CMD [ "node", "index.js" ]
