@@ -26,26 +26,21 @@ function useEnrollmentStatus() {
   >([]);
   const { fetchEnrollmentStatusItem } = useUserActionCreator();
 
-  const onFetch = useCallback(async () => {
-    const enrollmentStatusItem = await fetchEnrollmentStatusItem({
-      sequence: "",
-      status: "",
-      subject: "",
-      number: "",
-      title: "",
-      requestType: "",
-      message: "",
-    });
-    setEnrollmentStatusItemList(enrollmentStatusItem);
+  const onFetch = useCallback(() => {
+    fetchEnrollmentStatusItem()
+      .then((enrollmentStatusItem) => {
+        setEnrollmentStatusItemList(enrollmentStatusItem);
+      })
+      .catch(() => {});
   }, [fetchEnrollmentStatusItem]);
 
   const onRefresh = useCallback(() => {
-    void onFetch();
+    onFetch();
   }, [onFetch]);
 
-  const onCancelRequest = useCallback(() => {
-    onFetch();
-  }, []);
+  // const onCancelRequest = useCallback(() => {
+  //   onFetch();
+  // }, [onFetch]);
 
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
@@ -140,12 +135,12 @@ function useEnrollmentStatus() {
     (data: EnrollmentStatusItem): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
+          data.id,
           data.sequence,
           data.status,
           data.subject,
           data.number,
           data.title,
-          data.sequence,
           data.message
         )}
       />
@@ -166,7 +161,7 @@ function useEnrollmentStatus() {
       onRenderTableRow,
       onFetch,
       onRefresh,
-      onCancelRequest,
+      // onCancelRequest,
     }),
     [
       enrollmentStatusItemList,
@@ -175,7 +170,7 @@ function useEnrollmentStatus() {
       tableColumnOptions,
       onFetch,
       onRefresh,
-      onCancelRequest,
+      // onCancelRequest,
     ]
   );
 }
@@ -188,22 +183,23 @@ const EnrollmentStatus: React.FC = () => {
     enrollmentStatusItemList,
     onRenderTableRow,
     onRefresh,
-    onCancelRequest,
+    // onCancelRequest,
   } = useEnrollmentStatus();
   const { loading } = useCourseSearch();
   const submissionDate = new Date();
-  const requestID = "69696969";
+  const requestID = enrollmentStatusItemList[0].id;
 
   return (
     <>
       <Header as="h1">
         <FormattedMessage id="EnrollmentStatus.title" />
       </Header>
+      {/* {console.log(enrollmentStatusItemList)} */}
       <EnrollmentRequestInfo
         requestID={requestID}
         submissionDate={submissionDate.toString()}
         onRefresh={onRefresh}
-        onCancelRequest={onCancelRequest}
+        // onCancelRequest={onCancelRequest}
       />
       <Table
         tableData={enrollmentStatusItemList ?? []}

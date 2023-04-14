@@ -16,15 +16,12 @@ function useUserActionCreator() {
     }
   }, [apiClient.user.profile, safeQuery, updateUserProfile]);
 
-  const fetchEnrollmentStatusItem = useCallback(
-    async <T extends EnrollmentStatusItem>(type: T) => {
-      const result = await safeQuery(() =>
-        apiClient.enrollmentStatusItem.list.fetch({ type })
-      );
-      return result as EnrollmentStatusItem[];
-    },
-    [apiClient.enrollmentStatusItem.list, safeQuery]
-  );
+  const fetchEnrollmentStatusItem = useCallback(async () => {
+    const result = await safeQuery(() =>
+      apiClient.enrollmentStatusItem.list.fetch({ type })
+    );
+    return result as EnrollmentStatusItem[];
+  }, [apiClient.enrollmentStatusItem.list, safeQuery]);
 
   const validateSession = useCallback(async () => {
     const isValid = await safeQuery(() =>

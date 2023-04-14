@@ -7,6 +7,7 @@ import styles from "./styles.module.css";
 interface EnrollmentRequestInfoProps {
   requestID: string;
   submissionDate: string;
+  onRefresh: 
 }
 
 const EnrollmentRequestInfo: React.FC<EnrollmentRequestInfoProps> = (props) => {
@@ -30,8 +31,12 @@ const EnrollmentRequestInfo: React.FC<EnrollmentRequestInfoProps> = (props) => {
         </div>
       </div>
       <div className={styles.buttons}>
-        <Button color="orange">Refresh</Button>
-        <Button>Cancel Request</Button>
+        <Button color="orange">
+          <FormattedMessage id="EnrollmentStatus.request.refresh-button.label" />
+        </Button>
+        <Button>
+          <FormattedMessage id="EnrollmentStatus.request.cancel-button.label" />
+        </Button>
       </div>
     </div>
   );
