@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import { Header } from "semantic-ui-react";
 import useAdminActionCreator from "../actions/admin";
 import useCourseActionCreator from "../actions/course";
@@ -17,6 +18,7 @@ import TableRowCell from "../components/TableRowCell";
 import { useUser } from "../contexts/UserProvider";
 import { useEditCourseModal, useEditOpenedCourseModal } from "../hooks/modal";
 import { useCourseSearchBar } from "../hooks/searchBar";
+import routes from "../routes";
 import {
   Course,
   CourseListFilter,
@@ -64,6 +66,7 @@ export function useCourseSearch() {
     createCourseSection,
     editCourseSection,
   });
+  const navigate = useNavigate();
 
   const onSearch = useCallback(
     (
@@ -240,13 +243,12 @@ export function useCourseSearch() {
   );
 
   const onAddToShoppingCart = useCallback(
-    (courseID: string) => async () => {
-      const result = await addShoppingCart(courseID);
-      if (result) {
-        // TODO: fetch shopping cart list and set button disabled
-      }
+    (courseID: string) => () => {
+      addShoppingCart(courseID).finally(() => {
+        navigate(routes.shoppingCart.path);
+      });
     },
-    [addShoppingCart]
+    [addShoppingCart, navigate]
   );
 
   const onRenderTableRow = useCallback(
