@@ -6,13 +6,14 @@ CREATE TYPE "RequestType" AS ENUM ('ENROLL', 'DROP');
 
 -- CreateTable
 CREATE TABLE "enrollment_status" (
+    "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "course_id" TEXT NOT NULL,
     "status" "StatusType" NOT NULL,
     "request_type" "RequestType" NOT NULL,
     "message" TEXT NOT NULL,
 
-    CONSTRAINT "enrollment_status_pkey" PRIMARY KEY ("user_id","course_id")
+    CONSTRAINT "enrollment_status_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey

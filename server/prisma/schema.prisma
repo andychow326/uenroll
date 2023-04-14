@@ -148,6 +148,7 @@ enum RequestType {
 }
 
 model EnrollmentStatus {
+  id       String @id @default(uuid())
   userId   String @map("user_id")
   courseId String @map("course_id")
 
@@ -158,7 +159,6 @@ model EnrollmentStatus {
   user         User         @relation(fields: [userId], references: [id])
   openedCourse OpenedCourse @relation(fields: [courseId], references: [id])
 
-  @@id([userId, courseId])
   @@map("enrollment_status")
 }
 
