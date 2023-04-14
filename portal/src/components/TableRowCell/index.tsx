@@ -1,9 +1,8 @@
 import React, { ReactNode, useCallback, useId, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button, Checkbox } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import { TableRowCellOption } from "../../types";
 
-import routes from "../../routes";
 import styles from "./styles.module.css";
 
 interface TableRowCellProps {
@@ -14,7 +13,6 @@ interface TableRowCellProps {
   showSecondaryButton?: boolean;
   secondaryButtonLabelID?: string;
   DetailInfo?: ReactNode;
-  showCheckbox?: boolean;
   onClickDetailButton?: () => void;
   onClickSecondaryButton?: () => void;
 }
@@ -27,7 +25,6 @@ const TableRowCell: React.FC<TableRowCellProps> = (props) => {
     hideDetailButtonLabelID,
     showSecondaryButton,
     secondaryButtonLabelID,
-    showCheckbox = false,
     onClickDetailButton,
     onClickSecondaryButton,
     DetailInfo,
@@ -43,16 +40,11 @@ const TableRowCell: React.FC<TableRowCellProps> = (props) => {
   return (
     <>
       <div className={styles.container}>
-        {showCheckbox && <Checkbox />}
         <div className={styles.rowData}>
           {columnOptions.map((item, index) => (
-            <a
-              key={`${id}-${index}`}
-              style={item.styles}
-              href={routes.courseDetail.path}
-            >
+            <div key={`${id}-${index}`} style={item.styles}>
               {item.value}
-            </a>
+            </div>
           ))}
         </div>
         <div>

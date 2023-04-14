@@ -24,9 +24,6 @@ const routes = {
     course: { path: "/manage/course" },
     user: { path: "/manage/user" },
   },
-  courseDetail: {
-    path: "/course-detail",
-  },
 } as const;
 
 export default routes;

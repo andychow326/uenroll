@@ -30,10 +30,12 @@ export function useStudentHome() {
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
+        type: "text",
         headerLabelID: "StudentHome.table.header.course-code.label",
         width: 200,
       },
       {
+        type: "text",
         headerLabelID: "StudentHome.table.header.course-title.label",
         width: 200,
       },
