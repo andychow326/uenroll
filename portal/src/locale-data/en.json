@@ -44,6 +44,13 @@
   "AuthForm.forgot-password.button.label": "Continue",
   "AuthForm.reset-password.button.label": "Continue",
 
+  "StudentHome.title": "My Classes",
+  "StudentHome.table.header.course-code.label": "Course Code",
+  "StudentHome.table.header.course-title.label": "Course Title",
+  "StudentHome.table.row.course-code.label": "{subject}{number} {section}",
+  "StudentHome.table.row.more-button.label": "View Details",
+  "StudentHome.table.row.hidden-button.label": "Hide",
+
   "UserManagement.title": "User Management",
   "UserManagement.search-bar.user-id.label": "User ID: ",
   "UserManagement.search-bar.user-name.label": "User Name: ",
@@ -143,6 +150,9 @@
   "EditCourseModal.input.required-readings.label": "Required Readings (Optional)",
   "EditCourseModal.input.recommended-readings.label": "Recommended Readings (Optional)",
   "EditCourseModal.save-button.label": "Save",
+
+  "DropClass.title": "My Classes",
+  "DropClass.drop-button.label": "Drop",
 
   "EditOpenedCourseModal.header.create-course": "Create Course Section - {subject}{number}",
   "EditOpenedCourseModal.header.edit-course": "Edit Course Section",

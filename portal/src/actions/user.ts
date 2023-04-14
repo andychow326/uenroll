@@ -58,6 +58,11 @@ function useUserActionCreator() {
     [apiClient.user.deleteShoppingCart, safeQuery]
   );
 
+  const fetchEnrolledCourse = useCallback(async () => {
+    const result = await safeQuery(() => apiClient.user.enrolledCourse.fetch());
+    return (result as OpenedCourse[]) ?? [];
+  }, [apiClient.user.enrolledCourse, safeQuery]);
+
   return useMemo(
     () => ({
       fetchUserProfile,
@@ -67,15 +72,17 @@ function useUserActionCreator() {
       enrollCourse,
       deleteShoppingCart,
       loading,
+      fetchEnrolledCourse,
     }),
     [
-      fetchUserProfile,
-      validateSession,
       addShoppingCart,
-      fetchShoppingCart,
-      enrollCourse,
       deleteShoppingCart,
+      enrollCourse,
+      fetchEnrolledCourse,
+      fetchShoppingCart,
+      fetchUserProfile,
       loading,
+      validateSession,
     ]
   );
 }

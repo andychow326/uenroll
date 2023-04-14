@@ -22,6 +22,7 @@ const ShoppingCart = lazy(async () => import("./ShoppingCart"));
 const DropClasses = lazy(async () => import("./DropClasses"));
 const TimeTable = lazy(async () => import("./TimeTable"));
 const EnrollmentStatus = lazy(async () => import("./EnrollmentStatus"));
+const CourseDetails = lazy(async () => import("./CourseDetail"));
 
 const router = createBrowserRouter([
   {
@@ -135,6 +136,19 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<LoadingSpinner />}>
                 <EnrollmentStatus />
+              </Suspense>
+            ),
+          },
+        ],
+      },
+      {
+        path: routes.courseDetail.path,
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<LoadingSpinner />}>
+                <CourseDetails />
               </Suspense>
             ),
           },
