@@ -60,5 +60,14 @@ services:
     ports:
       - 3001:3001
 
+  worker:
+    <<: *dev-build
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npx prisma generate --schema=./worker/prisma/schema.prisma
+        npm run start:worker
+
 volumes:
   db_data:
