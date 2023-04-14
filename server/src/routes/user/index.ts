@@ -2,6 +2,7 @@ import trpc from "../../trpc";
 import addShoppingCart from "./addShoppingCart";
 import create from "./create";
 import edit from "./edit";
+import enrollCourse from "./enrollCourse";
 import enrolledCourse from "./enrolledCourse";
 import getShoppingCart from "./getShoppingCart";
 import list from "./list";
@@ -19,6 +20,7 @@ const user = trpc.router({
   enrolledCourse,
   addShoppingCart,
   getShoppingCart,
+  enrollCourse,
 });
 
 export default user;

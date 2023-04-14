@@ -6,10 +6,12 @@ import React, {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
+import routes from "../routes";
 import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 
 // onEnroll:
@@ -17,10 +19,11 @@ import { OpenedCourse, TableColumnOption, TableRowCellOption } from "../types";
 // onVaildate: check time crash
 
 function useShoppingCart() {
-  const { loading, fetchShoppingCart } = useUserActionCreator();
+  const { loading, fetchShoppingCart, enrollCourse } = useUserActionCreator();
   const [courseList, setCourseList] = useState<OpenedCourse[]>([]);
   const [courseChecked, setCourseChecked] = useState<string[]>([]);
   const intl = useIntl();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchShoppingCart()
@@ -32,9 +35,7 @@ function useShoppingCart() {
   }, []);
 
   const onSelectAll = useCallback(() => {
-    setCourseChecked(
-      courseList.map((course) => `${course.subject}${course.number}`)
-    );
+    setCourseChecked(courseList.map((course) => course.id));
   }, [courseList]);
 
   const onUnSelectAll = useCallback(() => {
@@ -42,10 +43,10 @@ function useShoppingCart() {
   }, []);
 
   const onEnroll = useCallback(() => {
-    // check vaildate
-    // if vaildate, enroll and direct to enrollment status
-    // if not vaildate, error message is displayed
-  }, []);
+    enrollCourse(courseChecked).finally(() => {
+      navigate(routes.enrollmentStatus.path);
+    });
+  }, [courseChecked, enrollCourse, navigate]);
 
   const onDelete = useCallback(() => {
     // remove courseChecked from courseList
@@ -87,22 +88,24 @@ function useShoppingCart() {
   );
 
   const getTableRowCellColumnOptions = useCallback(
-    (subject: string, number: string, title: string): TableRowCellOption[] => [
+    (
+      id: string,
+      subject: string,
+      number: string,
+      title: string
+    ): TableRowCellOption[] => [
       {
         value: (
           <Checkbox
-            checked={courseChecked.includes(`${subject}${number}`)}
+            checked={courseChecked.includes(id)}
             onClick={() => {
-              const index = courseChecked.indexOf(`${subject}${number}`);
+              const index = courseChecked.indexOf(id);
               if (index !== -1) {
                 setCourseChecked((courses) =>
-                  courses.filter((course) => course !== `${subject}${number}`)
+                  courses.filter((course) => course !== id)
                 );
               } else {
-                setCourseChecked((courses) => [
-                  ...courses,
-                  `${subject}${number}`,
-                ]);
+                setCourseChecked((courses) => [...courses, id]);
               }
             }}
           />
@@ -137,6 +140,7 @@ function useShoppingCart() {
     (data: OpenedCourse): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
+          data.id,
           data.course.subject,
           data.course.number,
           data.course.title

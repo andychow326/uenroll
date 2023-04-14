@@ -98,12 +98,6 @@ async function handleEnrollJob(job: Job<EnrollmentJobData>) {
     })),
   });
 
-  await prisma.shoppingCart.deleteMany({
-    where: {
-      OR: courses.map((course) => ({ courseId: course.id, userId: userID })),
-    },
-  });
-
   return Object.fromEntries(failCourses);
 }
 

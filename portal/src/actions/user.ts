@@ -42,12 +42,20 @@ function useUserActionCreator() {
     return (result as OpenedCourse[]) ?? [];
   }, [apiClient.user.getShoppingCart, safeQuery]);
 
+  const enrollCourse = useCallback(
+    async (courseIDList: string[]) => {
+      await safeQuery(() => apiClient.user.enrollCourse.fetch(courseIDList));
+    },
+    [apiClient.user.enrollCourse, safeQuery]
+  );
+
   return useMemo(
     () => ({
       fetchUserProfile,
       validateSession,
       addShoppingCart,
       fetchShoppingCart,
+      enrollCourse,
       loading,
     }),
     [
@@ -55,6 +63,7 @@ function useUserActionCreator() {
       validateSession,
       addShoppingCart,
       fetchShoppingCart,
+      enrollCourse,
       loading,
     ]
   );
