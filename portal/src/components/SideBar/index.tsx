@@ -85,11 +85,11 @@ const SideBar: React.FC = () => {
 
   const adminMenuItems = useMemo(
     (): MenuItemProps[] => [
-      {
-        icon: "home",
-        textID: "SideBar.menu.student.home.label",
-        path: routes.prefix,
-      },
+      // {
+      //   icon: "home",
+      //   textID: "SideBar.menu.student.home.label",
+      //   path: routes.prefix,
+      // },
       {
         icon: "folder open",
         textID: "SideBar.menu.admin.course-management.label",
