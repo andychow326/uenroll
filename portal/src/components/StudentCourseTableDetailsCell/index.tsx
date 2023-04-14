@@ -52,9 +52,9 @@ interface StudentCourseTableDetailsCellProps {
   openedCourse: OpenedCourse;
 }
 
-const CourseTableDetailsCell: React.FC<StudentCourseTableDetailsCellProps> = (
-  props
-) => {
+const StudentCourseTableDetailsCell: React.FC<
+  StudentCourseTableDetailsCellProps
+> = (props) => {
   const { openedCourse } = props;
   const { getTimeSlotsByIDs } = useTimeSlot();
 
@@ -89,4 +89,4 @@ const CourseTableDetailsCell: React.FC<StudentCourseTableDetailsCellProps> = (
   );
 };
 
-export default CourseTableDetailsCell;
+export default StudentCourseTableDetailsCell;
