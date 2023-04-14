@@ -1,6 +1,13 @@
-import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Header } from "semantic-ui-react";
+import useUserActionCreator from "../actions/user";
 import EnrollmentRequestInfo from "../components/EnrollmentRequestInfo";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
@@ -17,6 +24,28 @@ function useEnrollmentStatus() {
   const [enrollmentStatusItemList, setEnrollmentStatusItemList] = useState<
     EnrollmentStatusItem[]
   >([]);
+  const { fetchEnrollmentStatusItem } = useUserActionCreator();
+
+  const onFetch = useCallback(async () => {
+    const enrollmentStatusItem = await fetchEnrollmentStatusItem({
+      sequence: "",
+      status: "",
+      subject: "",
+      number: "",
+      title: "",
+      requestType: "",
+      message: "",
+    });
+    setEnrollmentStatusItemList(enrollmentStatusItem);
+  }, [fetchEnrollmentStatusItem]);
+
+  const onRefresh = useCallback(() => {
+    void onFetch();
+  }, [onFetch]);
+
+  const onCancelRequest = useCallback(() => {
+    onFetch();
+  }, []);
 
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
@@ -124,18 +153,29 @@ function useEnrollmentStatus() {
     [getTableRowCellColumnOptions]
   );
 
+  useEffect(() => {
+    onFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return useMemo(
     () => ({
       enrollmentStatusItemList,
       tableColumnOptions,
       getTableRowCellColumnOptions,
       onRenderTableRow,
+      onFetch,
+      onRefresh,
+      onCancelRequest,
     }),
     [
       enrollmentStatusItemList,
       getTableRowCellColumnOptions,
       onRenderTableRow,
       tableColumnOptions,
+      onFetch,
+      onRefresh,
+      onCancelRequest,
     ]
   );
 }
@@ -143,11 +183,16 @@ function useEnrollmentStatus() {
 const EnrollmentStatus: React.FC = () => {
   // const { loading, fetchCourseList, fetchCourseCount } =
   //   useCourseActionCreator();
-  const { tableColumnOptions, enrollmentStatusItemList, onRenderTableRow } =
-    useEnrollmentStatus();
+  const {
+    tableColumnOptions,
+    enrollmentStatusItemList,
+    onRenderTableRow,
+    onRefresh,
+    onCancelRequest,
+  } = useEnrollmentStatus();
   const { loading } = useCourseSearch();
-  const requestID = "69696969";
   const submissionDate = new Date();
+  const requestID = "69696969";
 
   return (
     <>
@@ -157,6 +202,8 @@ const EnrollmentStatus: React.FC = () => {
       <EnrollmentRequestInfo
         requestID={requestID}
         submissionDate={submissionDate.toString()}
+        onRefresh={onRefresh}
+        onCancelRequest={onCancelRequest}
       />
       <Table
         tableData={enrollmentStatusItemList ?? []}
