@@ -72,6 +72,9 @@ services:
 
   worker:
     <<: *dev-build
+    depends_on:
+      - db
+      - redis
     command:
       - /bin/sh
       - -c
