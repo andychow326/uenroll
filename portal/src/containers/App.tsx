@@ -20,7 +20,6 @@ const UserManagement = lazy(async () => import("./UserManagement"));
 const CourseSearch = lazy(async () => import("./CourseSearch"));
 const ShoppingCart = lazy(async () => import("./ShoppingCart"));
 const DropClasses = lazy(async () => import("./DropClasses"));
-const TimeTable = lazy(async () => import("./TimeTable"));
 const EnrollmentStatus = lazy(async () => import("./EnrollmentStatus"));
 
 const router = createBrowserRouter([
@@ -109,19 +108,6 @@ const router = createBrowserRouter([
             element: (
               <Suspense fallback={<LoadingSpinner />}>
                 <DropClasses />
-              </Suspense>
-            ),
-          },
-        ],
-      },
-      {
-        path: routes.timeTable.path,
-        children: [
-          {
-            index: true,
-            element: (
-              <Suspense fallback={<LoadingSpinner />}>
-                <TimeTable />
               </Suspense>
             ),
           },

@@ -70,11 +70,6 @@ const SideBar: React.FC = () => {
         path: routes.dropClasses.path,
       },
       {
-        icon: "calendar",
-        textID: "SideBar.menu.student.time-table.label",
-        path: routes.timeTable.path,
-      },
-      {
         icon: "file alternate",
         textID: "SideBar.menu.student.enrollment-status.label",
         path: routes.enrollmentStatus.path,
@@ -85,11 +80,6 @@ const SideBar: React.FC = () => {
 
   const adminMenuItems = useMemo(
     (): MenuItemProps[] => [
-      // {
-      //   icon: "home",
-      //   textID: "SideBar.menu.student.home.label",
-      //   path: routes.prefix,
-      // },
       {
         icon: "folder open",
         textID: "SideBar.menu.admin.course-management.label",

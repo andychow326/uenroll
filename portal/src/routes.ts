@@ -16,9 +16,6 @@ const routes = {
   enrollmentStatus: {
     path: "/enrollment-status",
   },
-  timeTable: {
-    path: "/time-table",
-  },
   manage: {
     path: "/manage",
     course: { path: "/manage/course" },
