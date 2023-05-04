@@ -18,10 +18,10 @@ function useUserActionCreator() {
 
   const fetchEnrollmentStatusItem = useCallback(async () => {
     const result = await safeQuery(() =>
-      apiClient.enrollmentStatusItem.list.fetch({ type })
+      apiClient.user.enrollmentStatus.fetch()
     );
     return result as EnrollmentStatusItem[];
-  }, [apiClient.enrollmentStatusItem.list, safeQuery]);
+  }, [apiClient.user.enrollmentStatus, safeQuery]);
 
   const validateSession = useCallback(async () => {
     const isValid = await safeQuery(() =>

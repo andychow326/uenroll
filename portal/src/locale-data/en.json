@@ -182,7 +182,7 @@
   "EnrollmentStatus.table.header.course-code": "Course Code",
   "EnrollmentStatus.table.header.course-title": "Course Title",
   "EnrollmentStatus.table.header.request-type": "Request Type",
-  "EnrollmentStatus.table.header.message": "Message/Warning/Error",
+  "EnrollmentStatus.table.header.message": "Detailed Message",
 
   "ShoppingCart.title": "Shopping Cart",
   "ShoppingCart.enroll-button.label": "Enroll",

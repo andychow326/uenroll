@@ -16,7 +16,13 @@ const enrolledStatus = authProcedure.query(async ({ ctx }) => {
   });
 
   return enrollmentStatusItem.map((item) => ({
-    ...item.openedCourse,
+    id: item.id,
+    status: item.status,
+    subject: item.openedCourse.subject,
+    number: item.openedCourse.number,
+    title: item.openedCourse.course.title,
+    requestType: item.requestType,
+    message: item.message,
   }));
 });
 

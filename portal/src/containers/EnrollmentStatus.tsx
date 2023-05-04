@@ -6,9 +6,8 @@ import React, {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Header } from "semantic-ui-react";
+import { Button, Header } from "semantic-ui-react";
 import useUserActionCreator from "../actions/user";
-import EnrollmentRequestInfo from "../components/EnrollmentRequestInfo";
 import Table from "../components/Table";
 import TableRowCell from "../components/TableRowCell";
 import {
@@ -17,7 +16,6 @@ import {
   TableRowCellOption,
 } from "../types";
 import { useCourseSearch } from "./CourseSearch";
-// import useCourseActionCreator from "../actions/course";
 
 function useEnrollmentStatus() {
   const intl = useIntl();
@@ -38,35 +36,26 @@ function useEnrollmentStatus() {
     onFetch();
   }, [onFetch]);
 
-  // const onCancelRequest = useCallback(() => {
-  //   onFetch();
-  // }, [onFetch]);
-
   const tableColumnOptions = useMemo(
     (): TableColumnOption[] => [
       {
         type: "text",
-        headerLabelID: "EnrollmentStatus.table.header.sequence",
-        width: 200,
+        headerLabelID: "EnrollmentStatus.table.header.request-type",
+        width: 150,
       },
       {
         type: "text",
         headerLabelID: "EnrollmentStatus.table.header.status",
-        width: 200,
+        width: 150,
       },
       {
         type: "text",
         headerLabelID: "EnrollmentStatus.table.header.course-code",
-        width: 200,
+        width: 150,
       },
       {
         type: "text",
         headerLabelID: "EnrollmentStatus.table.header.course-title",
-        width: 200,
-      },
-      {
-        type: "text",
-        headerLabelID: "EnrollmentStatus.table.header.request-type",
         width: 200,
       },
       {
@@ -80,7 +69,6 @@ function useEnrollmentStatus() {
 
   const getTableRowCellColumnOptions = useCallback(
     (
-      sequence: string,
       status: string,
       subject: string,
       number: string,
@@ -89,15 +77,15 @@ function useEnrollmentStatus() {
       message: string
     ): TableRowCellOption[] => [
       {
-        value: sequence,
+        value: requestType,
         styles: {
-          width: 200,
+          width: 150,
         },
       },
       {
         value: status,
         styles: {
-          width: 200,
+          width: 150,
         },
       },
       {
@@ -106,7 +94,7 @@ function useEnrollmentStatus() {
           { subject, number }
         ),
         styles: {
-          width: 200,
+          width: 150,
         },
       },
       {
@@ -116,15 +104,9 @@ function useEnrollmentStatus() {
         },
       },
       {
-        value: requestType,
-        styles: {
-          width: 200,
-        },
-      },
-      {
         value: message,
         styles: {
-          width: 200,
+          minWidth: 200,
         },
       },
     ],
@@ -135,12 +117,11 @@ function useEnrollmentStatus() {
     (data: EnrollmentStatusItem): ReactNode => (
       <TableRowCell
         columnOptions={getTableRowCellColumnOptions(
-          data.id,
-          data.sequence,
           data.status,
           data.subject,
           data.number,
           data.title,
+          data.requestType,
           data.message
         )}
       />
@@ -161,7 +142,6 @@ function useEnrollmentStatus() {
       onRenderTableRow,
       onFetch,
       onRefresh,
-      // onCancelRequest,
     }),
     [
       enrollmentStatusItemList,
@@ -170,37 +150,29 @@ function useEnrollmentStatus() {
       tableColumnOptions,
       onFetch,
       onRefresh,
-      // onCancelRequest,
     ]
   );
 }
 
 const EnrollmentStatus: React.FC = () => {
-  // const { loading, fetchCourseList, fetchCourseCount } =
-  //   useCourseActionCreator();
   const {
     tableColumnOptions,
     enrollmentStatusItemList,
     onRenderTableRow,
     onRefresh,
-    // onCancelRequest,
   } = useEnrollmentStatus();
   const { loading } = useCourseSearch();
-  const submissionDate = new Date();
-  const requestID = enrollmentStatusItemList[0].id;
 
   return (
     <>
       <Header as="h1">
         <FormattedMessage id="EnrollmentStatus.title" />
       </Header>
-      {/* {console.log(enrollmentStatusItemList)} */}
-      <EnrollmentRequestInfo
-        requestID={requestID}
-        submissionDate={submissionDate.toString()}
-        onRefresh={onRefresh}
-        // onCancelRequest={onCancelRequest}
-      />
+      <div style={{ textAlign: "right" }}>
+        <Button color="orange" onClick={onRefresh}>
+          <FormattedMessage id="EnrollmentStatus.request.refresh-button.label" />
+        </Button>
+      </div>
       <Table
         tableData={enrollmentStatusItemList ?? []}
         onRenderRow={onRenderTableRow}
