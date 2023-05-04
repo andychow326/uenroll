@@ -22,7 +22,7 @@ describe("auth", () => {
         userID: "admin",
         password: "admin",
       });
-      expect(sessionID.length).toBeGreaterThan(0);
+      expect(sessionID).toBeTruthy();
     });
 
     it("should reject login with invalid userID or password", async () => {
@@ -44,7 +44,7 @@ describe("auth", () => {
         accessToken: string;
       };
       expect(response.email).toEqual("admin@uenroll.com");
-      expect(response.accessToken.length).toBeGreaterThan(0);
+      expect(response.accessToken).toBeTruthy();
     });
 
     it("should reject sending email with invalid user ID", async () => {
