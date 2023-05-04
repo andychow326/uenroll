@@ -31,7 +31,6 @@ model User {
   ShoppingCart     ShoppingCart[]
   RecentlyViewed   RecentlyViewed[]
   EnrolledCourse   EnrolledCourse[]
-  WorkerQueue      WorkerQueue[]
   EnrollmentStatus EnrollmentStatus[]
 
   @@map("user")
@@ -97,7 +96,6 @@ model OpenedCourse {
   ShoppingCart     ShoppingCart[]
   RecentlyViewed   RecentlyViewed[]
   EnrolledCourse   EnrolledCourse[]
-  WorkerQueue      WorkerQueue[]
   EnrollmentStatus EnrollmentStatus[]
 
   @@unique([subject, number, section, year, semester])
@@ -160,30 +158,4 @@ model EnrollmentStatus {
   openedCourse OpenedCourse @relation(fields: [courseId], references: [id])
 
   @@map("enrollment_status")
-}
-
-enum WorkerAction {
-  ENROLL
-  DROP
-  SWAP
-}
-
-enum WorkerStatus {
-  PENDING
-  PROCESSING
-  SUCCESS
-  FULL
-}
-
-model WorkerQueue {
-  id       String       @id @map("id")
-  userId   String       @map("user_id")
-  courseId String       @map("course_id")
-  action   WorkerAction @map("action")
-  status   WorkerStatus @map("status")
-
-  user   User         @relation(fields: [userId], references: [id])
-  course OpenedCourse @relation(fields: [courseId], references: [id])
-
-  @@map("worker_queue")
 }

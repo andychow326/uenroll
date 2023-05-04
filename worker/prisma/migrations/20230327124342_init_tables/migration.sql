@@ -2,12 +2,6 @@
 CREATE TYPE "DayOfWeek" AS ENUM ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');
 
 -- CreateEnum
-CREATE TYPE "WorkerAction" AS ENUM ('ENROLL', 'DROP', 'SWAP');
-
--- CreateEnum
-CREATE TYPE "WorkerStatus" AS ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FULL');
-
--- CreateEnum
 CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'OTHER');
 
 -- CreateTable
@@ -95,17 +89,6 @@ CREATE TABLE "enrolled_course" (
     CONSTRAINT "enrolled_course_pkey" PRIMARY KEY ("user_id","course_id")
 );
 
--- CreateTable
-CREATE TABLE "worker_queue" (
-    "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
-    "course_id" TEXT NOT NULL,
-    "action" "WorkerAction" NOT NULL,
-    "status" "WorkerStatus" NOT NULL,
-
-    CONSTRAINT "worker_queue_pkey" PRIMARY KEY ("id")
-);
-
 -- AddForeignKey
 ALTER TABLE "opened_course" ADD CONSTRAINT "opened_course_subject_number_fkey" FOREIGN KEY ("subject", "number") REFERENCES "course"("subject", "number") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -126,12 +109,6 @@ ALTER TABLE "enrolled_course" ADD CONSTRAINT "enrolled_course_user_id_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "enrolled_course" ADD CONSTRAINT "enrolled_course_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "opened_course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "worker_queue" ADD CONSTRAINT "worker_queue_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "worker_queue" ADD CONSTRAINT "worker_queue_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "opened_course"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "opened_course_subject_number_section_year_semester_key" ON "opened_course"("subject", "number", "section", "year", "semester");
