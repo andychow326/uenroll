@@ -11,6 +11,7 @@ x-dev-build:
     - /app/server/node_modules
     - /app/portal/node_modules
   environment:
+    IN_TEST: 0
     ORIGIN: ${ORIGIN}
     DATABASE_URL: ${DATABASE_URL}
     REDIS_HOST: ${REDIS_HOST}
@@ -20,6 +21,18 @@ x-dev-build:
     GMAIL_CLIENT_ID: ${GMAIL_CLIENT_ID}
     GMAIL_CLIENT_SECRET: ${GMAIL_CLIENT_SECRET}
     GMAIL_REFRESH_TOKEN: ${GMAIL_REFRESH_TOKEN}
+
+x-test-build:
+  &test-build
+  <<: *dev-build
+  profiles:
+    - test
+  environment:
+    IN_TEST: 1
+    DATABASE_URL: ${TEST_DATABASE_URL}
+    REDIS_HOST: ${TEST_REDIS_HOST}
+    REDIS_PORT: ${TEST_REDIS_PORT}
+    REDIS_URL: ${TEST_REDIS_URL}
 
 services:
   db:
@@ -33,10 +46,28 @@ services:
     ports:
       - 5435:5432
 
+  test-db:
+    profiles:
+      - test
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5436:5432
+
   redis:
     image: redis:7
     ports:
       - 6380:6379
+
+  test-redis:
+    profiles:
+      - test
+    image: redis:7
+    ports:
+      - 6381:6379
 
   nginx:
     image: nginx:1.23.3
@@ -58,6 +89,19 @@ services:
         npm run start:server
     ports:
       - 3000:3000
+
+  test-server:
+    <<: *test-build
+    depends_on:
+      - test-db
+      - test-redis
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npx prisma migrate reset --force --schema=./server/prisma/schema.prisma
+        npx prisma generate --schema=./server/prisma/schema.prisma
+        npm run ci:server
 
   portal:
     <<: *dev-build

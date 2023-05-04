@@ -11,6 +11,8 @@ declare global {
       GMAIL_CLIENT_ID: string;
       GMAIL_CLIENT_SECRET: string;
       GMAIL_REFRESH_TOKEN: string;
+
+      IN_TEST: number;
     }
   }
 }
