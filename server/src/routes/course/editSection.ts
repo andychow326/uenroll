@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { CourseErrorCourseNotFound } from "../../exceptions";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 import { inputSchema } from "./createSection";
@@ -12,10 +12,7 @@ const editSection = adminProcedure
       })) != null;
 
     if (!isExists) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.course.not_found",
-      });
+      throw CourseErrorCourseNotFound;
     }
 
     await prisma.openedCourse.update({

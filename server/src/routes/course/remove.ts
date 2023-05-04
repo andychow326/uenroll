@@ -1,5 +1,5 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { CourseErrorCourseNotFound } from "../../exceptions";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
@@ -20,10 +20,7 @@ const remove = adminProcedure.input(inputSchema).query(async ({ input }) => {
       })) > 0;
 
     if (!isExists) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.course.not_found",
-      });
+      throw CourseErrorCourseNotFound;
     }
 
     await prisma.enrolledCourse.deleteMany({
@@ -43,10 +40,7 @@ const remove = adminProcedure.input(inputSchema).query(async ({ input }) => {
     })) > 0;
 
   if (!isExists) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "error.server.course.not_found",
-    });
+    throw CourseErrorCourseNotFound;
   }
 
   await prisma.openedCourse.deleteMany({

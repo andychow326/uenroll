@@ -1,6 +1,6 @@
-import { TRPCError } from "@trpc/server";
 import crypto from "crypto";
 import { z } from "zod";
+import { AuthErrorUserNotFound } from "../../exceptions";
 import { sendRegistrationEmail } from "../../mailer";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
@@ -19,10 +19,7 @@ const sendInvitation = adminProcedure
     });
 
     if (user == null) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.user_not_found",
-      });
+      throw AuthErrorUserNotFound;
     }
 
     const accessToken = crypto

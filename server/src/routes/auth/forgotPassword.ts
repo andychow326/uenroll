@@ -1,6 +1,6 @@
-import { TRPCError } from "@trpc/server";
 import crypto from "crypto";
 import { z } from "zod";
+import { AuthErrorUserNotFound } from "../../exceptions";
 import { sendForgotPasswordEmail } from "../../mailer";
 import prisma from "../../prisma";
 import { publicProcedure } from "../../procedure";
@@ -19,10 +19,7 @@ const forgotPassword = publicProcedure
     });
 
     if (user == null) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.user_not_found",
-      });
+      throw AuthErrorUserNotFound;
     }
 
     const accessToken = crypto
@@ -36,6 +33,9 @@ const forgotPassword = publicProcedure
         EX: 15 * 60, // 15 mintues expiration time
       }
     );
+
+    if (process.env.IN_TEST) return { email: user.email, accessToken };
+
     const redirectURL = `${process.env.ORIGIN}auth/resetPassword?accessToken=${accessToken}`;
     await sendForgotPasswordEmail(user.email, user.firstName, redirectURL);
 

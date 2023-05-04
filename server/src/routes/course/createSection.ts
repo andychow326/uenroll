@@ -1,5 +1,8 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import {
+  CourseErrorCourseAlreadyExists,
+  CourseErrorCourseNotFound,
+} from "../../exceptions";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
@@ -31,10 +34,7 @@ const createSection = adminProcedure
     });
 
     if (!course) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.course.not_found",
-      });
+      throw CourseErrorCourseNotFound;
     }
 
     const openedCourse = await prisma.openedCourse.findUnique({
@@ -50,10 +50,7 @@ const createSection = adminProcedure
     });
 
     if (openedCourse != null) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.course.already_exists",
-      });
+      throw CourseErrorCourseAlreadyExists;
     }
 
     await prisma.openedCourse.create({

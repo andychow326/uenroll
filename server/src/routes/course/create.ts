@@ -1,5 +1,5 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { CourseErrorCourseNotFound } from "../../exceptions";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
@@ -28,10 +28,7 @@ const create = adminProcedure.input(inputSchema).mutation(async ({ input }) => {
     })) > 0;
 
   if (isExists) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "error.server.course.already_exists",
-    });
+    throw CourseErrorCourseNotFound;
   }
 
   await prisma.course.create({

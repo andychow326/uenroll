@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { AuthErrorUserNotFound } from "../../exceptions";
 import prisma from "../../prisma";
 import { authProcedure } from "../../procedure";
 
@@ -9,7 +9,7 @@ const profile = authProcedure.query(async ({ ctx }) => {
     },
   });
   if (user == null) {
-    throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    throw AuthErrorUserNotFound;
   }
 
   return {

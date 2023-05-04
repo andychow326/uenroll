@@ -1,5 +1,5 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { AuthErrorUnauthorized } from "../../exceptions";
 import { publicProcedure } from "../../procedure";
 import { redisClient } from "../../redis";
 import { RedisKey, getRedisKey } from "../../utils/redis";
@@ -13,7 +13,7 @@ const validateAccessToken = publicProcedure
       getRedisKey(RedisKey.ACCESS_TOKEN, input)
     );
     if (userID == null) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw AuthErrorUnauthorized;
     }
     return userID;
   });

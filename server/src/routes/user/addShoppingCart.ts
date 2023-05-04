@@ -1,5 +1,5 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { CourseErrorCourseAlreadyExists } from "../../exceptions";
 import prisma from "../../prisma";
 import { authProcedure } from "../../procedure";
 
@@ -20,10 +20,7 @@ const addShoppingCart = authProcedure
     });
 
     if (data != null) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "error.server.shopping-cart.already_exists",
-      });
+      throw CourseErrorCourseAlreadyExists;
     }
 
     await prisma.shoppingCart.createMany({

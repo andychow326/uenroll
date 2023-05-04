@@ -1,7 +1,7 @@
-import { TRPCError } from "@trpc/server";
 import crypto from "crypto";
 import { z } from "zod";
 import { SessionUser } from "../../context";
+import { AuthErrorInvalidCredentials } from "../../exceptions";
 import prisma from "../../prisma";
 import { publicProcedure } from "../../procedure";
 import { redisClient } from "../../redis";
@@ -23,10 +23,7 @@ const login = publicProcedure.input(inputSchema).query(async ({ input }) => {
   });
 
   if (user == null || !(await verifyPassword(user.password, input.password))) {
-    throw new TRPCError({
-      code: "FORBIDDEN",
-      message: "error.server.incorrect_user_id_or_password",
-    });
+    throw AuthErrorInvalidCredentials;
   }
 
   const sessionID = crypto.randomBytes(128).toString("base64");

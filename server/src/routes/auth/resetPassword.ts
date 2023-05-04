@@ -1,5 +1,5 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { AuthErrorUnauthorized, AuthErrorUserNotFound } from "../../exceptions";
 import prisma from "../../prisma";
 import { publicProcedure } from "../../procedure";
 import { redisClient } from "../../redis";
@@ -25,7 +25,7 @@ const resetPassword = publicProcedure
       getRedisKey(RedisKey.ACCESS_TOKEN, input.accessToken)
     );
     if (userID == null) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw AuthErrorUnauthorized;
     }
 
     const password = await hashPassword(input.password);
@@ -37,7 +37,7 @@ const resetPassword = publicProcedure
       data: { password },
     });
     if (user == null) {
-      throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+      throw AuthErrorUserNotFound;
     }
 
     await redisClient.del(
