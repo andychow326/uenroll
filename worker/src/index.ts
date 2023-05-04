@@ -1,10 +1,7 @@
 import { Job, Worker } from "bullmq";
-import dotenv from "dotenv";
 import handleDropJob from "./drop";
 import handleEnrollJob from "./enroll";
 import { EnrollmentJobData, EnrollmentJobType } from "./types";
-
-dotenv.config();
 
 const worker = new Worker(
   "enrollment",

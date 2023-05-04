@@ -10,6 +10,16 @@ x-dev-build:
     - /app/node_modules
     - /app/server/node_modules
     - /app/portal/node_modules
+  environment:
+    ORIGIN: ${ORIGIN}
+    DATABASE_URL: ${DATABASE_URL}
+    REDIS_HOST: ${REDIS_HOST}
+    REDIS_PORT: ${REDIS_PORT}
+    REDIS_URL: ${REDIS_URL}
+    GMAIL_USER: ${GMAIL_USER}
+    GMAIL_CLIENT_ID: ${GMAIL_CLIENT_ID}
+    GMAIL_CLIENT_SECRET: ${GMAIL_CLIENT_SECRET}
+    GMAIL_REFRESH_TOKEN: ${GMAIL_REFRESH_TOKEN}
 
 services:
   db:

@@ -3,7 +3,6 @@ USE_DOCKER_COMPOSE=docker compose -p uenroll
 .PHONY: setup
 setup:
 	cp .env.example .env
-	ln .env server/.env
 
 .PHONY: init-prisma
 init-prisma:
