@@ -1,7 +1,14 @@
-import { exec } from "child_process";
+import childProcess from "child_process";
+import util from "util";
 
-function ResetDatabase() {
-  exec(`npx prisma migrate reset --force`);
+const exec = util.promisify(childProcess.exec);
+
+async function ResetDatabase() {
+  try {
+    await exec(`npx prisma migrate reset --force`);
+  } catch {
+    await exec(`npx prisma migrate dev`);
+  }
 }
 
 export default ResetDatabase;

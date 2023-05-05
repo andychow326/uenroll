@@ -1,15 +1,13 @@
 import { AuthErrorUnauthorized } from "../src/exceptions";
 import prisma from "../src/prisma";
-import { redisClient, setupRedisClient } from "../src/redis";
 import MockAPIRequest from "./helpers/MockAPIRequest";
 import MockUser from "./helpers/MockUser";
 import ResetDatabase from "./helpers/ResetDatabase";
 
-beforeAll(() => setupRedisClient());
-beforeEach(() => ResetDatabase());
-afterAll(async () =>
-  Promise.all([prisma.$disconnect(), redisClient.disconnect()])
-);
+beforeEach((done) => {
+  ResetDatabase().finally(done);
+});
+afterEach(async () => prisma.$disconnect());
 
 describe("user", () => {
   describe("validateSession", () => {
