@@ -4,7 +4,6 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import { createContext } from "./context";
-import { setupRedisClient } from "./redis";
 import { router } from "./router";
 
 const app = express();
@@ -25,8 +24,6 @@ app.use(
     createContext,
   })
 );
-
-setupRedisClient();
 
 console.log("Server lisening on port 3000");
 app.listen(3000);
