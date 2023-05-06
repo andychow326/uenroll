@@ -40,7 +40,32 @@ describe("auth", () => {
           userID: "",
           password: "",
         })
-      ).rejects.toThrowError(AuthErrorInvalidCredentials);
+      ).rejects.toThrowErrorMatchingInlineSnapshot(`
+"[
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "userID"
+    ]
+  },
+  {
+    "code": "too_small",
+    "minimum": 1,
+    "type": "string",
+    "inclusive": true,
+    "exact": false,
+    "message": "String must contain at least 1 character(s)",
+    "path": [
+      "password"
+    ]
+  }
+]"
+`);
     });
   });
 
