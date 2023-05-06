@@ -23,6 +23,10 @@ const remove = adminProcedure.input(inputSchema).query(async ({ input }) => {
       throw CourseErrorCourseNotFound;
     }
 
+    await prisma.enrollmentStatus.deleteMany({
+      where: { courseId: id },
+    });
+
     await prisma.enrolledCourse.deleteMany({
       where: { courseId: id },
     });
