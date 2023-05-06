@@ -32,6 +32,16 @@ describe("auth", () => {
         })
       ).rejects.toThrowError(AuthErrorInvalidCredentials);
     });
+
+    it("should reject login with empty userID or password", async () => {
+      const mockAPIRequest = MockAPIRequest();
+      await expect(
+        mockAPIRequest.auth.login({
+          userID: "",
+          password: "",
+        })
+      ).rejects.toThrowError(AuthErrorInvalidCredentials);
+    });
   });
 
   describe("forgotPassword", () => {
