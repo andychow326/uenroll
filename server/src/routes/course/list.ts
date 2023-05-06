@@ -5,6 +5,38 @@ import { authProcedure } from "../../procedure";
 
 export const MAX_COURSE_LIST_SIZE = 20;
 
+export function finalizeOpenedCourseList(
+  openedCourses: (OpenedCourse & {
+    _count: {
+      EnrolledCourse: number;
+    };
+    course: Course;
+  })[]
+) {
+  const map1 = new Map<string, (OpenedCourse & { openSeats: number })[]>();
+  const map2 = new Map<string, Course>();
+  openedCourses.forEach((openedCourse) => {
+    const key = `${openedCourse.subject}${openedCourse.number}`;
+    const openedCourseData = {
+      ...openedCourse,
+      // eslint-disable-next-line no-underscore-dangle
+      openSeats: openedCourse.capacity - openedCourse._count.EnrolledCourse,
+      _count: undefined,
+    };
+    map1.set(
+      key,
+      map1.get(key)?.concat([openedCourseData]) ?? [openedCourseData]
+    );
+    map2.set(key, openedCourse.course);
+  });
+
+  return Object.entries(Object.fromEntries(map1)).map((value) => ({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    ...map2.get(value[0])!,
+    openedCourse: value[1],
+  }));
+}
+
 const inputSchema = z.object({
   type: z.enum(["course", "openedCourse"]),
   code: z.string().trim().optional(),
@@ -80,28 +112,7 @@ const list = authProcedure.input(inputSchema).query(async ({ input }) => {
       },
     });
 
-    const map1 = new Map<string, (OpenedCourse & { openSeats: number })[]>();
-    const map2 = new Map<string, Course>();
-    openedCourses.forEach((openedCourse) => {
-      const key = `${openedCourse.subject}${openedCourse.number}`;
-      const openedCourseData = {
-        ...openedCourse,
-        // eslint-disable-next-line no-underscore-dangle
-        openSeats: openedCourse.capacity - openedCourse._count.EnrolledCourse,
-        _count: undefined,
-      };
-      map1.set(
-        key,
-        map1.get(key)?.concat([openedCourseData]) ?? [openedCourseData]
-      );
-      map2.set(key, openedCourse.course);
-    });
-
-    return Object.entries(Object.fromEntries(map1)).map((value) => ({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      ...map2.get(value[0])!,
-      openedCourse: value[1],
-    }));
+    return finalizeOpenedCourseList(openedCourses);
   }
 
   const courses = await prisma.course.findMany({
