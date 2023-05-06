@@ -32,7 +32,7 @@ ensure-test-env-up:
 
 .PHONY: clean-up-test-env
 clean-up-test-env:
-	${USE_DOCKER_COMPOSE_TEST} rm -s -v -f test-db test-redis
+	${USE_DOCKER_COMPOSE_TEST} down
 
 .PHONY: test-server
 test-server: ensure-test-env-up
