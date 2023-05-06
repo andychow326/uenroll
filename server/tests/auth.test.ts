@@ -32,6 +32,16 @@ describe("auth", () => {
         })
       ).rejects.toThrowError(AuthErrorInvalidCredentials);
     });
+
+    it("should reject login with input that using SQL injection", async () => {
+      const mockAPIRequest = MockAPIRequest();
+      await expect(
+        mockAPIRequest.auth.login({
+          userID: "admin’ or 1=1",
+          password: "random",
+        })
+      ).rejects.toThrowError(AuthErrorInvalidCredentials);
+    });
   });
 
   describe("forgotPassword", () => {
