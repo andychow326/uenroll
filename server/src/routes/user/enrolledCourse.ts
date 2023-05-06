@@ -1,5 +1,6 @@
 import prisma from "../../prisma";
 import { authProcedure } from "../../procedure";
+import { finalizeOpenedCourseList } from "../course/list";
 
 const enrolledCourse = authProcedure.query(async ({ ctx }) => {
   const userID = ctx.user.id;
@@ -17,7 +18,7 @@ const enrolledCourse = authProcedure.query(async ({ ctx }) => {
   });
 
   return courses.map((course) => ({
-    ...course.openedCourse,
+    ...finalizeOpenedCourseList([course.openedCourse])[0].openedCourse[0],
   }));
 });
 
