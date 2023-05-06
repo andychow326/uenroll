@@ -122,4 +122,24 @@ describe("course", () => {
       ).rejects.toThrowError(CourseErrorCourseAlreadyExists);
     });
   });
+
+  describe("createSection", () => {
+    it("should create a new course section with valid inputs", async () => {
+      const newCourseSection = {
+        id: "",
+        subject: "CSCI",
+        number: "3100",
+        section: "A",
+        year: 2023,
+        semester: "2",
+        timeSlotIds: ["M1", "M2", "T4"],
+        venue: "Shaw",
+        instructor: "Prof. Michael Lyu",
+        capacity: 200,
+      };
+      await expect(
+        mockAdminAPIRequest.course.createSection(newCourseSection)
+      ).resolves.not.toThrowError();
+    });
+  });
 });
