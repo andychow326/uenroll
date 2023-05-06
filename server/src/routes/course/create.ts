@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CourseErrorCourseNotFound } from "../../exceptions";
+import { CourseErrorCourseAlreadyExists } from "../../exceptions";
 import prisma from "../../prisma";
 import { adminProcedure } from "../../procedure";
 
@@ -28,7 +28,7 @@ const create = adminProcedure.input(inputSchema).mutation(async ({ input }) => {
     })) > 0;
 
   if (isExists) {
-    throw CourseErrorCourseNotFound;
+    throw CourseErrorCourseAlreadyExists;
   }
 
   await prisma.course.create({
